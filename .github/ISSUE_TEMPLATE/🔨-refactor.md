@@ -1,6 +1,6 @@
 ---
-name: Refactoring
-about: 코드 리팩토링.
+name: "\U0001F528 Refactor"
+about: 코드 리펙토링
 title: ''
 labels: refactoring
 assignees: ''
