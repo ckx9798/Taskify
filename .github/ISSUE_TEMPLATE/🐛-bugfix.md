@@ -1,6 +1,6 @@
 ---
-name: Bugfix
-about: 버그 수정사항
+name: "\U0001F41B Bugfix"
+about: 버그 수정
 title: ''
 labels: bugfix
 assignees: ''
