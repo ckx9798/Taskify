@@ -5,10 +5,20 @@ interface ColumnData {
   dashboardId: number;
 }
 
+interface ColumnResponseData {
+  id: number;
+  title: string;
+  teamId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 const BASE_URL = "https://sp-taskify-api.vercel.app/9-2";
 
 // 새로운 컬럼을 생성하는 함수
-async function createColumn(columnData: ColumnData): Promise<ColumnData> {
+async function createColumn(
+  columnData: ColumnData,
+): Promise<ColumnResponseData> {
   const response = await axios.post(`${BASE_URL}/columns`, columnData, {
     headers: {
       "Content-Type": "application/json",
@@ -18,7 +28,7 @@ async function createColumn(columnData: ColumnData): Promise<ColumnData> {
 }
 
 // 컬럼 목록을 가져오는 함수
-async function getColumns(): Promise<ColumnData> {
+async function getColumns(): Promise<ColumnResponseData> {
   const response = await axios.get(`${BASE_URL}/columns`, {
     headers: {
       "Content-Type": "application/json",
@@ -31,7 +41,7 @@ async function getColumns(): Promise<ColumnData> {
 async function updateColumn(
   columnId: string,
   columnData: ColumnData,
-): Promise<ColumnData> {
+): Promise<ColumnResponseData> {
   const response = await axios.put(
     `${BASE_URL}/columns/${columnId}`,
     columnData,
@@ -44,7 +54,7 @@ async function updateColumn(
   return response.data;
 }
 // 컬럼을 삭제하는 함수
-async function deleteColumn(columnId: string): Promise<ColumnData> {
+async function deleteColumn(columnId: string) {
   const response = await axios.delete(`${BASE_URL}/columns/${columnId}`, {
     headers: {
       "Content-Type": "application/json",
@@ -57,7 +67,9 @@ async function deleteColumn(columnId: string): Promise<ColumnData> {
 async function uploadCardImage(
   columnId: string,
   imageFile: File,
-): Promise<ColumnData> {
+): Promise<{
+  imageUrl: "string";
+}> {
   const formData = new FormData();
   formData.append("image", imageFile);
 
