@@ -3,6 +3,7 @@ import Head from "next/head";
 import images from "@/assets/mainimages";
 import Image from "next/image";
 import Link from "next/link";
+import BoxButton from "@/components/BoxButton";
 
 export default function Page() {
   return (
@@ -28,17 +29,47 @@ export default function Page() {
             새로운 일정 관리 <span className="text-violet">Taskify</span>
           </h1>
           <Link href={"/login"}>
-            <button>로그인 하기 </button>
+            <BoxButton
+              width="50px"
+              height="20px"
+              radius="8"
+              backgroundColor="purple"
+              fontSize="16"
+            >
+              로그인하기
+            </BoxButton>
           </Link>
         </div>
-        <div className="margincenter flex h-[600px] w-[1200px] rounded-lg bg-black-300">
-          <div>
-            <p>Point 1</p>
-            <p>
-              일의 우선순위를 <br /> 관리하세요
-            </p>
+        <div className="flex flex-col gap-10 py-20">
+          <div className="margincenter relative flex h-[600px] w-[1200px] rounded-lg bg-black-300">
+            <div className="flex flex-col gap-y-20 pl-12 pt-24">
+              <p className="text-[22px] text-gray-400">Point 1</p>
+              <p className="text-[48px] font-bold leading-[64px]">
+                일의 우선순위를 <br /> 관리하세요
+              </p>
+            </div>
+            <Image
+              src={images.mainPoint1}
+              alt="포인트1"
+              className="absolute bottom-0 right-0"
+            />
           </div>
-          <Image src={images.mainPoint1} alt="포인트1" className="end-" />
+          <div className="margincenter relative flex h-[600px] w-[1200px] rounded-lg bg-black-300">
+            <div className="ml-[600px] flex flex-col gap-y-20 pl-12 pt-24">
+              <p className="text-[22px] text-gray-400">Point 2</p>
+              <p className="text-[48px] font-bold leading-[64px]">
+                해야 할 일을 <br /> 등록하세요
+              </p>
+            </div>
+            <Image
+              src={images.mainPoint2}
+              alt="포인트1"
+              className="absolute bottom-0 left-20"
+            />
+          </div>
+        </div>
+        <div>
+          <p>생산성을 높이는 다양한 설정 ⚡</p>
         </div>
       </main>
 
