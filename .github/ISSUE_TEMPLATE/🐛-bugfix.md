@@ -1,10 +1,9 @@
 ---
 name: "\U0001F41B Bugfix"
 about: 버그 수정
-title: ''
+title: ""
 labels: bugfix
-assignees: ''
-
+assignees: ""
 ---
 
 > 어떤 버그인지 간결하게 설명해주세요
