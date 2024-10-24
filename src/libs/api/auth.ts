@@ -1,5 +1,5 @@
 // pages/api/login.js
-import axios from "axios";
+import baseaxios from "./axios";
 
 interface LoginInfo {
   email: string;
@@ -20,10 +20,7 @@ interface userInfo {
 
 export async function postLogin(loginInfo: LoginInfo) {
   try {
-    const response = await axios.post(
-      "https://sp-taskify-api.vercel.app/9-2/auth/login",
-      loginInfo,
-    );
+    const response = await baseaxios.post("/auth/login", loginInfo);
     return response.data as userInfo;
   } catch (error) {
     console.log("auth api error");
@@ -38,10 +35,7 @@ interface PasswordInfo {
 
 export async function ChangePassword(passwordInfo: PasswordInfo) {
   try {
-    const response = await axios.put(
-      "https://sp-taskify-api.vercel.app/9-2/auth/login",
-      passwordInfo,
-    );
+    const response = await baseaxios.put("/auth/login", passwordInfo);
     return response.data;
   } catch (error) {
     console.log("auth api error");

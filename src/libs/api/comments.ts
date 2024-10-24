@@ -1,4 +1,4 @@
-import axios from "axios";
+import baseaxios from "./axios";
 
 interface CommentData {
   content: string;
@@ -7,16 +7,9 @@ interface CommentData {
   dashboardId: number;
 }
 
-const BASE_URL = axios.create({
-  baseURL: "https://sp-taskify-api.vercel.app/9-2",
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
-
 export async function createComment(commentData: CommentData) {
   try {
-    const response = await BASE_URL.post(`/comments`, commentData);
+    const response = await baseaxios.post(`/comments`, commentData);
     return response.data;
   } catch (error) {
     console.error("Error creating comment:", error);
@@ -26,7 +19,7 @@ export async function createComment(commentData: CommentData) {
 
 export async function getComments() {
   try {
-    const response = await BASE_URL.get(`/comments`);
+    const response = await baseaxios.get(`/comments`);
     return response.data;
   } catch (error) {
     console.error("Error fetching comments:", error);
@@ -39,7 +32,7 @@ export async function updateComment(
   commentData: CommentData,
 ) {
   try {
-    const response = await BASE_URL.put(`/comments/${commentId}`, commentData);
+    const response = await baseaxios.put(`/comments/${commentId}`, commentData);
     return response.data;
   } catch (error) {
     console.error("Error updating comment:", error);
@@ -49,7 +42,7 @@ export async function updateComment(
 
 export async function deleteComment(commentId: string) {
   try {
-    const response = await BASE_URL.delete(`/comments/${commentId}`);
+    const response = await baseaxios.delete(`/comments/${commentId}`);
     return response.data;
   } catch (error) {
     console.error("Error deleting comment:", error);
