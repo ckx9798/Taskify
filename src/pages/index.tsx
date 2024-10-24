@@ -16,7 +16,7 @@ export default function Page() {
           <Image src={images.midLogo} alt="홈 화면으로" />
         </Link>
         <nav className="flex space-x-2 text-white">
-          <Link href={"/login"}>로그인</Link>
+          <Link href={"/signin"}>로그인</Link>
           <Link href={"/signup"}>회원가입</Link>
         </nav>
       </header>
@@ -27,7 +27,7 @@ export default function Page() {
           <h1 className="text-center text-7xl font-bold">
             새로운 일정 관리 <span className="text-violet">Taskify</span>
           </h1>
-          <Link href={"/login"}>
+          <Link href={"/signin"}>
             <button>로그인 하기 </button>
           </Link>
         </div>
