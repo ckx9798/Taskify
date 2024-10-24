@@ -1,6 +1,6 @@
 interface LoginButtonProps {
-  width: string;
-  height: string;
+  paddingTopBottom: string;
+  paddingRightLeft: string;
   radius: "4" | "8";
   backgroundColor: "purple" | "white";
   fontSize: "12" | "14" | "16" | "18";
@@ -10,8 +10,8 @@ interface LoginButtonProps {
 }
 
 export default function BoxButton({
-  width,
-  height,
+  paddingTopBottom,
+  paddingRightLeft,
   radius,
   backgroundColor,
   fontSize,
@@ -19,6 +19,11 @@ export default function BoxButton({
   disabled = false,
   onClick,
 }: LoginButtonProps) {
+  const borderValue = {
+    purple: "",
+    white: "border-solid border-gray-300 border",
+  };
+
   const radiusValue = {
     "4": "rounded",
     "8": "rounded-lg",
@@ -48,8 +53,10 @@ export default function BoxButton({
 
   return (
     <button
-      style={{ width: `${width}px`, height: `${height}px` }}
-      className={`${radiusValue[radius]} ${backgroundColorValue[backgroundColor]} ${hoverColorValue[backgroundColor]} ${textColorValue[backgroundColor]} ${fontSizeValue[fontSize]} text-center  disabled:bg-gray-500 disabled:hover:bg-gray-500 disabled:text-white disabled:cursor-not-allowed`}
+      style={{
+        padding: `${paddingTopBottom}px ${paddingRightLeft}px`,
+      }}
+      className={`${borderValue[backgroundColor]} ${radiusValue[radius]} ${backgroundColorValue[backgroundColor]} ${hoverColorValue[backgroundColor]} ${textColorValue[backgroundColor]} ${fontSizeValue[fontSize]} text-center  disabled:bg-gray-500 disabled:hover:bg-gray-500 disabled:text-white disabled:cursor-not-allowed disabled: border-none`}
       disabled={disabled}
       onClick={onClick}
     >
