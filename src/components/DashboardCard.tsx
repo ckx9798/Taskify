@@ -4,14 +4,14 @@ interface DashboardCardProps {
   width: number;
   height: number;
   border?: string;
-  isopen?: boolean;
+  isArrowOpen?: boolean;
 }
 
 export default function DashboardCard({
   width,
   height,
   border,
-  isopen,
+  isArrowOpen,
 }: DashboardCardProps) {
   return (
     <div className={"flex"}>
@@ -26,11 +26,11 @@ export default function DashboardCard({
         }}
       >
         <div className={"flex gap-3"}>
-          <span> 🔴 </span>
-          <span> 비브리지 </span>
+          <span role="colorCircle"> 🔴 </span>
+          <span role="dashboardName"> 비브리지 </span>
           <Image src="/svg/crown.svg" alt="왕관" width={18} height={14} />
         </div>
-        {isopen ? (
+        {isArrowOpen ? (
           <Image src="/svg/dashboardArrow.svg" alt=">" width={18} height={18} />
         ) : null}
       </div>
