@@ -1,4 +1,5 @@
 module.exports = {
+  plugins: ["prettier-plugin-tailwindcss"],
   printWidth: 80, // 최대 한 줄 길이
   tabWidth: 2, // 탭 너비
   semi: true, // 문장 끝 세미콜론

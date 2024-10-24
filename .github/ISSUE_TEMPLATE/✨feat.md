@@ -1,10 +1,9 @@
 ---
 name: "✨Feat"
 about: 기능 구현
-title: ''
+title: ""
 labels: feature
-assignees: ''
-
+assignees: ""
 ---
 
 ## 어떤 기능인가요?
