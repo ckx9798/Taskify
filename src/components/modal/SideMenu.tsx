@@ -12,7 +12,9 @@ export default function SideMenu() {
   return (
     // bg-rose-100 삭제
     <div
-      className={"flex flex-col w-72 h-screen gap-2.5 px-2 py-5 bg-rose-100"}
+      className={
+        "flex flex-col w-72 min-w-72 h-screen gap-2.5 px-2 py-5 bg-rose-100"
+      }
     >
       <div className={"mb-9"}>
         <Link href={"/"}>

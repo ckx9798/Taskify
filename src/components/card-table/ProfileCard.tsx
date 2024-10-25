@@ -1,9 +1,23 @@
 import Image from "next/image";
 import React, { useRef, useState } from "react";
+// import { updateUserInfo } from "@/libs/api/Users";
 
-export default function ProfileCard() {
+export default function ProfileCard({ updateUserProfile }) {
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const [nickName, setNickName] = useState("전역");
+  const changeNickName = (e) => {
+    setNickName(e.target.value);
+  };
+  const handliClickSave = async (e) => {
+    //api
+    e.preventDefault();
+    const data = await updateUserProfile({
+      nickname: nickName,
+      profileImageUrl: profileImage,
+    });
+  };
 
   // 이미지 파일 선택 창 열기
   const handleProfileImg = () => {
@@ -16,16 +30,19 @@ export default function ProfileCard() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files ? e.target.files[0] : null;
     if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setProfileImage(imageUrl);
+      // const imageUrl = URL.createObjectURL(file);
+      // setProfileImage(imageUrl);
     }
   };
 
+  function isNicknameInputError() {
+    return nickName.length > 10;
+  }
   return (
     <>
       <div
         className={
-          "w-full max-w-[672px] h-96 rounded-2xl p-6 flex flex-col gap-6 bg-red-100 "
+          "w-full max-w-[672px] h-96 rounded-2xl p-6 flex flex-col gap-6 bg-rose-100"
         }
       >
         <div>
@@ -70,6 +87,7 @@ export default function ProfileCard() {
                 disabled
               />
             </div>
+
             <div className={"flex flex-col gap-2"}>
               <label htmlFor="nickname">닉네임</label>
               <input
@@ -77,14 +95,26 @@ export default function ProfileCard() {
                 type="text"
                 placeholder="배유철"
                 id="nickname"
+                value={nickName}
+                onChange={changeNickName}
               />
+              <div className={`${!isNicknameInputError() ? "hidden" : ""}`}>
+                닉네임을 10자 이내로 입력해주세요
+              </div>
             </div>
             <div
               className={
                 "w-full h-12 p-4 rounded-lg bg-blue-700 flex justify-center items-center text-white font-semibold"
               }
             >
-              <button type="submit"> 저장 </button>
+              <button
+                type="submit"
+                onClick={handliClickSave}
+                disabled={isNicknameInputError()}
+              >
+                {" "}
+                저장{" "}
+              </button>
             </div>
           </form>
         </div>

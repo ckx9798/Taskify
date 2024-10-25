@@ -3,7 +3,7 @@ export default function ChangePwCard() {
     <>
       <div
         className={
-          "w-full max-w-[672px] h-auto rounded-2xl p-6 flex flex-col gap-6 bg-red-100 "
+          "w-full max-w-[672px] h-auto rounded-2xl p-6 flex flex-col gap-6 bg-rose-100 "
         }
       >
         <div>
