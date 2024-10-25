@@ -23,7 +23,7 @@ interface ChangePasswordPayloadType {
 
 interface UpdateInformationPayloadType {
   nickname: string;
-  profileImageUrl?: string;
+  profileImageUrl: string | null;
 }
 
 // isAxiosError 판별 함수 직접 정의
