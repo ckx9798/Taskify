@@ -1,0 +1,31 @@
+### GET 요청 테스트
+GET https://sp-taskify-api.vercel.app/9-2/endpoint1
+Content-Type: application/json
+
+### POST 요청 테스트
+POST https://sp-taskify-api.vercel.app/9-2/users
+Content-Type: application/json
+
+{
+  "email": "test@test.test",
+  "nickname":"aaaaa",
+  "password":"asdasdasd"
+    
+}
+
+### PUT 요청 테스트
+PUT https://sp-taskify-api.vercel.app/9-2/endpoint3
+Content-Type: application/json
+
+{
+  "key1": "updatedValue1",
+  "key2": "updatedValue2"
+}
+
+### DELETE 요청 테스트
+DELETE https://sp-taskify-api.vercel.app/9-2/endpoint4
+Content-Type: application/json
+
+{
+  "key1": "value1"
+}

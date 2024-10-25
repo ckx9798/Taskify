@@ -1,10 +1,9 @@
 ---
 name: "\U0001F528 Refactor"
 about: 코드 리펙토링
-title: ''
+title: ""
 labels: refactoring
-assignees: ''
-
+assignees: ""
 ---
 
 ## 어떤 기능인가요?
