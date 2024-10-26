@@ -21,17 +21,17 @@ interface InvitationType {
   updatedAt: string;
 }
 
-interface ReceivedInvitationsResponseType {
+export interface ReceivedInvitationsResponseType {
   invitations: InvitationType[];
   cursorId: number;
 }
 
 export async function getReceivedInvitations(
-  searchQuery: string | null,
+  cursorId: number = 1,
 ): Promise<ReceivedInvitationsResponseType> {
   try {
     const response = await baseaxios.get<ReceivedInvitationsResponseType>(
-      `/invitations?size=5${searchQuery}`,
+      `/invitations?size=10&cursorId=${cursorId}`,
     );
     return response.data;
   } catch (error) {

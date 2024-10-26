@@ -6,20 +6,27 @@ const baseaxios = axios.create({
     "Content-Type": "application/json",
   },
 });
-
 // 요청 인터셉터
 baseaxios.interceptors.request.use(
-  function (config) {
-    // 1. 요청 전달되기 전 작업 처리
-    // config를 설정할 수 있다
+  (config) => {
+    const tokenCookie = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("accessToken="));
+    if (tokenCookie) {
+      const token = tokenCookie.split("=")[1];
+      if (token) {
+        if (!config.headers) {
+          config.headers = {};
+        }
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    }
     return config;
   },
-  function (error) {
-    // 2. 요청 에러가 있는 작업 처리
+  (error) => {
     return Promise.reject(error);
   },
 );
-
 // 응답 인터셉터
 baseaxios.interceptors.response.use(
   function (response) {
