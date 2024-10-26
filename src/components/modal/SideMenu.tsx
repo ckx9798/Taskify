@@ -1,48 +1,98 @@
-import { useState } from "react";
-// import DashboardCard from "../DashboardCard";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import DashboardCard from "@/pages/DashboardCard";
+import { getDashboardList, Dashboard } from "@/libs/api/dashboards";
 import Image from "next/image";
+import CreateDashboardModal from "./CreateDashboardModal";
+import DashboardPagination from "./DashboardPagination";
 
+// 왼쪽 사이드바에서 대시보드 목록을 보여주고 생성하는 컴포넌트
 export default function SideMenu() {
-  const [isOpen, setIsOpen] = useState(false);
-  const ViewAddDashboardModal = () => {
-    setIsOpen(!isOpen);
+  // 새로운 대시보드 모달창 열기
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
+  // 대시보드 데이터 불러오기
+  const [dashboardData, setDashboardData] = useState<Dashboard[]>([]);
+  const [dashboardPage, setDashboardPage] = useState<number>(1);
+  const [dashboardCount, setDashboardCount] = useState<number>(0);
+
+  const loadDashboard = async (): Promise<void> => {
+    const data = await getDashboardList({
+      navigationMethod: "pagination",
+      page: dashboardPage,
+      size: 10,
+    });
+    setDashboardData(data.dashboards);
+    setDashboardCount(data.totalCount);
   };
 
+  useEffect(() => {
+    loadDashboard();
+  }, [dashboardPage]);
+
   return (
-    // bg-rose-100 삭제
-    <div
-      className={
-        "flex flex-col w-72 min-w-72 h-screen gap-2.5 px-2 py-5 bg-rose-100"
-      }
-    >
-      <div className={"mb-9"}>
-        <Link href={"/"}>
-          <Image
-            src="/logo/midLogo.svg"
-            alt="로고이미지"
-            width={109}
-            height={33}
+    <>
+      <div
+        className={
+          "flex h-screen w-72 min-w-72 flex-col gap-2.5 border border-rose-400 bg-white px-2 py-5"
+        }
+      >
+        {/* 상단  */}
+        <div className={"mb-9"}>
+          <Link href={"/"}>
+            <Image
+              src="/logo/midLogo.svg"
+              alt="로고이미지"
+              width={109}
+              height={33}
+            />
+          </Link>
+        </div>
+        <div
+          className={
+            "flex items-center justify-between border-2 border-rose-500"
+          }
+        >
+          <span className={"text-xs font-semibold text-gray-500"}>
+            Dash Boards
+          </span>
+          <button onClick={openModal}>
+            <Image
+              src="/icons/sideMenuPlus.svg"
+              alt="+"
+              width={20}
+              height={20}
+            />
+          </button>
+        </div>
+
+        {/* 대시보드 목록  */}
+        <ul className="space-y-1">
+          {dashboardData.map((dashboard) => {
+            return (
+              <li key={dashboard.id}>
+                <DashboardCard dashboard={dashboard} />
+              </li>
+            );
+          })}
+        </ul>
+        {/* 페이지네이션 버튼 */}
+        <div className="fixed bottom-5">
+          <DashboardPagination
+            dashboardCount={dashboardCount}
+            dashboardPage={dashboardPage}
+            setDashboardPage={setDashboardPage}
           />
-        </Link>
+        </div>
       </div>
-
-      <div className={"flex justify-between items-center"}>
-        <span className={"font-semibold	text-xs	text-gray-500"}>Dash Boards</span>
-        <button onClick={ViewAddDashboardModal}>
-          <Image src="/icons/sideMenuPlus.svg" alt="+" width={20} height={20} />
-        </button>
-      </div>
-
-      {/* <ul className="space-y-1">
-        <li>
-          <DashboardCard width={280} height={42} />
-        </li>
-        <li>
-          <DashboardCard width={280} height={42} />
-        </li>
-      </ul> */}
-      {/* PagenationButton 추가 */}
-    </div>
+      {/* 모달창  */}
+      <CreateDashboardModal
+        isOpen={isModalOpen}
+        refresh={loadDashboard}
+        closeModal={closeModal}
+      />
+    </>
   );
 }
