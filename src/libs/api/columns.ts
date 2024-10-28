@@ -1,29 +1,41 @@
 import baseaxios from "./axios";
 
-interface ColumnData {
+export interface Column {
+  id: number;
+  title: string;
+  teamId: string;
+  dashboardId: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ColumnData {
   title: string;
   dashboardId: number;
 }
 
 // 새로운 컬럼을 생성하는 함수
-export async function createColumn(columnData: ColumnData) {
-  const response = await baseaxios.post(
-    `/columns?dashboardId=${columnData.dashboardId}`,
-    columnData.title,
-  );
-  return response.data;
-}
-
-// 컬럼 목록을 가져오는 함수
-export async function getColumns(dashboardId: number) {
-  const response = await baseaxios.get(`/columns`, {
-    params: {
-      dashboardId,
-    },
+export async function createColumn(columnData: ColumnData): Promise<Column> {
+  const response = await baseaxios.post<Column>(`/columns`, {
+    title: columnData.title,
+    dashboardId: columnData.dashboardId,
   });
   return response.data;
 }
-
+// 컬럼 목록을 가져오는 함수
+export async function getColumns(
+  dashboardId: number,
+): Promise<{ result: string; data: Column[] }> {
+  const response = await baseaxios.get<{ result: string; data: Column[] }>(
+    `/columns`,
+    {
+      params: {
+        dashboardId,
+      },
+    },
+  );
+  return response.data;
+}
 // 기존 컬럼을 수정하는 함수
 export async function updateColumn(columnId: string, columnData: ColumnData) {
   const response = await baseaxios.put(`/columns/${columnId}`, columnData);
