@@ -1,14 +1,14 @@
 import { ReactNode } from "react";
 
-interface ButtonProps {
+export interface BoxButtonStyle {
   paddingTopBottom: string;
   paddingRightLeft: string;
   radius: "4" | "6" | "8";
   backgroundColor: "purple" | "white" | "white2";
   fontSize: "12" | "14" | "16" | "18";
   children: ReactNode;
-  disabled: boolean;
-  onClick: () => void;
+  disabled?: boolean;
+  onClick?: () => void;
 }
 
 export default function BoxButton({
@@ -20,7 +20,7 @@ export default function BoxButton({
   children,
   disabled = false,
   onClick,
-}: ButtonProps) {
+}: BoxButtonStyle) {
   const borderValue = {
     purple: "",
     white: "border-solid border-gray-300 border",
@@ -48,7 +48,7 @@ export default function BoxButton({
   const textColorValue = {
     purple: "text-white",
     white: "text-indigo-700",
-    white2: "text-gray-500"
+    white2: "text-gray-500",
   };
 
   const fontSizeValue = {
@@ -63,7 +63,7 @@ export default function BoxButton({
       style={{
         padding: `${paddingTopBottom}px ${paddingRightLeft}px`,
       }}
-      className={`${borderValue[backgroundColor]} ${radiusValue[radius]} ${backgroundColorValue[backgroundColor]} ${hoverColorValue[backgroundColor]} ${textColorValue[backgroundColor]} ${fontSizeValue[fontSize]} flex items-center gap-x-2 text-center font-medium  disabled:bg-gray-500 disabled:hover:bg-gray-500 disabled:text-white disabled:cursor-not-allowed`}
+      className={`${borderValue[backgroundColor]} ${radiusValue[radius]} ${backgroundColorValue[backgroundColor]} ${hoverColorValue[backgroundColor]} ${textColorValue[backgroundColor]} ${fontSizeValue[fontSize]} flex items-center gap-x-2 text-center font-medium disabled:cursor-not-allowed disabled:bg-gray-500 disabled:text-white disabled:hover:bg-gray-500`}
       disabled={disabled}
       onClick={onClick}
     >

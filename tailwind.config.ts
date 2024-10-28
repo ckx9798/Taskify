@@ -31,6 +31,8 @@ const config: Config = {
         pink: "#e876ea",
         "mandy-500": "#d25b68",
         "vanillaIce-200": "#f4d7da",
+        "diserria-400": "#d58d49",
+        "linen-100": "#f9eee3",
       },
     },
   },
