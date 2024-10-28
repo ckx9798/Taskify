@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import DashboardCard from "@/pages/DashboardCard";
 import { getDashboardList, Dashboard } from "@/libs/api/dashboards";
 import Image from "next/image";
 import CreateDashboardModal from "./CreateDashboardModal";
 import DashboardPagination from "./DashboardPagination";
+import DashboardCard from "./DashboardCard";
 
 // 왼쪽 사이드바에서 대시보드 목록을 보여주고 생성하는 컴포넌트
 export default function SideMenu() {
@@ -79,7 +79,7 @@ export default function SideMenu() {
           })}
         </ul>
         {/* 페이지네이션 버튼 */}
-        <div className="fixed bottom-5">
+        <div className="mt-auto">
           <DashboardPagination
             dashboardCount={dashboardCount}
             dashboardPage={dashboardPage}

@@ -17,14 +17,14 @@ export default function PaginationButton({
   };
 
   return (
-    <div className=" flex w-fit bg-white rounded border-solid border-gray-300 border">
+    <div className="flex w-fit rounded border border-solid border-gray-300 bg-white">
       <button
-        className={`${paddingValue[size]} border-r border-r-gray-300 flex-1 flex items-center justify-center`}
+        className={`${paddingValue[size]} flex flex-1 items-center justify-center border-r border-r-gray-300`}
       >
         {childArray[0]}
       </button>
       <button
-        className={`${paddingValue[size]} border-l border-l-gray-300 flex-1 flex items-center justify-center`}
+        className={`${paddingValue[size]} flex flex-1 items-center justify-center border-l border-l-gray-300`}
       >
         {childArray[1]}
       </button>
