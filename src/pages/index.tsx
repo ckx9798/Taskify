@@ -3,7 +3,6 @@ import Head from "next/head";
 import images from "@/assets/mainimages";
 import Image from "next/image";
 import Link from "next/link";
-import InvitedDashboard from "@/components/card-table/InvitedDashboard";
 
 export default function Page() {
   return (
@@ -42,8 +41,6 @@ export default function Page() {
           <Image src={images.mainPoint1} alt="포인트1" className="end-" />
         </div>
       </main>
-      <InvitedDashboard />
-
       <footer className="flex justify-between px-20 py-4 text-gray-400">
         <div>©codeit - 2023</div>
         <div className="flex space-x-2">

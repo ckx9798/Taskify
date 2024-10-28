@@ -1,5 +1,5 @@
 import baseaxios from "./axios";
-interface InvitationType {
+export interface InvitationType {
   id: number;
   inviter: {
     id: number;
@@ -27,11 +27,16 @@ export interface ReceivedInvitationsResponseType {
 }
 
 export async function getReceivedInvitations(
-  cursorId: number = 1,
+  cursorId: number | null = null,
 ): Promise<ReceivedInvitationsResponseType> {
   try {
+    const params: { size: number; cursorId?: number } = { size: 10 };
+    if (cursorId !== null) {
+      params.cursorId = cursorId;
+    }
     const response = await baseaxios.get<ReceivedInvitationsResponseType>(
-      `/invitations?size=10&cursorId=${cursorId}`,
+      `/invitations`,
+      { params },
     );
     return response.data;
   } catch (error) {

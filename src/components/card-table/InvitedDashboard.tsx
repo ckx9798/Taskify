@@ -1,129 +1,80 @@
-import useInfiniteScroll from "@/hooks/useInfiniteScroll";
 import React, { useState, useEffect } from "react";
-// 타입 정의
-interface Dashboard {
-  id: number;
-  title: string;
-}
+import useInfiniteScroll from "@/hooks/useInfiniteScroll";
+import {
+  getReceivedInvitations,
+  acceptInvite,
+  InvitationType,
+} from "../../libs/api/Invitations"; // API 함수 임포트
 
-interface Invitation {
-  id: number;
-  inviter: {
-    nickname: string;
-    email: string;
-    id: number;
-  };
-  teamId: string;
-  dashboard: Dashboard;
-  invitee: {
-    nickname: string;
-    email: string;
-    id: number;
-  };
-  inviteAccepted: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
-
-// 목업 데이터
-const mockData: { invitations: Invitation[] } = {
-  invitations: Array.from({ length: 50 }, (_, index) => ({
-    id: index,
-    inviter: {
-      nickname: `Inviter ${index}`,
-      email: `inviter${index}@example.com`,
-      id: index,
-    },
-    teamId: `team-${index}`,
-    dashboard: {
-      title: `Dashboard ${index}`,
-      id: index,
-    },
-    invitee: {
-      nickname: `Invitee ${index}`,
-      email: `invitee${index}@example.com`,
-      id: index,
-    },
-    inviteAccepted: true,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  })),
-};
-
-// DashboardItem 컴포넌트 분리
 interface DashboardItemProps {
-  dashboard: Dashboard;
+  invitation: InvitationType;
   onAccept: (id: number) => void;
   onReject: (id: number) => void;
 }
+
 const InvitedDashboard: React.FC = () => {
   // 상태 변수
-  const [dashboards, setDashboards] = useState<Dashboard[]>([]);
+  const [invitations, setInvitations] = useState<InvitationType[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [page, setPage] = useState(0);
+  const [cursorId, setCursorId] = useState<number | null>(null);
   const [isFetching, setIsFetching] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
-  const [hasInvitations, setHasInvitations] = useState<boolean>(true);
 
-  // 상수
-  const PAGE_SIZE = 10;
-
-  // 컴포넌트 마운트 시 전체 초대 데이터 여부 확인
+  // 검색어 변경 시 상태 초기화 및 데이터 로드
   useEffect(() => {
-    setHasInvitations(mockData.invitations.length > 0);
-  }, []);
-
-  // 검색어 변경 시 상태 초기화
-  useEffect(() => {
-    setDashboards([]);
-    setPage(0);
+    setInvitations([]);
+    setCursorId(null);
     setHasMore(true);
     setIsDataLoaded(false);
+    fetchInvitations();
   }, [searchTerm]);
-
-  // 페이지 또는 검색어 변경 시 대시보드 데이터 페칭
-  useEffect(() => {
-    fetchDashboards();
-  }, [page, searchTerm]);
 
   // 무한 스크롤 훅 사용
   const { lastElementRef } = useInfiniteScroll({
     isFetching,
     hasMore,
-    onLoadMore: () => setPage((prevPage) => prevPage + 1),
+    onLoadMore: () => {
+      if (!isFetching && hasMore) {
+        fetchInvitations();
+      }
+    },
   });
 
-  // 대시보드 데이터 페칭 함수
-  const fetchDashboards = async () => {
+  // 초대 데이터 페칭 함수
+  const fetchInvitations = async () => {
     if (isFetching || !hasMore) return;
     setIsFetching(true);
 
     try {
-      // 검색어를 적용하여 데이터 필터링
-      const filteredInvitations = mockData.invitations.filter((invitation) =>
-        invitation.dashboard.title
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase()),
-      );
+      const response = await getReceivedInvitations(cursorId);
+      const newInvitations = response.invitations;
 
-      const totalItems = filteredInvitations.length;
-      const start = page * PAGE_SIZE;
-      const end = start + PAGE_SIZE;
+      // 검색어가 있을 때만 필터링
+      const filteredInvitations = searchTerm
+        ? newInvitations.filter((invitation) =>
+            invitation.inviter.nickname
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase()),
+          )
+        : newInvitations; // 검색어가 없으면 모든 데이터 사용
 
-      const paginatedData = filteredInvitations.slice(start, end);
+      if (cursorId === null) {
+        // 초기 로드 또는 검색어 변경 시 상태 덮어쓰기
+        setInvitations(filteredInvitations);
+      } else {
+        // 무한 스크롤로 추가 데이터 로드 시 기존 데이터에 추가
+        setInvitations((prev) => [...prev, ...filteredInvitations]);
+      }
 
-      const newDashboards = paginatedData.map(
-        (invitation) => invitation.dashboard,
-      );
-
-      setDashboards((prevDashboards) => [...prevDashboards, ...newDashboards]);
-
-      if (end >= totalItems) {
+      // 다음 페이지를 위한 cursorId 업데이트
+      if (response.cursorId !== null) {
+        setCursorId(response.cursorId);
+      } else {
         setHasMore(false);
       }
     } catch (error) {
-      console.error("Error fetching dashboards:", error);
+      console.error("Error fetching invitations:", error);
     } finally {
       setIsFetching(false);
       setIsDataLoaded(true);
@@ -131,28 +82,38 @@ const InvitedDashboard: React.FC = () => {
   };
 
   // 수락 및 거절 핸들러
-  const handleAccept = (id: number) => {
-    setDashboards((prevDashboards) =>
-      prevDashboards.filter((dashboard) => dashboard.id !== id),
-    );
+  const handleAccept = async (id: number) => {
+    try {
+      await acceptInvite(id, true);
+      setInvitations((prev) =>
+        prev.filter((invitation) => invitation.id !== id),
+      );
+    } catch (error) {
+      console.error("Error accepting invitation:", error);
+    }
   };
 
-  const handleReject = (id: number) => {
-    setDashboards((prevDashboards) =>
-      prevDashboards.filter((dashboard) => dashboard.id !== id),
-    );
+  const handleReject = async (id: number) => {
+    try {
+      await acceptInvite(id, false);
+      setInvitations((prev) =>
+        prev.filter((invitation) => invitation.id !== id),
+      );
+    } catch (error) {
+      console.error("Error rejecting invitation:", error);
+    }
   };
 
-  // 초대 메시지 표시 여부 결정
+  // 메시지 표시 여부 결정
   const shouldShowNoInvitationsMessage =
-    dashboards.length === 0 && !isFetching && isDataLoaded && !hasInvitations;
+    invitations.length === 0 && !isFetching && isDataLoaded;
 
   return (
     <div className="min-h-screen bg-gray-800 p-4">
       <input
         className="mb-4 w-full rounded p-2 text-black"
         type="text"
-        placeholder="제목으로 검색"
+        placeholder="이름으로 검색"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
@@ -160,15 +121,15 @@ const InvitedDashboard: React.FC = () => {
         <p className="text-white">아직 초대받은 대시보드가 없어요</p>
       ) : (
         <div>
-          {dashboards.map((dashboard, index) => {
-            const isLastItem = index === dashboards.length - 1;
+          {invitations.map((invitation, index) => {
+            const isLastItem = index === invitations.length - 1;
             return (
               <DashboardItem
-                key={dashboard.id}
-                dashboard={dashboard}
+                key={invitation.id}
+                invitation={invitation}
                 onAccept={handleAccept}
                 onReject={handleReject}
-                ref={isLastItem ? lastElementRef : null} // 콜백 ref 전달
+                ref={isLastItem ? lastElementRef : null}
               />
             );
           })}
@@ -180,19 +141,27 @@ const InvitedDashboard: React.FC = () => {
 };
 
 const DashboardItem = React.forwardRef<HTMLDivElement, DashboardItemProps>(
-  ({ dashboard, onAccept, onReject }, ref) => (
+  ({ invitation, onAccept, onReject }, ref) => (
     <div ref={ref} className="mb-4 rounded bg-gray-700 p-4 shadow-md">
-      <h2 className="text-white">{dashboard.title}</h2>
+      <div className="">
+        <h2>이름</h2>
+        <h2 className="text-white">{invitation.dashboard.title}</h2>
+      </div>
+      <div>
+        <p>초대자</p>
+        <p className="text-white">{invitation.inviter.nickname}</p>
+      </div>
+
       <div className="flex space-x-2">
         <button
           className="bg-green-500 hover:bg-green-600 rounded px-4 py-2 text-white"
-          onClick={() => onAccept(dashboard.id)}
+          onClick={() => onAccept(invitation.id)}
         >
           수락
         </button>
         <button
           className="bg-red-500 hover:bg-red-600 rounded px-4 py-2 text-white"
-          onClick={() => onReject(dashboard.id)}
+          onClick={() => onReject(invitation.id)}
         >
           거절
         </button>
