@@ -28,7 +28,7 @@ const mockData2 = {
 export default function Page() {
   const [members, setMembers] = useState<string[]>([]);
   const router = useRouter();
-  // const id = router.query['dashboardid'];
+  // const id = router.query["dashboardid"];
 
   useEffect(() => {
     setMembers(mockData);
