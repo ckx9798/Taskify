@@ -1,15 +1,32 @@
+import useInfiniteScroll from "@/hooks/useInfiniteScroll";
 import React, { useState, useEffect } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { getReceivedInvitations } from "@/libs/api/Invitations";
-import { ReceivedInvitationsResponseType } from "@/libs/api/Invitations"; // Assuming this is where the type is defined
-
+// 타입 정의
 interface Dashboard {
   id: number;
   title: string;
 }
 
-const mockData = {
-  cursorId: 0,
+interface Invitation {
+  id: number;
+  inviter: {
+    nickname: string;
+    email: string;
+    id: number;
+  };
+  teamId: string;
+  dashboard: Dashboard;
+  invitee: {
+    nickname: string;
+    email: string;
+    id: number;
+  };
+  inviteAccepted: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// 목업 데이터
+const mockData: { invitations: Invitation[] } = {
   invitations: Array.from({ length: 50 }, (_, index) => ({
     id: index,
     inviter: {
@@ -33,100 +50,156 @@ const mockData = {
   })),
 };
 
+// DashboardItem 컴포넌트 분리
+interface DashboardItemProps {
+  dashboard: Dashboard;
+  onAccept: (id: number) => void;
+  onReject: (id: number) => void;
+}
 const InvitedDashboard: React.FC = () => {
+  // 상태 변수
   const [dashboards, setDashboards] = useState<Dashboard[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [page, setPage] = useState(0);
+  const [isFetching, setIsFetching] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  const [cursorId, setCursorId] = useState(0);
+  const [isDataLoaded, setIsDataLoaded] = useState(false);
+  const [hasInvitations, setHasInvitations] = useState<boolean>(true);
 
+  // 상수
+  const PAGE_SIZE = 10;
+
+  // 컴포넌트 마운트 시 전체 초대 데이터 여부 확인
   useEffect(() => {
-    fetchDashboards(cursorId);
-
-    // fetchDashboards();
+    setHasInvitations(mockData.invitations.length > 0);
   }, []);
 
-  const fetchDashboards = async (cursorId: number) => {
+  // 검색어 변경 시 상태 초기화
+  useEffect(() => {
+    setDashboards([]);
+    setPage(0);
+    setHasMore(true);
+    setIsDataLoaded(false);
+  }, [searchTerm]);
+
+  // 페이지 또는 검색어 변경 시 대시보드 데이터 페칭
+  useEffect(() => {
+    fetchDashboards();
+  }, [page, searchTerm]);
+
+  // 무한 스크롤 훅 사용
+  const { lastElementRef } = useInfiniteScroll({
+    isFetching,
+    hasMore,
+    onLoadMore: () => setPage((prevPage) => prevPage + 1),
+  });
+
+  // 대시보드 데이터 페칭 함수
+  const fetchDashboards = async () => {
+    if (isFetching || !hasMore) return;
+    setIsFetching(true);
+
     try {
-      // const response: ReceivedInvitationsResponseType = await getReceivedInvitations(cursorId);
-      // await getReceivedInvitations(cursorId);
-      // setDashboards((prevDashboards) => [
-      //   ...prevDashboards,
-      //   ...response.invitations.map((invitation) => invitation.dashboard),
-      // ]);
-      // setHasMore(response.invitations.length > 0);
-      // if (response.invitations.length > 0) {
-      //   setCursorId(response.invitations[response.invitations.length - 1].id);
-      // }
-      // 목데이터를 페이징하여 가져오기
-      const pageSize = 10;
-      const start = cursorId;
-      const end = cursorId + pageSize;
-      const paginatedData = mockData.invitations.slice(start, end);
+      // 검색어를 적용하여 데이터 필터링
+      const filteredInvitations = mockData.invitations.filter((invitation) =>
+        invitation.dashboard.title
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()),
+      );
 
-      if (paginatedData.length === 0) {
+      const totalItems = filteredInvitations.length;
+      const start = page * PAGE_SIZE;
+      const end = start + PAGE_SIZE;
+
+      const paginatedData = filteredInvitations.slice(start, end);
+
+      const newDashboards = paginatedData.map(
+        (invitation) => invitation.dashboard,
+      );
+
+      setDashboards((prevDashboards) => [...prevDashboards, ...newDashboards]);
+
+      if (end >= totalItems) {
         setHasMore(false);
-        return;
       }
-
-      setDashboards((prevDashboards) => [
-        ...prevDashboards,
-        ...paginatedData.map((invitation) => invitation.dashboard),
-      ]);
-      setCursorId(end);
     } catch (error) {
       console.error("Error fetching dashboards:", error);
+    } finally {
+      setIsFetching(false);
+      setIsDataLoaded(true);
     }
   };
 
-  const loadMoreDashboards = () => {
-    const newCursorId = cursorId + 10;
-    setCursorId(newCursorId);
-    fetchDashboards(newCursorId);
-    // cursorId는 fetchDashboards 함수에서 업데이트됩니다.
-  };
-
+  // 수락 및 거절 핸들러
   const handleAccept = (id: number) => {
-    // Implement the accept logic here
-    setDashboards(dashboards.filter((dashboard) => dashboard.id !== id));
+    setDashboards((prevDashboards) =>
+      prevDashboards.filter((dashboard) => dashboard.id !== id),
+    );
   };
 
   const handleReject = (id: number) => {
-    // Implement the reject logic here
-    setDashboards(dashboards.filter((dashboard) => dashboard.id !== id));
+    setDashboards((prevDashboards) =>
+      prevDashboards.filter((dashboard) => dashboard.id !== id),
+    );
   };
 
-  const filteredDashboards = dashboards.filter((dashboard) =>
-    dashboard.title.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
+  // 초대 메시지 표시 여부 결정
+  const shouldShowNoInvitationsMessage =
+    dashboards.length === 0 && !isFetching && isDataLoaded && !hasInvitations;
 
   return (
-    <div>
+    <div className="min-h-screen bg-gray-800 p-4">
       <input
+        className="mb-4 w-full rounded p-2 text-black"
         type="text"
-        placeholder="Search by title"
+        placeholder="제목으로 검색"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
-      {filteredDashboards.length === 0 ? (
-        <p>아직 초대받은 대시보드가 없어요</p>
+      {shouldShowNoInvitationsMessage ? (
+        <p className="text-white">아직 초대받은 대시보드가 없어요</p>
       ) : (
-        <InfiniteScroll
-          dataLength={filteredDashboards.length}
-          next={loadMoreDashboards}
-          hasMore={hasMore}
-          loader={<h4>Loading...</h4>}
-        >
-          {filteredDashboards.map((dashboard) => (
-            <div key={dashboard.id} className="text-white">
-              <h3>{dashboard.title}</h3>
-              <button onClick={() => handleAccept(dashboard.id)}>수락</button>
-              <button onClick={() => handleReject(dashboard.id)}>거절</button>
-            </div>
-          ))}
-        </InfiniteScroll>
+        <div>
+          {dashboards.map((dashboard, index) => {
+            const isLastItem = index === dashboards.length - 1;
+            return (
+              <DashboardItem
+                key={dashboard.id}
+                dashboard={dashboard}
+                onAccept={handleAccept}
+                onReject={handleReject}
+                ref={isLastItem ? lastElementRef : null} // 콜백 ref 전달
+              />
+            );
+          })}
+          {isFetching && <p className="text-white">Loading...</p>}
+        </div>
       )}
     </div>
   );
 };
+
+const DashboardItem = React.forwardRef<HTMLDivElement, DashboardItemProps>(
+  ({ dashboard, onAccept, onReject }, ref) => (
+    <div ref={ref} className="mb-4 rounded bg-gray-700 p-4 shadow-md">
+      <h2 className="text-white">{dashboard.title}</h2>
+      <div className="flex space-x-2">
+        <button
+          className="bg-green-500 hover:bg-green-600 rounded px-4 py-2 text-white"
+          onClick={() => onAccept(dashboard.id)}
+        >
+          수락
+        </button>
+        <button
+          className="bg-red-500 hover:bg-red-600 rounded px-4 py-2 text-white"
+          onClick={() => onReject(dashboard.id)}
+        >
+          거절
+        </button>
+      </div>
+    </div>
+  ),
+);
+DashboardItem.displayName = "DashboardItem";
 
 export default InvitedDashboard;
