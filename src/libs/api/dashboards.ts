@@ -1,5 +1,4 @@
 import baseaxios from "./axios";
-import { AxiosResponse } from "axios";
 
 interface DashboardData {
   title: string;

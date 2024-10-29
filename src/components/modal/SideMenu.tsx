@@ -36,7 +36,7 @@ export default function SideMenu() {
     <>
       <div
         className={
-          "flex h-screen w-72 min-w-72 flex-col gap-2.5 border border-rose-400 bg-white px-2 py-5"
+          "flex h-screen w-72 min-w-72 flex-col gap-2.5 bg-white px-2 py-5"
         }
       >
         {/* 상단  */}
@@ -79,7 +79,7 @@ export default function SideMenu() {
           })}
         </ul>
         {/* 페이지네이션 버튼 */}
-        <div className="mt-auto">
+        <div className="fixed bottom-3">
           <DashboardPagination
             dashboardCount={dashboardCount}
             dashboardPage={dashboardPage}
