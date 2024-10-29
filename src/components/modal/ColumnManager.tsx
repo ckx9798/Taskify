@@ -7,7 +7,7 @@ interface ColumnManagerProps {
   isOpen: boolean;
   onClose: () => void;
   dashboardId: number;
-  columnId: string;
+  columnId: number;
 }
 
 const ColumnManager: React.FC<ColumnManagerProps> = ({
@@ -26,7 +26,7 @@ const ColumnManager: React.FC<ColumnManagerProps> = ({
         const response = await getColumns(dashboardId);
         setColumns(response.data);
         const currentColumn = response.data.find(
-          (column) => column.id.toString() === columnId,
+          (column) => column.id === columnId,
         );
         if (currentColumn) {
           setColumnName(currentColumn.title);
@@ -45,8 +45,7 @@ const ColumnManager: React.FC<ColumnManagerProps> = ({
     if (!columnName) return;
 
     const isNameDuplicate = columns.some(
-      (column) =>
-        column.title === columnName && column.id.toString() !== columnId,
+      (column) => column.title === columnName && column.id !== columnId,
     );
 
     if (isNameDuplicate) {

@@ -37,18 +37,18 @@ export async function getColumns(
   return response.data;
 }
 // 기존 컬럼을 수정하는 함수
-export async function updateColumn(columnId: string, columnData: ColumnData) {
+export async function updateColumn(columnId: number, columnData: ColumnData) {
   const response = await baseaxios.put(`/columns/${columnId}`, columnData);
   return response.data;
 }
 // 컬럼을 삭제하는 함수
-export async function deleteColumn(columnId: string) {
+export async function deleteColumn(columnId: number) {
   const response = await baseaxios.delete(`/columns/${columnId}`);
   return response.data;
 }
 
 // 컬럼에 카드 이미지를 업로드하는 함수
-export async function uploadCardImage(columnId: string, imageFile: File) {
+export async function uploadCardImage(columnId: number, imageFile: File) {
   const formData = new FormData();
   formData.append("image", imageFile);
 
