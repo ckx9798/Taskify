@@ -63,7 +63,7 @@ const CreateColumn: React.FC<CreateColumnProps> = ({
     <div>
       <CommonModal isOpen={isOpen} onClose={onClose} hideCloseButton={false}>
         <div className="flex flex-col gap-6">
-          <p className="text-[24px] font-bold text-black-200">컬럼 관리</p>
+          <p className="text-[24px] font-bold text-black-200">새 컬럼 생성</p>
           <div className="flex flex-col gap-2">
             <p>이름</p>
             <input
