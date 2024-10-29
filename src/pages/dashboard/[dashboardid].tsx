@@ -4,6 +4,7 @@ import crownIcon from "@/../public/icons/crown_icon.svg";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import BoardCard from "@/components/BoardCard";
+import CardModal from "@/components/modal/CardModal";
 
 const nickName: string = "포텐셜";
 const mockData: string[] = ["TIGER", "BEAR", "DOG", "CAT", "RABBIT"];
@@ -44,7 +45,13 @@ export default function Page() {
         </div>
       </NavBar>
 
-      <BoardCard {...mockData2} />
+      <BoardCard {...mockData2} onClick={() => alert("상세")} />
+      <CardModal
+        isOpen={true}
+        columnTitle={"ToDo"}
+        cardId={3}
+        onClose={() => alert("닫혀")}
+      />
     </div>
   );
 }

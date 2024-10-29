@@ -1,9 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // images: {
-  //   domains: ["www.shutterstock.com"],
-  // },
+  images: {
+    domains: ["search.pstatic.net"],
+  },
 };
 
 export default nextConfig;
