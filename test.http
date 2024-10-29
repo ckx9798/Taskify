@@ -3,12 +3,11 @@ GET https://sp-taskify-api.vercel.app/9-2/endpoint1
 Content-Type: application/json
 
 ### POST 요청 테스트
-POST https://sp-taskify-api.vercel.app/9-2/users
+POST https://sp-taskify-api.vercel.app/9-2/auth/login
 Content-Type: application/json
 
 {
-  "email": "test@test.test",
-  "nickname":"aaaaa",
+  "email": "test@test.te",
   "password":"asdasdasd"
     
 }
