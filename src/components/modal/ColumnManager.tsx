@@ -1,18 +1,20 @@
 import CommonModal from "@/components/modal/CommonModal";
 import React, { useEffect, useState } from "react";
 import BoxButton from "../BoxButton";
-import { Column, createColumn, getColumns } from "@/libs/api/columns";
+import { Column, getColumns, updateColumn } from "@/libs/api/columns";
 
-interface CreateColumnProps {
+interface ColumnManagerProps {
   isOpen: boolean;
   onClose: () => void;
   dashboardId: number;
+  columnId: string;
 }
 
-const CreateColumn: React.FC<CreateColumnProps> = ({
+const ColumnManager: React.FC<ColumnManagerProps> = ({
   isOpen,
   onClose,
   dashboardId,
+  columnId,
 }) => {
   const [columnName, setColumnName] = useState("");
   const [isDuplicate, setIsDuplicate] = useState(false);
@@ -23,21 +25,28 @@ const CreateColumn: React.FC<CreateColumnProps> = ({
       try {
         const response = await getColumns(dashboardId);
         setColumns(response.data);
+        const currentColumn = response.data.find(
+          (column) => column.id.toString() === columnId,
+        );
+        if (currentColumn) {
+          setColumnName(currentColumn.title);
+        }
       } catch (error) {
-        console.error("Error fetching columns:", error);
+        console.error("컬럼을 가져오는 중 오류 발생:", error);
       }
     };
 
     if (isOpen) {
       fetchColumns();
     }
-  }, [isOpen, dashboardId]);
+  }, [isOpen, dashboardId, columnId]);
 
-  const handleCreateColumn = async () => {
+  const handleUpdateColumn = async () => {
     if (!columnName) return;
 
     const isNameDuplicate = columns.some(
-      (column) => column.title === columnName,
+      (column) =>
+        column.title === columnName && column.id.toString() !== columnId,
     );
 
     if (isNameDuplicate) {
@@ -46,16 +55,16 @@ const CreateColumn: React.FC<CreateColumnProps> = ({
     }
 
     try {
-      await createColumn({
+      await updateColumn(columnId, {
         title: columnName,
         dashboardId: dashboardId,
       });
-      // 성공적으로 생성되면 모달을 닫고 상태를 초기화합니다.
+      // 성공적으로 수정되면 모달을 닫고 상태를 초기화합니다.
       onClose();
       setColumnName("");
       setIsDuplicate(false);
     } catch (error) {
-      console.error("Error creating column:", error);
+      console.error("컬럼을 수정하는 중 오류 발생:", error);
     }
   };
 
@@ -74,7 +83,7 @@ const CreateColumn: React.FC<CreateColumnProps> = ({
               value={columnName}
               onChange={(e) => {
                 setColumnName(e.target.value);
-                setIsDuplicate(false); // 입력이 변경될 때 에러 메시지를 초기화합니다.
+                setIsDuplicate(false); // 입력이 변경될 때 중복 에러 메시지를 초기화합니다.
               }}
               placeholder="컬럼 이름을 입력해주세요"
             />
@@ -106,9 +115,9 @@ const CreateColumn: React.FC<CreateColumnProps> = ({
               backgroundColor="purple"
               fontSize="16"
               disabled={!columnName}
-              onClick={handleCreateColumn}
+              onClick={handleUpdateColumn}
             >
-              생성
+              변경
             </BoxButton>
           </div>
         </div>
@@ -117,4 +126,4 @@ const CreateColumn: React.FC<CreateColumnProps> = ({
   );
 };
 
-export default CreateColumn;
+export default ColumnManager;
