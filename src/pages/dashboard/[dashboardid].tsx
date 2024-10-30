@@ -46,12 +46,6 @@ export default function Page() {
       </NavBar>
 
       <BoardCard {...mockData2} onClick={() => alert("상세")} />
-      <CardModal
-        isOpen={true}
-        columnTitle={"ToDo"}
-        cardId={3}
-        onClose={() => alert("닫혀")}
-      />
     </div>
   );
 }

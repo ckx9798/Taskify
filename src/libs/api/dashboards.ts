@@ -12,6 +12,22 @@ interface ListQueryData {
   size: number;
 }
 
+export interface Dashboard {
+  id: number;
+  title: string;
+  color: string;
+  userId: number;
+  createdAt: string;
+  updatedAt: string;
+  createdByMe: boolean;
+}
+
+export interface DashboardListResponse {
+  cursorId: number;
+  totalCount: number;
+  dashboards: Dashboard[];
+}
+
 interface InvitationsQueryData {
   page: number;
   size: number;
@@ -31,7 +47,7 @@ export async function createDashboard(dashboardData: DashboardData) {
 // 대시보드 목록 조회
 export async function getDashboardList(listQueryData: ListQueryData) {
   try {
-    const response = await baseaxios.get(`/dashboards`, {
+    const response = await baseaxios.get<DashboardListResponse>(`/dashboards`, {
       params: {
         navigationMethod: listQueryData.navigationMethod,
         cursorId: listQueryData.cursorId,
