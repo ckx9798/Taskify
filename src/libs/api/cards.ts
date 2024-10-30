@@ -1,7 +1,8 @@
 // pages/api/login.js
 import baseaxios from "./axios";
 
-interface PostCard {
+// PostCard 인터페이스 정의
+export interface PostCard {
   assigneeUserId: number;
   dashboardId: number;
   columnId: number;
@@ -9,9 +10,10 @@ interface PostCard {
   description: string;
   dueDate: string;
   tags: string[];
-  imageUrl: string;
+  imageUrl?: string;
 }
-interface PostResponse {
+
+export interface PostResponse {
   id: number;
   title: string;
   description: string;
@@ -22,7 +24,7 @@ interface PostResponse {
     nickname: string;
     id: number;
   };
-  imageUrl: string;
+  imageUrl?: string;
   teamId: string;
   columnId: number;
   createdAt: string;
@@ -30,7 +32,7 @@ interface PostResponse {
 }
 
 // 카드 생성
-export async function CreatCard(postCard: PostCard) {
+export async function createCard(postCard: PostCard) {
   try {
     const response = await baseaxios.post("/cards", postCard);
     return response.data as PostResponse;

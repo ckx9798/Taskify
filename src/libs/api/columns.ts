@@ -14,6 +14,10 @@ export interface ColumnData {
   dashboardId: number;
 }
 
+interface UploadImageResponse {
+  imageUrl: string;
+}
+
 // 새로운 컬럼을 생성하는 함수
 export async function createColumn(columnData: ColumnData): Promise<Column> {
   const response = await baseaxios.post<Column>(`/columns`, {
@@ -48,11 +52,14 @@ export async function deleteColumn(columnId: number) {
 }
 
 // 컬럼에 카드 이미지를 업로드하는 함수
-export async function uploadCardImage(columnId: number, imageFile: File) {
+export async function uploadCardImage(
+  columnId: number,
+  imageFile: File,
+): Promise<UploadImageResponse> {
   const formData = new FormData();
   formData.append("image", imageFile);
 
-  const response = await baseaxios.post(
+  const response = await baseaxios.post<UploadImageResponse>(
     `/columns/${columnId}/card-image`,
     formData,
   );
