@@ -127,15 +127,16 @@ interface DetailResponse {
   imageUrl: string;
   teamId: string;
   columnId: number;
+  dashboardId: number;
   createdAt: string;
   updatedAt: string;
 }
 
 // 카드 상세 조회
-export async function GetDetailCard(cardId: number) {
+export async function GetDetailCard(cardId: number): Promise<DetailResponse> {
   try {
-    const response = await baseaxios.get(`/cards/${cardId}`);
-    return response.data as DetailResponse;
+    const response = await baseaxios.get<DetailResponse>(`/cards/${cardId}`);
+    return response.data;
   } catch (error) {
     console.log("카드 상세 조회 api 오류");
     throw error;
