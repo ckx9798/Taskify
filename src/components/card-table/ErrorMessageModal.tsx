@@ -1,11 +1,18 @@
 import BoxButton from "../BoxButton";
 
+interface ErrorMessageModalProps {
+  errorMessage: string;
+  width: string;
+  height: string;
+  modalClose: () => void;
+}
+
 export default function ErrorMessageModal({
   errorMessage,
   width,
   height,
   modalClose,
-}) {
+}: ErrorMessageModalProps) {
   return (
     <div
       className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
