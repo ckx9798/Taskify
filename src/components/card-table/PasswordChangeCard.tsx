@@ -2,6 +2,7 @@ import MypageInput from "./MypageInput";
 import { FormEvent, useState } from "react";
 import { ChangePassword } from "@/libs/api/auth";
 import ErrorMessageModal from "./ErrorMessageModal";
+import axios from "axios";
 
 export default function PasswordChangeCard() {
   const [currentPw, setCurrentPw] = useState<string>("");
@@ -19,7 +20,7 @@ export default function PasswordChangeCard() {
   const changePw = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      const data = await ChangePassword({
+      await ChangePassword({
         password: currentPw,
         newPassword: newPw,
       });
@@ -29,22 +30,46 @@ export default function PasswordChangeCard() {
       setErrorMessage("");
       setSuccessMessage("비밀번호 변경 성공!");
       setIsModalOpen(true);
-    } catch (error: any) {
-      const message =
-        error.response && error.response.data
-          ? error.response.data.message || JSON.stringify(error.response.data)
-          : error.message;
-      setErrorMessage(message);
-      setIsModalOpen(true);
+    } catch (error) {
+      // axios 에러 수정
+      if (axios.isAxiosError(error)) {
+        const message =
+          error.response && error.response.data
+            ? error.response.data.message || JSON.stringify(error.response.data)
+            : error.message;
+        setErrorMessage(message);
+        setIsModalOpen(true);
+      }
     }
   };
 
   // 비밀번호 변경 요청 성공,실패 시 뜨는 모달 닫기
-  const modalClose = (e: FormEvent) => {
-    e.preventDefault();
+  const modalClose = (e?: FormEvent) => {
+    e?.preventDefault();
     setIsModalOpen(false);
   };
 
+  const validationCheckNewPw = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value !== newPw) {
+      setCheckNewPwError("비밀번호가 일치하지 않습니다.");
+    } else {
+      setCheckNewPwError("");
+    }
+  };
+  const validationNewPw = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value.length < 8) {
+      setNewPwError("8자 이상 입력해주세요.");
+    } else {
+      setNewPwError("");
+    }
+  };
+  const validationCurrentPw = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value.length < 8) {
+      setCurrentPwError("8자 이상 입력해주세요.");
+    } else {
+      setCurrentPwError("");
+    }
+  };
   return (
     <>
       <div
@@ -65,15 +90,11 @@ export default function PasswordChangeCard() {
               labelId="currentPw"
               placeholder="비밀번호 입력"
               value={currentPw}
-              onChange={(e) => setCurrentPw(e.target.value)}
-              error={currentPwError}
-              onBlur={(e) => {
-                if (e.target.value.length < 8) {
-                  setCurrentPwError("8자 이상 입력해주세요.");
-                } else {
-                  setCurrentPwError("");
-                }
+              onChange={(e) => {
+                setCurrentPw(e.target.value);
               }}
+              error={currentPwError}
+              onBlur={validationCurrentPw}
             />
             <p className={"mt-0 text-sm text-red"}>{currentPwError}</p>
             {/* 새 비밀번호 */}
@@ -85,13 +106,7 @@ export default function PasswordChangeCard() {
               value={newPw}
               onChange={(e) => setNewPw(e.target.value)}
               error={newPwError}
-              onBlur={(e) => {
-                if (e.target.value.length < 8) {
-                  setNewPwError("8자 이상 입력해주세요.");
-                } else {
-                  setNewPwError("");
-                }
-              }}
+              onBlur={validationNewPw}
             />
             <p className={"mt-0 text-sm text-red"}>{newPwError}</p>
             {/* 새 비밀번호 확인 */}
@@ -103,13 +118,7 @@ export default function PasswordChangeCard() {
               value={checkNewPw}
               onChange={(e) => setCheckNewPw(e.target.value)}
               error={checkNewPwError}
-              onBlur={(e) => {
-                if (e.target.value !== newPw) {
-                  setCheckNewPwError("비밀번호가 일치하지 않습니다.");
-                } else {
-                  setCheckNewPwError("");
-                }
-              }}
+              onBlur={validationCheckNewPw}
             />
             <p className={"mt-0 text-sm text-red"}>{checkNewPwError}</p>
             {/* 비밀번호 변경 버튼 */}
