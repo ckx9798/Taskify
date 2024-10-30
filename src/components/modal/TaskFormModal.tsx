@@ -56,19 +56,19 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
   const [error, setError] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  // 대시보드 멤버 가져오기
+  // 멤버 데이터 가져온 후 설정
   useEffect(() => {
     const fetchMembers = async () => {
       try {
-        const response = await getMembers({ dashboardId, page: 0 });
+        const response = await getMembers({ dashboardId, page: 1 });
         if (response && response.members) {
           setMembers(response.members);
-          // Set initial assignee to the first member
+          // 첫 번째 멤버의 userId로 assigneeUserId 설정
           if (response.members.length > 0) {
             const firstMember = response.members[0];
             setFormData((prevData) => ({
               ...prevData,
-              assigneeUserId: firstMember.id,
+              assigneeUserId: firstMember.userId,
             }));
           }
         }
@@ -142,14 +142,23 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
     }));
   };
 
+  // 날짜를 "YYYY-MM-DD HH:MM" 형식으로 변환하는 함수
+  const formatDateToString = (date: Date): string => {
+    const year = date.getFullYear();
+    const month = ("0" + (date.getMonth() + 1)).slice(-2); // 월은 0부터 시작하므로 +1
+    const day = ("0" + date.getDate()).slice(-2);
+    const hours = ("0" + date.getHours()).slice(-2);
+    const minutes = ("0" + date.getMinutes()).slice(-2);
+
+    return `${year}-${month}-${day} ${hours}:${minutes}`;
+  };
   // 마감일 변경 핸들러
   const handleDateChange = (date: Date | null) => {
     setFormData((prev) => ({
       ...prev,
-      dueDate: date ? date.toISOString() : "",
+      dueDate: date ? formatDateToString(date) : "",
     }));
   };
-
   // 태그 추가 핸들러
   const handleAddTag = () => {
     if (tagsInput.trim() !== "") {
@@ -278,7 +287,7 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
           >
             <option value="">담당자 선택</option>
             {members.map((member) => (
-              <option key={member.id} value={member.id}>
+              <option key={member.userId} value={member.userId}>
                 {member.nickname}
               </option>
             ))}
@@ -319,7 +328,11 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
             onChange={handleDateChange}
             placeholderText="마감일을 선택해주세요"
             className="h-12 w-full rounded-lg border border-gray-300 p-4 text-black"
-            dateFormat="yyyy-MM-dd"
+            dateFormat="yyyy-MM-dd HH:mm"
+            showTimeSelect
+            timeFormat="HH:mm"
+            timeIntervals={15} // 시간 선택 간격 (15분마다 선택 가능)
+            timeCaption="시간"
           />
         </div>
 
