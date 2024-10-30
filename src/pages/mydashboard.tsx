@@ -8,7 +8,7 @@ import NavBar from "@/components/NavBar";
 import { Dashboard, getDashboardList } from "@/libs/api/dashboards";
 import React, { useEffect, useState } from "react";
 
-export default function mydashboard() {
+export default function Mydashboard() {
   // 새로운 대시보드 모달창 열기
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const openModal = () => setIsModalOpen(true);
@@ -16,7 +16,6 @@ export default function mydashboard() {
   // 대시보드 데이터 불러오기
   const [dashboardData, setDashboardData] = useState<Dashboard[]>([]);
   const [dashboardPage, setDashboardPage] = useState<number>(1);
-  // const [dataNum, setDataNum] = useState<number>(10);
   const [dashboardCount, setDashboardCount] = useState<number>(0);
 
   const loadDashboard = async (): Promise<void> => {
@@ -44,9 +43,7 @@ export default function mydashboard() {
         <main
           className={"flex h-screen w-screen grow flex-col bg-gray-100 p-10"}
         >
-          <section
-          // className={"flex h-screen w-screen flex-col bg-gray-100 p-5"}
-          >
+          <section>
             <ul className={"grid w-[1022px] grid-cols-3 grid-rows-3 gap-2"}>
               <li>
                 <CustomBtn
@@ -63,9 +60,9 @@ export default function mydashboard() {
                 return (
                   <li
                     key={dashboard.id}
-                    className={"rounded-lg border border-gray-400 bg-white"}
+                    className={"rounded-lg border border-gray-300 bg-white"}
                   >
-                    <DashboardCard dashboard={dashboard} isArrow={"true"} />
+                    <DashboardCard dashboard={dashboard} isArrow={true} />
                   </li>
                 );
               })}

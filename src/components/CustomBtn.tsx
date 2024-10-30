@@ -24,7 +24,7 @@ export default function CustomBtn({
       <button
         onClick={onClick}
         className={
-          "flex items-center justify-center gap-3 border border-gray-400 bg-white"
+          "flex items-center justify-center gap-3 border border-gray-300 bg-white"
         }
         style={{
           width: `${width}px`,

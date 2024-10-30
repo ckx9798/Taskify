@@ -8,15 +8,14 @@ interface Dashboard {
 
 interface DashboardCardProps {
   dashboard: Dashboard;
-  isArrow?: "true";
+  isArrow?: boolean;
 }
 
 const DashboardCard: React.FC<DashboardCardProps> = ({
   dashboard,
-  isArrow,
+  isArrow = false,
 }) => {
   return (
-    // <div className="flex">
     <div className="flex items-center justify-between p-5">
       <div className="flex items-center gap-3">
         <div
@@ -32,11 +31,8 @@ const DashboardCard: React.FC<DashboardCardProps> = ({
       </div>
       {isArrow ? (
         <Image src="/svg/dashboardArrow.svg" width={18} height={18} alt=">" />
-      ) : (
-        ""
-      )}
+      ) : null}
     </div>
-    // </div>
   );
 };
 
