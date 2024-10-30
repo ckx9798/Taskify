@@ -2,6 +2,7 @@ import BoxButton from "../BoxButton";
 
 interface ErrorMessageModalProps {
   errorMessage: string;
+  successMessage: string | null;
   width: string;
   height: string;
   modalClose: () => void;
@@ -9,6 +10,7 @@ interface ErrorMessageModalProps {
 
 export default function ErrorMessageModal({
   errorMessage,
+  successMessage,
   width,
   height,
   modalClose,
@@ -25,7 +27,9 @@ export default function ErrorMessageModal({
           e.stopPropagation();
         }}
       >
-        <p className="mb-7 text-lg font-medium text-black">{errorMessage}</p>
+        <p className="mb-7 text-lg font-medium text-black">
+          {errorMessage || successMessage}
+        </p>
         <BoxButton
           backgroundColor="purple"
           radius="8"

@@ -19,9 +19,13 @@ export default function mypage() {
 
       <div>
         <NavBar myNickName="qwe" />
-        <div className={"flex h-full w-screen flex-col gap-7 bg-gray-400 p-5"}>
-          <ProfileCard updateUserProfile={handliClickSave} />
-          <PasswordChangeCard />
+        <div className={"flex h-full w-screen flex-col gap-7 bg-gray-100 p-5"}>
+          <section>
+            <ProfileCard updateUserProfile={handliClickSave} />
+          </section>
+          <section>
+            <PasswordChangeCard />
+          </section>
         </div>
       </div>
     </div>
