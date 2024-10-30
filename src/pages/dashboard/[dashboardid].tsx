@@ -4,6 +4,7 @@ import crownIcon from "@/../public/icons/crown_icon.svg";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import BoardCard from "@/components/BoardCard";
+import CardModal from "@/components/modal/CardModal";
 
 const nickName: string = "포텐셜";
 const mockData: string[] = ["TIGER", "BEAR", "DOG", "CAT", "RABBIT"];
@@ -28,7 +29,7 @@ const mockData2 = {
 export default function Page() {
   const [members, setMembers] = useState<string[]>([]);
   const router = useRouter();
-  // const id = router.query['dashboardid'];
+  // const id = router.query["dashboardid"];
 
   useEffect(() => {
     setMembers(mockData);
@@ -44,7 +45,7 @@ export default function Page() {
         </div>
       </NavBar>
 
-      <BoardCard {...mockData2} />
+      <BoardCard {...mockData2} onClick={() => alert("상세")} />
     </div>
   );
 }

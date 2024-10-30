@@ -2,21 +2,20 @@ import { useState } from "react";
 import SelectColorCircle from "./SelectColorCircle";
 import { createDashboard } from "@/libs/api/dashboards";
 
-// 새로운 대시보드 생성 모달창
-
 interface CreateDashboardModalProps {
   isOpen: boolean;
   refresh: () => void;
   closeModal: () => void;
 }
+
 export default function CreateDashboardModal({
   isOpen,
   refresh,
   closeModal,
 }: CreateDashboardModalProps) {
-  const [title, setTitle] = useState("");
-  const [color, setColor] = useState("");
-  const [selectedColor, setSelectedColor] = useState("");
+  const [title, setTitle] = useState<string>("");
+  const [color, setColor] = useState<string>("");
+  const [selectedColor, setSelectedColor] = useState<string>("");
 
   // 대시보드 생성 api 함수
   const handleCreateSubmit = async (e: React.FormEvent) => {
@@ -37,6 +36,7 @@ export default function CreateDashboardModal({
   // 페이지 진입 시 모달 닫기
   if (!isOpen) return null;
 
+  // 새로운 대시보드 생성 모달창
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div className="h-[21.5rem] w-[36.5rem] rounded-2xl bg-white p-9 shadow-lg">

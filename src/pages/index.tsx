@@ -41,7 +41,6 @@ export default function Page() {
           <Image src={images.mainPoint1} alt="포인트1" className="end-" />
         </div>
       </main>
-
       <footer className="flex justify-between px-20 py-4 text-gray-400">
         <div>©codeit - 2023</div>
         <div className="flex space-x-2">

@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 
 export interface BoxButtonStyle {
+  width?: string;
   paddingTopBottom: string;
   paddingRightLeft: string;
   radius: "4" | "6" | "8";
@@ -12,6 +13,7 @@ export interface BoxButtonStyle {
 }
 
 export default function BoxButton({
+  width,
   paddingTopBottom,
   paddingRightLeft,
   radius,
@@ -62,8 +64,9 @@ export default function BoxButton({
     <button
       style={{
         padding: `${paddingTopBottom}px ${paddingRightLeft}px`,
+        width: `${width}`,
       }}
-      className={`${borderValue[backgroundColor]} ${radiusValue[radius]} ${backgroundColorValue[backgroundColor]} ${hoverColorValue[backgroundColor]} ${textColorValue[backgroundColor]} ${fontSizeValue[fontSize]} flex items-center gap-x-2 text-center font-medium disabled:cursor-not-allowed disabled:bg-gray-500 disabled:text-white disabled:hover:bg-gray-500`}
+      className={`${borderValue[backgroundColor]} ${radiusValue[radius]} ${backgroundColorValue[backgroundColor]} ${hoverColorValue[backgroundColor]} ${textColorValue[backgroundColor]} ${fontSizeValue[fontSize]} flex items-center justify-center gap-x-2 text-center font-medium disabled:cursor-not-allowed disabled:bg-gray-500 disabled:text-white disabled:hover:bg-gray-500`}
       disabled={disabled}
       onClick={onClick}
     >
