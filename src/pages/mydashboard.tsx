@@ -1,13 +1,11 @@
+import InvitedDashboard from "@/components/card-table/InvitedDashboard";
 import CustomBtn from "@/components/CustomBtn";
 import CreateDashboardModal from "@/components/modal/CreateDashboardModal";
 import DashboardCard from "@/components/modal/DashboardCard";
 import DashboardPagination from "@/components/modal/DashboardPagination";
-import MydashboardList from "@/components/modal/MydashboardList";
 import SideMenu from "@/components/modal/SideMenu";
 import NavBar from "@/components/NavBar";
-import PaginationButton from "@/components/PaginationButton";
 import { Dashboard, getDashboardList } from "@/libs/api/dashboards";
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
 export default function mydashboard() {
@@ -18,6 +16,7 @@ export default function mydashboard() {
   // 대시보드 데이터 불러오기
   const [dashboardData, setDashboardData] = useState<Dashboard[]>([]);
   const [dashboardPage, setDashboardPage] = useState<number>(1);
+  // const [dataNum, setDataNum] = useState<number>(10);
   const [dashboardCount, setDashboardCount] = useState<number>(0);
 
   const loadDashboard = async (): Promise<void> => {
@@ -35,53 +34,64 @@ export default function mydashboard() {
   }, [dashboardPage]);
 
   return (
-    <div className={"flex"}>
+    <div className={"min-w-screen flex min-h-screen"}>
       <div>
         <SideMenu />
       </div>
-      <div className={"flex w-screen flex-col"}>
+      <div className={"flex w-screen grow flex-col items-center"}>
         <NavBar myNickName="qwe" />
-        <div className={"mt-3 grid grid-cols-3 grid-rows-2 gap-2 p-3"}>
-          <CustomBtn
-            borderRadius={"6"}
-            content="새로운 대시보드"
-            fontSize={"16"}
-            fontWeight="600"
-            width={354}
-            height={70}
-            onClick={openModal}
-          />
-          {dashboardData.map((dashboard) => {
-            return (
-              <div
-                key={dashboard.id}
-                className={
-                  "h-[70px] w-[354px] rounded-lg border border-gray-400"
-                }
-              >
-                <DashboardCard dashboard={dashboard} isArrow={"true"} />
-              </div>
-            );
-          })}
-        </div>
 
-        <div className={"flex pr-6"}>
-          {/* 페이지네이션 버튼 */}
-          <div className="ml-auto">
-            <DashboardPagination
-              dashboardCount={dashboardCount}
-              dashboardPage={dashboardPage}
-              setDashboardPage={setDashboardPage}
-            />
-          </div>
-        </div>
+        <main
+          className={"flex h-screen w-screen grow flex-col bg-gray-100 p-10"}
+        >
+          <section
+          // className={"flex h-screen w-screen flex-col bg-gray-100 p-5"}
+          >
+            <ul className={"grid w-[1022px] grid-cols-3 grid-rows-3 gap-2"}>
+              <li>
+                <CustomBtn
+                  borderRadius={"8"}
+                  content="새로운 대시보드"
+                  fontSize={"16"}
+                  fontWeight="600"
+                  width={354}
+                  height={70}
+                  onClick={openModal}
+                />
+              </li>
+              {dashboardData.map((dashboard) => {
+                return (
+                  <li
+                    key={dashboard.id}
+                    className={"rounded-lg border border-gray-400 bg-white"}
+                  >
+                    <DashboardCard dashboard={dashboard} isArrow={"true"} />
+                  </li>
+                );
+              })}
+              <div className="col-span-3 flex max-h-10 justify-end">
+                {/* 페이지네이션 버튼 */}
+                <DashboardPagination
+                  dashboardCount={dashboardCount}
+                  dashboardPage={dashboardPage}
+                  setDashboardPage={setDashboardPage}
+                  data={5}
+                />
+              </div>
+            </ul>
+          </section>
+          <section className={"h-[500px] w-[1022px]"}>
+            <InvitedDashboard />
+          </section>
+
+          {/* 모달창  */}
+          <CreateDashboardModal
+            isOpen={isModalOpen}
+            refresh={loadDashboard}
+            closeModal={closeModal}
+          />
+        </main>
       </div>
-      {/* 모달창  */}
-      <CreateDashboardModal
-        isOpen={isModalOpen}
-        refresh={loadDashboard}
-        closeModal={closeModal}
-      />
     </div>
   );
 }

@@ -113,7 +113,7 @@ const InvitedDashboard: React.FC = () => {
     invitations.length === 0 && !isFetching && isDataLoaded;
 
   return (
-    <div className="flex min-h-screen flex-col gap-3 bg-white p-4">
+    <div className="flex h-full flex-col gap-3 bg-white p-4">
       <div className="flex flex-col gap-4">
         <p className="text-[20px] font-bold">초대받은 대시보드</p>
         <div className="relative">

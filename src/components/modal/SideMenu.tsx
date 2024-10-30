@@ -80,6 +80,7 @@ export default function SideMenu() {
             dashboardCount={dashboardCount}
             dashboardPage={dashboardPage}
             setDashboardPage={setDashboardPage}
+            data={10}
           />
         </div>
       </div>

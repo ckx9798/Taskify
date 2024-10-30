@@ -17,7 +17,7 @@ const DashboardCard: React.FC<DashboardCardProps> = ({
 }) => {
   return (
     // <div className="flex">
-    <div className="flex items-center justify-between bg-white p-5">
+    <div className="flex items-center justify-between p-5">
       <div className="flex items-center gap-3">
         <div
           className="flex h-2 w-2 items-center justify-center rounded-full"
