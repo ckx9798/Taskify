@@ -18,22 +18,23 @@ interface InvitationsType {
 }
 
 interface InvitationListProps {
-  dashBoardId: number;
+  dashBoardId: number; // 대시보드 ID를 전달하기 위한 prop
 }
 
 export default function InvitationList({ dashBoardId }: InvitationListProps) {
   const router = useRouter();
-  const pageSize = 5;
-  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 5; // 페이지당 표시할 초대 항목 수
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태
   const [data, setData] = useState<InvitationsType | null>({
     totalCount: 10,
     invitations: Array.from({ length: 10 }, (_, i) => ({
       id: i + 1,
       invitee: { email: `user${i + 1}@example.com` },
     })),
-  });
-  const [loading, setLoading] = useState(false);
+  }); // 초대 데이터를 저장하는 상태
+  const [loading, setLoading] = useState(false); // 로딩 상태 관리
 
+  // 대시보드의 초대 데이터를 가져오는 useEffect 훅
   useEffect(() => {
     const fetchInvitations = async () => {
       setLoading(true);
@@ -59,10 +60,12 @@ export default function InvitationList({ dashBoardId }: InvitationListProps) {
     }
   }, [dashBoardId, currentPage]);
 
+  // 초대하기 버튼 클릭 시 대시보드 편집 페이지로 이동
   const handleInviteClick = () => {
     router.push(`/dashboard/${dashBoardId}/edit`);
   };
 
+  // 초대 취소 기능 (특정 초대 삭제)
   const handleRemoveInvitation = (invitationId: number) => {
     setData((prevData) => {
       if (!prevData) return prevData;
@@ -93,6 +96,7 @@ export default function InvitationList({ dashBoardId }: InvitationListProps) {
             "rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px",
         }}
       >
+        {/* 헤더 부분: 초대 내역 제목과 페이지 정보, 버튼들 */}
         <div
           style={{
             paddingBottom: "2.8rem",
@@ -127,6 +131,7 @@ export default function InvitationList({ dashBoardId }: InvitationListProps) {
               {Math.ceil((data?.totalCount ?? 0) / pageSize)} 페이지 중{" "}
               {currentPage}
             </span>
+            {/* 페이지네이션 버튼 */}
             <PaginationButton
               size="large"
               onClickForward={() => {
@@ -142,22 +147,24 @@ export default function InvitationList({ dashBoardId }: InvitationListProps) {
                 }
               }}
             >
-              {[
-                <img
-                  key="foward"
-                  src={arrow_forward_gray_icon.src}
-                  alt="Forward"
-                  style={{ marginLeft: "8px", blockSize: "40px" }}
-                />,
-                <img
-                  key="back"
-                  src={arrow_back_gray_icon.src}
-                  alt="Back"
-                  style={{ marginRight: "8px", blockSize: "40px" }}
-                />,
-                ,
-              ]}
+              {/* 페이지네이션 버튼의 자식 요소: 이미지 아이콘 */}
+              [
+              <img
+                key="foward"
+                src={arrow_forward_gray_icon.src}
+                alt="Forward"
+                style={{ marginLeft: "8px", blockSize: "40px" }}
+              />
+              , // 앞으로 가기 아이콘
+              <img
+                key="back"
+                src={arrow_back_gray_icon.src}
+                alt="Back"
+                style={{ marginRight: "8px", blockSize: "40px" }}
+              />
+              , // 뒤로 가기 아이콘 ]
             </PaginationButton>
+            {/* 초대하기 버튼 */}
             <BoxButton
               paddingTopBottom="15"
               paddingRightLeft="10"
@@ -179,12 +186,14 @@ export default function InvitationList({ dashBoardId }: InvitationListProps) {
             </BoxButton>
           </div>
         </div>
+        {/* 초대 내역 헤더 */}
         <div className="flex justify-between pl-[28px] pr-[104px] text-2xl text-gray-400 max-[499px]:hidden">
           이메일
         </div>
 
         <div>
           {loading ? (
+            // 로딩 중 표시
             <p
               style={{
                 textAlign: "center",
@@ -195,6 +204,7 @@ export default function InvitationList({ dashBoardId }: InvitationListProps) {
               로딩 중...
             </p>
           ) : data?.totalCount === 0 ? (
+            // 초대 내역이 없을 때 표시
             <p
               style={{
                 textAlign: "center",
@@ -205,6 +215,7 @@ export default function InvitationList({ dashBoardId }: InvitationListProps) {
               초대 내역이 없어요
             </p>
           ) : (
+            // 초대 목록
             <ul style={{ listStyle: "none", padding: 0 }}>
               {data?.invitations
                 .slice((currentPage - 1) * pageSize, currentPage * pageSize)
@@ -234,6 +245,7 @@ export default function InvitationList({ dashBoardId }: InvitationListProps) {
                         {invitation.invitee.email}
                       </span>
                       <div className="flex gap-[10px]">
+                        {/* 초대 취소 버튼 */}
                         <BoxButton
                           paddingTopBottom="14"
                           paddingRightLeft="44"
@@ -247,6 +259,7 @@ export default function InvitationList({ dashBoardId }: InvitationListProps) {
                       </div>
                     </div>
 
+                    {/* 초대 목록 사이의 구분선 */}
                     <hr className="my-4 w-full border-t border-gray-300" />
                   </li>
                 ))}
