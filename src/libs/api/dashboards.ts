@@ -1,5 +1,4 @@
 import baseaxios from "./axios";
-import { AxiosResponse } from "axios";
 
 interface DashboardData {
   title: string;
@@ -110,7 +109,7 @@ export async function createDashboardInvitation(
   try {
     const response = await baseaxios.post(
       `/dashboards/${dashboardId}/invitations`,
-      email,
+      { email },
     );
     return response.data;
   } catch (error) {

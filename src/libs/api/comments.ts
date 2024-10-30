@@ -6,10 +6,35 @@ interface CommentData {
   columnId: number;
   dashboardId: number;
 }
+interface Author {
+  id: number;
+  nickname: string;
+  profileImageUrl: string;
+}
 
-export async function createComment(commentData: CommentData) {
+interface CommentInfo {
+  id: number;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  cardId: number;
+  author: Author;
+}
+
+interface CommentsResponse {
+  cursorId: number;
+  comments: CommentInfo[]; // CommentInfo[] 타입 배열
+}
+
+// 댓글 생성
+export async function createComment(
+  commentData: CommentData,
+): Promise<CommentInfo> {
   try {
-    const response = await baseaxios.post(`/comments`, commentData);
+    const response = await baseaxios.post<CommentInfo>(
+      `/comments`,
+      commentData,
+    );
     return response.data;
   } catch (error) {
     console.error("Error creating comment:", error);
@@ -17,9 +42,12 @@ export async function createComment(commentData: CommentData) {
   }
 }
 
-export async function getComments() {
+// 댓글 조회
+export async function getComments(cardId: number): Promise<CommentsResponse> {
   try {
-    const response = await baseaxios.get(`/comments`);
+    const response = await baseaxios.get<CommentsResponse>(
+      `/comments?cardId=${cardId}`,
+    );
     return response.data;
   } catch (error) {
     console.error("Error fetching comments:", error);
@@ -27,12 +55,13 @@ export async function getComments() {
   }
 }
 
-export async function updateComment(
-  commentId: string,
-  commentData: CommentData,
-) {
+// 댓글 수정
+export async function updateComment(commentId: number, content: string) {
   try {
-    const response = await baseaxios.put(`/comments/${commentId}`, commentData);
+    const response = await baseaxios.put<CommentInfo>(
+      `/comments/${commentId}`,
+      { content },
+    );
     return response.data;
   } catch (error) {
     console.error("Error updating comment:", error);
@@ -40,10 +69,11 @@ export async function updateComment(
   }
 }
 
-export async function deleteComment(commentId: string) {
+// 댓글 삭제
+export async function deleteComment(commentId: number) {
   try {
-    const response = await baseaxios.delete(`/comments/${commentId}`);
-    return response.data;
+    await baseaxios.delete(`/comments/${commentId}`);
+    return commentId;
   } catch (error) {
     console.error("Error deleting comment:", error);
     throw error;

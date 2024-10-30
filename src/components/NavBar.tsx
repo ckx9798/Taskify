@@ -126,18 +126,21 @@ export default function NavBar({ myNickName, members = [], children }: Props) {
         {members.length !== 0 && (
           <div className="mr-3 flex -space-x-2 border-r border-solid border-gray-300 pr-3 md:mr-6 md:pr-6 xl:mr-9 xl:pr-9">
             {visibleMembers?.map((item, index) => (
-              <ProfileImage key={index} size={profileImageSize}>
-                {item}
-              </ProfileImage>
+              <ProfileImage
+                key={index}
+                size={profileImageSize}
+                nickName={item}
+              />
             ))}
             {remainingCount > 0 && (
-              <ProfileImage size={profileImageSize}>
-                {"+" + remainingCount.toString()}
-              </ProfileImage>
+              <ProfileImage
+                size={profileImageSize}
+                nickName={"+" + remainingCount.toString()}
+              />
             )}
           </div>
         )}
-        <ProfileImage size={profileImageSize}>{myNickName}</ProfileImage>
+        <ProfileImage size={profileImageSize} nickName={myNickName} />
         {screenSize !== "mobile" && (
           <span className="pl-3 text-base">{myNickName}</span>
         )}
