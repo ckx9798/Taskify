@@ -1,9 +1,12 @@
+import Image from "next/image";
+
 interface Props {
   size: "large" | "medium" | "small" | "smallest";
-  children: string;
+  nickName: string;
+  imageUrl?: string;
 }
 
-export default function ProfileImage({ size, children }: Props) {
+export default function ProfileImage({ size, nickName, imageUrl }: Props) {
   const profileWidth = {
     large: "w-[38px]",
     medium: "w-[34px]",
@@ -23,18 +26,28 @@ export default function ProfileImage({ size, children }: Props) {
     smallest: "text-[10px]",
   };
   const backgroundColor =
-    children.charAt(0) === "+" ? "bg-vanillaIce-200" : "bg-blue";
-  const firstText = children.charAt(0) === "+" ? children : children.charAt(0);
+    nickName?.charAt(0) === "+" ? "bg-vanillaIce-200" : "bg-blue";
+  const firstText =
+    nickName?.charAt(0) === "+" ? nickName : nickName?.charAt(0);
   const textColorValue =
-    children.charAt(0) === "+" ? "text-mandy-500" : "text-white";
+    nickName?.charAt(0) === "+" ? "text-mandy-500" : "text-white";
 
   return (
     <div
-      className={`${profileWidth[size]} ${profileHeight[size]} ring-2 ring-white ${backgroundColor} flex items-center justify-center rounded-full`}
+      className={`relative ${profileWidth[size]} ${profileHeight[size]} ring-2 ring-white ${backgroundColor} flex items-center justify-center rounded-full`}
     >
-      <small className={`${textColorValue} ${fontSize[size]} font-semibold`}>
-        {firstText}
-      </small>
+      {imageUrl ? (
+        <Image
+          fill
+          src={imageUrl}
+          alt="프로필 사진"
+          className="rounded-full object-cover"
+        />
+      ) : (
+        <small className={`${textColorValue} ${fontSize[size]} font-semibold`}>
+          {firstText}
+        </small>
+      )}
     </div>
   );
 }

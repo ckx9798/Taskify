@@ -18,14 +18,16 @@ interface BoardCardProps {
   assignee: Assignee;
   imageUrl: string;
   createdAt: string;
+  onClick: () => void;
 }
 
 export default function BoardCard({
   title,
   tags,
-  createdAt,
   assignee,
   imageUrl,
+  createdAt,
+  onClick,
 }: BoardCardProps) {
   const [screenSize, setScreenSize] = useState<"mobile" | "tablet" | "pc">(
     "mobile",
@@ -69,6 +71,8 @@ export default function BoardCard({
 
   return (
     <div
+      role="button"
+      onClick={onClick}
       className={`flex h-fit w-[284px] flex-col md:w-[544px] md:flex-row xl:w-[314px] xl:flex-col ${imageInfoGap} rounded-md border border-solid border-gray-300 bg-white ${wrapPadding}`}
     >
       {imageUrl && (
@@ -106,9 +110,10 @@ export default function BoardCard({
                 {createdAt}
               </div>
             </div>
-            <ProfileImage size={screenSize === "mobile" ? "smallest" : "small"}>
-              {assignee.nickname}
-            </ProfileImage>
+            <ProfileImage
+              size={screenSize === "mobile" ? "smallest" : "small"}
+              nickName={assignee.nickname}
+            />
           </div>
         </div>
       </div>

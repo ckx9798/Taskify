@@ -36,9 +36,10 @@ export default function MemberListItem({
   return (
     <li className="flex items-center justify-between border-b border-solid border-gray-200 px-5 pb-3 pt-3 first:pt-[13px] last:border-0 last:pb-4 md:px-7 md:pb-4 md:pt-4 md:first:pt-[17px] md:last:pb-5">
       <div className="md: flex items-center gap-x-2 md:gap-x-3">
-        <ProfileImage size={screenSize === "mobile" ? "medium" : "large"}>
-          {memberName}
-        </ProfileImage>
+        <ProfileImage
+          size={screenSize === "mobile" ? "medium" : "large"}
+          nickName={memberName}
+        />
         <p className="text-sm font-normal md:text-base">{memberName}</p>
       </div>
       <BoxButton
