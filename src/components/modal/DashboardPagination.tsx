@@ -24,7 +24,6 @@ export default function DashboardPagination({
             onClick={() => {
               if (dashboardPage > 1) {
                 setDashboardPage(dashboardPage - 1);
-                console.log(dashboardPage, dashboardCount);
               }
             }}
             disabled={dashboardPage === 1}
@@ -44,7 +43,6 @@ export default function DashboardPagination({
           <button
             onClick={() => {
               if (dashboardPage) setDashboardPage(dashboardPage + 1);
-              console.log(dashboardPage, dashboardCount);
             }}
             disabled={dashboardPage === lastPage}
           >
