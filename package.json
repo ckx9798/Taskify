@@ -21,7 +21,6 @@
     "react-hot-toast": "^2.4.1"
   },
   "devDependencies": {
-    "@types/axios": "^0.9.36",
     "@types/next": "^8.0.7",
     "@types/node": "^20",
     "@types/react": "^18",
