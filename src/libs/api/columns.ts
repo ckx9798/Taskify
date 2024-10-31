@@ -63,5 +63,6 @@ export async function uploadCardImage(
     `/columns/${columnId}/card-image`,
     formData,
   );
+  console.log(response);
   return response.data;
 }
