@@ -50,11 +50,7 @@ export default function SideMenu() {
             />
           </Link>
         </div>
-        <div
-          className={
-            "flex items-center justify-between border-2 border-rose-500"
-          }
-        >
+        <div className={"flex items-center justify-between"}>
           <span className={"text-xs font-semibold text-gray-500"}>
             Dash Boards
           </span>
@@ -84,6 +80,7 @@ export default function SideMenu() {
             dashboardCount={dashboardCount}
             dashboardPage={dashboardPage}
             setDashboardPage={setDashboardPage}
+            data={10}
           />
         </div>
       </div>
