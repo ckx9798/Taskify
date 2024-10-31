@@ -19,7 +19,7 @@ export const setCookie = (name: string, value: string) => {
   return cookies.set(name, value, {
     path: "/",
     secure: true,
-    maxAge: 80000,
+    maxAge: 86400,
   });
 };
 
@@ -44,27 +44,34 @@ const SIGNIN_SENTENCE = {
   linkPath: "/signup",
 };
 
+// SignLayout 컴포넌트
 export function SignLayout({ children }: SignLayoutProps) {
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center text-black">
-      <div className="flex w-[52rem] flex-col items-center justify-center gap-8 lg:w-[30rem]">
+      <div className="flex w-full max-w-[52rem] flex-col items-center justify-center gap-8 px-4 lg:w-[30rem]">
         <Link href="/">
           <div className="flex flex-col items-end justify-center gap-12">
-            <div className="relative h-[19rem] w-[16.5rem] lg:h-[13rem] lg:w-[11.5rem]">
+            <div className="relative h-auto w-[200px]">
+              {" "}
+              {/* 가로폭 200px */}
               <Image
                 src="/logo/large_logo.svg"
                 alt="logo"
-                className="h-full w-full"
+                width={200} // 고정된 가로폭
+                height={100} // 원하는 비율에 따라 적절한 높이 설정
                 priority
-                fill
+                className="h-auto" // 자동으로 높이를 조정
               />
             </div>
-            <div className="relative h-[5.5rem] w-[20rem] lg:h-[3.8rem] lg:w-[14rem]">
+            <div className="relative h-auto w-[200px]">
+              {" "}
+              {/* 가로폭 200px */}
               <Image
                 src="/logo/large_Taskify.svg"
                 alt="logo title"
-                className="h-full w-full"
-                fill
+                width={200} // 고정된 가로폭
+                height={100} // 원하는 비율에 따라 적절한 높이 설정
+                className="h-auto" // 자동으로 높이를 조정
               />
             </div>
           </div>
@@ -95,7 +102,7 @@ export function SigninForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid }, // isValid 추가
     getValues,
   } = useForm<SignInDataType>({ mode: "all" });
   const router = useRouter();
@@ -123,10 +130,11 @@ export function SigninForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+    <form onSubmit={handleSubmit(onSubmit)} className="w-full px-4">
+      {/* w-full과 px-4 추가 */}
       <div className="w-full py-3">
         <TextInput
-          placeholder="이메일을 입력해 주세요."
+          placeholder="이메일을 입력해주세요."
           labelName="이메일"
           {...register("email", emailValidationRules)}
           hasError={errors}
@@ -140,7 +148,7 @@ export function SigninForm() {
 
       <div className="w-full py-3">
         <PasswordInput
-          placeholder="비밀번호를 입력해 주세요."
+          placeholder="비밀번호를 입력해주세요."
           labelName="비밀번호"
           {...register("password", passwordValidationRules)}
           hasError={errors}
@@ -153,8 +161,8 @@ export function SigninForm() {
       </div>
 
       <button
-        disabled={isPending}
-        className="mt-4 w-full rounded-lg bg-[#9fa6b2] py-4 text-lg font-medium text-white"
+        disabled={!isValid || isPending} // 유효성 검사 성공 여부에 따라 버튼 활성화
+        className={`mt-4 w-full rounded-lg py-4 text-lg font-medium text-white ${isValid ? "bg-[#5534da]" : "bg-[#9fa6b2]"} ${isPending ? "cursor-not-allowed" : ""}`} // 요청 중일 때 커서 변경
       >
         로그인
       </button>
