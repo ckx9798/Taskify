@@ -1,7 +1,8 @@
 // pages/api/login.js
 import baseaxios from "./axios";
 
-interface PostCard {
+// PostCard 인터페이스 정의
+export interface PostCard {
   assigneeUserId: number;
   dashboardId: number;
   columnId: number;
@@ -9,9 +10,10 @@ interface PostCard {
   description: string;
   dueDate: string;
   tags: string[];
-  imageUrl: string;
+  imageUrl?: string;
 }
-interface PostResponse {
+
+export interface PostResponse {
   id: number;
   title: string;
   description: string;
@@ -22,7 +24,7 @@ interface PostResponse {
     nickname: string;
     id: number;
   };
-  imageUrl: string;
+  imageUrl?: string;
   teamId: string;
   columnId: number;
   createdAt: string;
@@ -30,7 +32,7 @@ interface PostResponse {
 }
 
 // 카드 생성
-export async function CreatCard(postCard: PostCard) {
+export async function createCard(postCard: PostCard) {
   try {
     const response = await baseaxios.post("/cards", postCard);
     return response.data as PostResponse;
@@ -73,7 +75,7 @@ export async function GetCardList(columnId: number) {
   }
 }
 
-interface PutCard {
+export interface PutCard {
   columnId: number;
   assigneeUserId: number;
   title: string;
@@ -82,7 +84,7 @@ interface PutCard {
   tags: string[];
   imageUrl: string;
 }
-interface EditResponse {
+export interface EditResponse extends DetailResponse {
   id: number;
   title: string;
   description: string;
@@ -101,7 +103,7 @@ interface EditResponse {
 }
 
 // 카드 수정
-export async function EditCard(putCard: PutCard, cardId: number) {
+export async function editCard(putCard: PutCard, cardId: number) {
   try {
     const response = await baseaxios.put(`/cards/${cardId}`, putCard);
     return response.data as EditResponse;
@@ -111,27 +113,21 @@ export async function EditCard(putCard: PutCard, cardId: number) {
   }
 }
 
-interface DetailResponse {
+export interface DetailResponse extends PutCard {
   id: number;
-  title: string;
-  description: string;
-  tags: string[];
-  dueDate: string;
-  assignee: {
-    profileImageUrl: string;
-    nickname: string;
-    id: number;
-  };
-  imageUrl: string;
-  teamId: string;
-  columnId: number;
   dashboardId: number;
+  assignee: {
+    id: number;
+    nickname: string;
+    profileImageUrl: string | null;
+  };
+  teamId: string;
   createdAt: string;
   updatedAt: string;
 }
 
 // 카드 상세 조회
-export async function GetDetailCard(cardId: number): Promise<DetailResponse> {
+export async function getDetailCard(cardId: number): Promise<DetailResponse> {
   try {
     const response = await baseaxios.get<DetailResponse>(`/cards/${cardId}`);
     return response.data;
