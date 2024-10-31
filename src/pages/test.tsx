@@ -1,33 +1,56 @@
-import React, { useState } from "react";
-import TaskFormModal from "@/components/modal/TaskFormModal";
-import { PostResponse } from "@/libs/api/cards";
+import { GetServerSideProps } from "next";
+import baseaxios from "@/libs/api/axios";
 
-const ParentComponent: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [tasks, setTasks] = useState<PostResponse[]>([]);
+interface Column {
+  id: number;
+  title: string;
+  teamId: string;
+  dashboardId: number;
+  createdAt: string;
+  updatedAt: string;
+}
 
-  const handleCreate = (newTask: PostResponse) => {
-    setTasks((prevTasks) => [...prevTasks, newTask]);
-    setIsModalOpen(false); // 모달 닫기
-  };
+interface ParentComponentProps {
+  columns: Column[];
+}
 
+const ParentComponent: React.FC<ParentComponentProps> = ({ columns }) => {
+  const columnss = columns.data;
   return (
     <div>
-      <button onClick={() => setIsModalOpen(true)}>할 일 추가</button>
-      <TaskFormModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        column={41185}
-        dashboardId={12174}
-        onCreate={handleCreate}
-      />
+      <h1>안녕하세요</h1>
       <ul>
-        {tasks.map((task) => (
-          <li key={task.id}>{task.title}</li>
+        {columnss.map((column) => (
+          <li key={column.id}>{column.title}</li>
         ))}
       </ul>
     </div>
   );
+};
+
+// getServerSideProps 함수
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { req } = context;
+  // 요청의 쿠키를 가져옵니다.
+  const cookies = req.headers.cookie;
+  try {
+    const response = await baseaxios.get("/columns?dashboardId=12174");
+
+    console.log("응답 데이터:", response.data);
+
+    return {
+      props: {
+        columns: response.data,
+      },
+    };
+  } catch (error) {
+    console.error("컬럼 목록 조회 실패:", error);
+    return {
+      props: {
+        columns: [],
+      },
+    };
+  }
 };
 
 export default ParentComponent;

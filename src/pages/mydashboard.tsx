@@ -1,10 +1,9 @@
 import InvitedDashboard from "@/components/card-table/InvitedDashboard";
 import CustomBtn from "@/components/CustomBtn";
+import Layout from "@/components/Layout";
 import CreateDashboardModal from "@/components/modal/CreateDashboardModal";
 import DashboardCard from "@/components/modal/DashboardCard";
 import DashboardPagination from "@/components/modal/DashboardPagination";
-import SideMenu from "@/components/modal/SideMenu";
-import NavBar from "@/components/NavBar";
 import { Dashboard, getDashboardList } from "@/libs/api/dashboards";
 import React, { useEffect, useState } from "react";
 
@@ -34,12 +33,7 @@ export default function Mydashboard() {
 
   return (
     <div className={"min-w-screen flex min-h-screen"}>
-      <div>
-        <SideMenu />
-      </div>
       <div className={"flex w-screen grow flex-col items-center"}>
-        <NavBar myNickName="qwe" />
-
         <main
           className={"flex h-screen w-screen grow flex-col bg-gray-100 p-10"}
         >
@@ -92,3 +86,7 @@ export default function Mydashboard() {
     </div>
   );
 }
+
+const getLayout = (page: React.ReactElement) => <Layout>{page}</Layout>;
+
+Mydashboard.getLayout = getLayout;
