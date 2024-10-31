@@ -1,5 +1,7 @@
 import { GetServerSideProps } from "next";
-import baseaxios from "@/libs/api/axios";
+import baseaxios, { setToken } from "@/libs/api/axios";
+import { get } from "axios";
+import { getColumns } from "@/libs/api/columns";
 
 interface Column {
   id: number;
@@ -15,7 +17,7 @@ interface ParentComponentProps {
 }
 
 const ParentComponent: React.FC<ParentComponentProps> = ({ columns }) => {
-  const columnss = columns.data;
+  const columnss = columns;
   return (
     <div>
       <h1>안녕하세요</h1>
@@ -32,9 +34,20 @@ const ParentComponent: React.FC<ParentComponentProps> = ({ columns }) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { req } = context;
   // 요청의 쿠키를 가져옵니다.
-  const cookies = req.headers.cookie;
+  const cookies = req.headers.cookie as string;
+  console.log(cookies);
+
   try {
-    const response = await baseaxios.get("/columns?dashboardId=12174");
+    if (cookies) {
+      setToken(
+        cookies
+          .split("; ")
+          .find((row: string) => row.startsWith("accessToken="))
+          ?.split("=")[1],
+      );
+    }
+
+    const response = await getColumns(12174);
 
     console.log("응답 데이터:", response.data);
 

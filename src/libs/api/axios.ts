@@ -4,11 +4,19 @@ const baseaxios = axios.create({
   baseURL: "https://sp-taskify-api.vercel.app/9-2",
 });
 
+export const setToken = (token: string | undefined) => {
+  baseaxios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+};
+
 baseaxios.interceptors.request.use(
   (config) => {
+    if (!config.headers) {
+      config.headers = {};
+      // headers가 undefined일 경우 빈 객체로 초기화
+    }
     // Node.js 환경에서 쿠키를 가져옵니다.
     if (typeof window === "undefined") {
-      const tokenCookie = config?.headers;
+      const tokenCookie = config.headers.cookie;
       console.log(tokenCookie);
       if (tokenCookie) {
         const token = tokenCookie
