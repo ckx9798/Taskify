@@ -6,6 +6,7 @@ interface DashboardPaginationProps {
   dashboardCount: number;
   dashboardPage: number;
   setDashboardPage: (page: number) => void;
+  data: 5 | 10;
 }
 
 // 사이드바 밑에 대시보드 목록을 넘기는 페이지네이션 버튼 컴포넌트
@@ -13,22 +14,35 @@ export default function DashboardPagination({
   dashboardCount,
   dashboardPage,
   setDashboardPage,
+  data,
 }: DashboardPaginationProps) {
-  const lastPage = Math.ceil(dashboardCount / 10);
-
+  
+  const lastPage = Math.ceil(dashboardCount / data);
+  
+  const handleForwardClick = () => {
+    if (dashboardPage > 1) {
+      setDashboardPage(dashboardPage - 1);
+    }
+  };
+  const handleBackClick = () => {
+    if (dashboardPage) setDashboardPage(dashboardPage + 1);
+  };
   return (
-    <>
-      {dashboardCount > 10 ? (
-        <PaginationButton size="large">
-          <button
-            onClick={() => {
-              if (dashboardPage > 1) {
-                setDashboardPage(dashboardPage - 1);
-                console.log(dashboardPage, dashboardCount);
-              }
-            }}
-            disabled={dashboardPage === 1}
-          >
+    <div className={"flex justify-start gap-3"}>
+      {data === 5 ? (
+        <div className={"flex items-center justify-center gap-3"}>
+          <span className={""}>
+            {lastPage}페이지 중 {dashboardPage}
+          </span>
+        </div>
+      ) : null}
+      {dashboardCount > data ? (
+        <PaginationButton
+          size="large"
+          onClickForward={handleForwardClick}
+          onClickBack={handleBackClick}
+        >
+          <button onClick={handleBackClick} disabled={dashboardPage === 1}>
             <Image
               src={
                 dashboardPage === 1
@@ -42,10 +56,7 @@ export default function DashboardPagination({
           </button>
 
           <button
-            onClick={() => {
-              if (dashboardPage) setDashboardPage(dashboardPage + 1);
-              console.log(dashboardPage, dashboardCount);
-            }}
+            onClick={handleForwardClick}
             disabled={dashboardPage === lastPage}
           >
             <Image
@@ -61,6 +72,6 @@ export default function DashboardPagination({
           </button>
         </PaginationButton>
       ) : null}
-    </>
+    </div>
   );
 }

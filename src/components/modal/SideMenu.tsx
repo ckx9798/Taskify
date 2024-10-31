@@ -36,7 +36,7 @@ export default function SideMenu() {
     <>
       <div
         className={
-          "flex h-screen w-72 min-w-72 flex-col gap-2.5 border border-rose-400 bg-white px-2 py-5"
+          "flex h-screen w-72 min-w-72 flex-col gap-2.5 bg-white px-2 py-5"
         }
       >
         {/* 상단  */}
@@ -50,11 +50,7 @@ export default function SideMenu() {
             />
           </Link>
         </div>
-        <div
-          className={
-            "flex items-center justify-between border-2 border-rose-500"
-          }
-        >
+        <div className={"flex items-center justify-between"}>
           <span className={"text-xs font-semibold text-gray-500"}>
             Dash Boards
           </span>
@@ -79,11 +75,12 @@ export default function SideMenu() {
           })}
         </ul>
         {/* 페이지네이션 버튼 */}
-        <div className="mt-auto">
+        <div className="fixed bottom-3">
           <DashboardPagination
             dashboardCount={dashboardCount}
             dashboardPage={dashboardPage}
             setDashboardPage={setDashboardPage}
+            data={10}
           />
         </div>
       </div>

@@ -1,7 +1,8 @@
-import ProfileCard from "@/components/card-table/ProfileCard";
 import SideMenu from "@/components/modal/SideMenu";
-import ChangePwCard from "@/components/card-table/ChangePwCard";
+import ProfileCard from "@/components/card-table/ProfileCard";
+import PasswordChangeCard from "@/components/card-table/PasswordChangeCard";
 import { updateUserInfo } from "@/libs/api/Users";
+import NavBar from "@/components/NavBar";
 
 export default function mypage() {
   const handliClickSave = async ({ nickname, profileImageUrl }) => {
@@ -17,10 +18,14 @@ export default function mypage() {
       <SideMenu />
 
       <div>
-        <div>네비바</div>
-        <div className={"w-screen h-full bg-gray-400 p-5 flex flex-col gap-7"}>
-          <ProfileCard updateUserProfile={handliClickSave} />
-          <ChangePwCard />
+        <NavBar myNickName="qwe" />
+        <div className={"flex h-full w-screen flex-col gap-7 bg-gray-100 p-5"}>
+          <section>
+            <ProfileCard updateUserProfile={handliClickSave} />
+          </section>
+          <section>
+            <PasswordChangeCard />
+          </section>
         </div>
       </div>
     </div>
