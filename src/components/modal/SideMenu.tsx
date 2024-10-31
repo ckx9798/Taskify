@@ -33,7 +33,7 @@ export default function SideMenu() {
   }, [dashboardPage]);
 
   return (
-    <div className="fixed left-0 top-0">
+    <div className="fixed left-0 top-0 z-10">
       <div
         className={
           "flex h-screen w-72 min-w-72 flex-col gap-2.5 bg-white px-2 py-5"

@@ -45,7 +45,7 @@ interface InvitationListProps {
 export default function InvitationList({ dashBoardId }: InvitationListProps) {
   const pageSize = 5; // 페이지당 표시할 초대 항목 수
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태
-  const [data, setData] = useState<InvitationsType>(); // 초대 데이터 상태
+  const [data, setData] = useState<InvitationsType | undefined>(); // 초대 데이터 상태
   const [loading, setLoading] = useState(false); // 로딩 상태 관리
   const [isopen, setIsopen] = useState(false); // 모달 상태 관리
 
@@ -59,7 +59,7 @@ export default function InvitationList({ dashBoardId }: InvitationListProps) {
           size: pageSize,
         });
         if (response) {
-          setData(response);
+          setData(response as InvitationsType);
           console.log("초대 데이터d:", response);
         }
       } catch (error) {
