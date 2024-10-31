@@ -16,19 +16,27 @@ export default function DashboardPagination({
 }: DashboardPaginationProps) {
   const lastPage = Math.ceil(dashboardCount / 10);
 
+  const handleNextClick = () => {
+    if (dashboardPage > 1) {
+      setDashboardPage(dashboardPage - 1);
+      console.log(dashboardPage, dashboardCount);
+    }
+  };
+
+  const handlePreClick = () => {
+    if (dashboardPage) setDashboardPage(dashboardPage + 1);
+    console.log(dashboardPage, dashboardCount);
+  };
+
   return (
     <>
       {dashboardCount > 10 ? (
-        <PaginationButton size="large">
-          <button
-            onClick={() => {
-              if (dashboardPage > 1) {
-                setDashboardPage(dashboardPage - 1);
-                console.log(dashboardPage, dashboardCount);
-              }
-            }}
-            disabled={dashboardPage === 1}
-          >
+        <PaginationButton
+          size="large"
+          onClickForward={handleNextClick}
+          onClickBack={handlePreClick}
+        >
+          <button onClick={handleNextClick} disabled={dashboardPage === 1}>
             <Image
               src={
                 dashboardPage === 1
@@ -42,10 +50,7 @@ export default function DashboardPagination({
           </button>
 
           <button
-            onClick={() => {
-              if (dashboardPage) setDashboardPage(dashboardPage + 1);
-              console.log(dashboardPage, dashboardCount);
-            }}
+            onClick={handlePreClick}
             disabled={dashboardPage === lastPage}
           >
             <Image

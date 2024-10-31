@@ -35,7 +35,7 @@ interface PasswordInfo {
 
 export async function ChangePassword(passwordInfo: PasswordInfo) {
   try {
-    const response = await baseaxios.put("/auth/login", passwordInfo);
+    const response = await baseaxios.put("/auth/password", passwordInfo);
     return response.data;
   } catch (error) {
     console.log("auth api error");
