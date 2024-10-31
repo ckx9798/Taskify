@@ -1,15 +1,36 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
-import { useRouter } from "next/router";
 import BoxButton from "../BoxButton";
 import PaginationButton from "../PaginationButton";
-import arrow_forward_gray_icon from "../../public/icons/arrow_forward_gray_icon.svg";
-import arrow_back_gray_icon from "../../public/icons/arrow_back_gray_icon.svg";
-import whitePlus from "../../public/svg/whitePlus.svg";
+import arrow_forward_gray_icon from "@/../public/icons/arrow_forward_gray_icon.svg";
+import arrow_back_gray_icon from "@/../public/icons/arrow_back_gray_icon.svg";
+import whitePlus from "@/../public/svg/whitePlus.svg";
+import {
+  deleteDashboardInvitation,
+  getDashboardInvitations,
+} from "@/libs/api/dashboards";
+import DashboardInvite from "../modal/DashboardInvite";
+import Image from "next/image";
 
 interface Invitation {
   id: number;
-  invitee: { email: string };
+  inviter: {
+    nickname: string;
+    email: string;
+    id: number;
+  };
+  teamId: string;
+  dashboardId: {
+    title: string;
+    id: number;
+  };
+  invitee: {
+    email: string;
+    nickname: string;
+    id: number;
+  };
+  inviteAccepted: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface InvitationsType {
@@ -22,31 +43,24 @@ interface InvitationListProps {
 }
 
 export default function InvitationList({ dashBoardId }: InvitationListProps) {
-  const router = useRouter();
   const pageSize = 5; // 페이지당 표시할 초대 항목 수
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태
-  const [data, setData] = useState<InvitationsType | null>({
-    totalCount: 10,
-    invitations: Array.from({ length: 10 }, (_, i) => ({
-      id: i + 1,
-      invitee: { email: `user${i + 1}@example.com` },
-    })),
-  }); // 초대 데이터를 저장하는 상태
+  const [data, setData] = useState<InvitationsType>(); // 초대 데이터 상태
   const [loading, setLoading] = useState(false); // 로딩 상태 관리
+  const [isopen, setIsopen] = useState(false); // 모달 상태 관리
 
   // 대시보드의 초대 데이터를 가져오는 useEffect 훅
   useEffect(() => {
     const fetchInvitations = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(
-          `/api/dashboards/${dashBoardId}/invitations`,
-          {
-            params: { page: currentPage, size: pageSize },
-          },
-        );
-        if (response?.data) {
-          setData(response.data as InvitationsType);
+        const response = await getDashboardInvitations(dashBoardId, {
+          page: currentPage,
+          size: pageSize,
+        });
+        if (response) {
+          setData(response);
+          console.log("초대 데이터d:", response);
         }
       } catch (error) {
         console.error("Error fetching invitations:", error);
@@ -54,32 +68,44 @@ export default function InvitationList({ dashBoardId }: InvitationListProps) {
         setLoading(false);
       }
     };
-
     if (dashBoardId) {
       fetchInvitations();
     }
   }, [dashBoardId, currentPage]);
 
   // 초대하기 버튼 클릭 시 대시보드 편집 페이지로 이동
-  const handleInviteClick = () => {
-    router.push(`/dashboard/${dashBoardId}/edit`);
+  const handleOpenInvite = () => {
+    setIsopen(true);
+  };
+  const handelColseInvite = () => {
+    setIsopen(false);
   };
 
   // 초대 취소 기능 (특정 초대 삭제)
-  const handleRemoveInvitation = (invitationId: number) => {
-    setData((prevData) => {
-      if (!prevData) return prevData;
-      const updatedInvitations = prevData.invitations.filter(
-        (inv) => inv.id !== invitationId,
-      );
-      return {
-        ...prevData,
-        totalCount: prevData.totalCount - 1,
-        invitations: updatedInvitations,
-      };
-    });
-  };
+  const handleRemoveInvitation = async (invitationId: number) => {
+    if (!confirm("정말로 이 초대를 취소하시겠습니까?")) return;
 
+    setLoading(true);
+    try {
+      await deleteDashboardInvitation(dashBoardId, invitationId);
+      // 초대 목록에서 삭제
+      setData((prevData) => {
+        if (!prevData) return prevData;
+        const updatedInvitations = prevData.invitations.filter(
+          (inv) => inv.id !== invitationId,
+        );
+        return {
+          ...prevData,
+          totalCount: prevData.totalCount - 1,
+          invitations: updatedInvitations,
+        } as InvitationsType;
+      });
+    } catch (error) {
+      console.error("Error removing invitation:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <>
       <section
@@ -134,11 +160,6 @@ export default function InvitationList({ dashBoardId }: InvitationListProps) {
             {/* 페이지네이션 버튼 */}
             <PaginationButton
               size="large"
-              onClickForward={() => {
-                if (currentPage > 1) {
-                  setCurrentPage(currentPage - 1);
-                }
-              }}
               onClickBack={() => {
                 if (
                   currentPage < Math.ceil((data?.totalCount ?? 0) / pageSize)
@@ -146,35 +167,42 @@ export default function InvitationList({ dashBoardId }: InvitationListProps) {
                   setCurrentPage(currentPage + 1);
                 }
               }}
+              onClickForward={() => {
+                if (currentPage > 1) {
+                  setCurrentPage(currentPage - 1);
+                }
+              }}
             >
               {/* 페이지네이션 버튼의 자식 요소: 이미지 아이콘 */}
-              [
-              <img
+              <Image
                 key="foward"
-                src={arrow_forward_gray_icon.src}
+                src={arrow_forward_gray_icon}
                 alt="Forward"
                 style={{ marginLeft: "8px", blockSize: "40px" }}
               />
-              , // 앞으로 가기 아이콘
-              <img
+              <Image
                 key="back"
-                src={arrow_back_gray_icon.src}
+                src={arrow_back_gray_icon}
                 alt="Back"
                 style={{ marginRight: "8px", blockSize: "40px" }}
               />
-              , // 뒤로 가기 아이콘 ]
             </PaginationButton>
             {/* 초대하기 버튼 */}
+            <DashboardInvite
+              isOpen={isopen}
+              onClose={handelColseInvite}
+              dashboardId={dashBoardId}
+            />
             <BoxButton
               paddingTopBottom="15"
               paddingRightLeft="10"
               radius="4"
               backgroundColor="purple"
               fontSize="18"
-              onClick={handleInviteClick}
+              onClick={handleOpenInvite}
             >
-              <img
-                src={whitePlus.src}
+              <Image
+                src={whitePlus}
                 alt="Plus Icon"
                 style={{
                   marginLeft: "10px",
@@ -217,52 +245,50 @@ export default function InvitationList({ dashBoardId }: InvitationListProps) {
           ) : (
             // 초대 목록
             <ul style={{ listStyle: "none", padding: 0 }}>
-              {data?.invitations
-                .slice((currentPage - 1) * pageSize, currentPage * pageSize)
-                .map((invitation) => (
-                  <li
-                    key={invitation.id}
+              {data?.invitations.map((invitation) => (
+                <li
+                  key={invitation.id}
+                  style={{
+                    padding: "1.9rem 2.8rem",
+                    borderBottom: "1px solid var(--color-gray20)",
+                    listStyle: "none",
+                  }}
+                >
+                  <div
                     style={{
-                      padding: "1.9rem 2.8rem",
-                      borderBottom: "1px solid var(--color-gray20)",
-                      listStyle: "none",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
                     }}
                   >
-                    <div
+                    <span
                       style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
+                        fontSize: "1.6rem",
+                        fontWeight: 400,
+                        color: "var(--color-black_33)",
                       }}
                     >
-                      <span
-                        style={{
-                          fontSize: "1.6rem",
-                          fontWeight: 400,
-                          color: "var(--color-black_33)",
-                        }}
+                      {invitation.invitee.email}
+                    </span>
+                    <div className="flex gap-[10px]">
+                      {/* 초대 취소 버튼 */}
+                      <BoxButton
+                        paddingTopBottom="14"
+                        paddingRightLeft="44"
+                        radius="4"
+                        backgroundColor="white"
+                        fontSize="18"
+                        onClick={() => handleRemoveInvitation(invitation.id)}
                       >
-                        {invitation.invitee.email}
-                      </span>
-                      <div className="flex gap-[10px]">
-                        {/* 초대 취소 버튼 */}
-                        <BoxButton
-                          paddingTopBottom="14"
-                          paddingRightLeft="44"
-                          radius="4"
-                          backgroundColor="white"
-                          fontSize="18"
-                          onClick={() => handleRemoveInvitation(invitation.id)}
-                        >
-                          <div className="text-xl, font-bold">취소</div>
-                        </BoxButton>
-                      </div>
+                        <div className="text-xl, font-bold">취소</div>
+                      </BoxButton>
                     </div>
+                  </div>
 
-                    {/* 초대 목록 사이의 구분선 */}
-                    <hr className="my-4 w-full border-t border-gray-300" />
-                  </li>
-                ))}
+                  {/* 초대 목록 사이의 구분선 */}
+                  <hr className="my-4 w-full border-t border-gray-300" />
+                </li>
+              ))}
             </ul>
           )}
         </div>

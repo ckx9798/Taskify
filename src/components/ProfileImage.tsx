@@ -2,7 +2,7 @@ import Image from "next/image";
 
 interface Props {
   size: "large" | "medium" | "small" | "smallest";
-  nickName: string;
+  nickName: string | undefined;
   imageUrl?: string;
 }
 

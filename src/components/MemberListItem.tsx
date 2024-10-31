@@ -3,12 +3,16 @@ import BoxButton from "./BoxButton";
 import ProfileImage from "./ProfileImage";
 
 interface MemberListItemProps {
+  memberId: number;
   memberName: string;
-  onClick: () => void;
+  isOwner: boolean; // 추가
+  onClick: (memberId: number) => void;
 }
 
 export default function MemberListItem({
+  memberId,
   memberName,
+  isOwner,
   onClick,
 }: MemberListItemProps) {
   const [screenSize, setScreenSize] = useState<string>("mobile");
@@ -42,17 +46,19 @@ export default function MemberListItem({
         />
         <p className="text-sm font-normal md:text-base">{memberName}</p>
       </div>
-      <BoxButton
-        paddingTopBottom={screenSize === "mobile" ? "7" : "4"}
-        paddingRightLeft={screenSize === "mobile" ? "16" : "30"}
-        radius="4"
-        backgroundColor="white"
-        fontSize={screenSize === "mobile" ? "12" : "14"}
-        disabled={false}
-        onClick={onClick}
-      >
-        삭제
-      </BoxButton>
+      {!isOwner && ( // isOwner가 false일 때만 삭제 버튼 표시
+        <BoxButton
+          paddingTopBottom={screenSize === "mobile" ? "7" : "4"}
+          paddingRightLeft={screenSize === "mobile" ? "16" : "30"}
+          radius="4"
+          backgroundColor="white"
+          fontSize={screenSize === "mobile" ? "12" : "14"}
+          disabled={false}
+          onClick={() => onClick(memberId)}
+        >
+          삭제
+        </BoxButton>
+      )}
     </li>
   );
 }
