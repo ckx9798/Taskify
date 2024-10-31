@@ -2,18 +2,18 @@ import Image from "next/image";
 
 interface CustomBtnProps {
   content?: string;
-  paddingTopBottom: number;
-  paddingRightLeft: number;
-  fontSize?: number;
+  width: number;
+  height: number;
+  borderRadius: "4" | "6" | "8";
+  fontSize?: "12" | "14" | "16" | "18";
   fontWeight?: "500" | "600" | "700";
-  borderRadius: number;
   onClick?: () => void;
 }
 
 export default function CustomBtn({
   content,
-  paddingTopBottom,
-  paddingRightLeft,
+  width,
+  height,
   fontSize,
   fontWeight,
   borderRadius,
@@ -24,10 +24,11 @@ export default function CustomBtn({
       <button
         onClick={onClick}
         className={
-          "bg-white flex items-center justify-center gap-3 border border-gray-400"
+          "flex items-center justify-center gap-3 border border-gray-300 bg-white"
         }
         style={{
-          padding: `${paddingTopBottom}px ${paddingRightLeft}px`,
+          width: `${width}px`,
+          height: `${height}px`,
           fontSize: `${fontSize}px`,
           fontWeight: `${fontWeight}`,
           borderRadius: `${borderRadius}px`,

@@ -1,6 +1,6 @@
 import baseaxios from "./axios";
 
-type MemberType = {
+export type MemberType = {
   id: number;
   email: string;
   nickname: string;
