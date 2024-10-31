@@ -22,20 +22,34 @@ export async function createColumn(columnData: ColumnData): Promise<Column> {
   });
   return response.data;
 }
+
+interface ColumnList {
+  result: string;
+  data: Column[];
+}
+
 // 컬럼 목록을 가져오는 함수
-export async function getColumns(
-  dashboardId: number,
-): Promise<{ result: string; data: Column[] }> {
-  const response = await baseaxios.get<{ result: string; data: Column[] }>(
-    `/columns`,
-    {
-      params: {
-        dashboardId,
-      },
+export async function getColumns(dashboardId: number): Promise<ColumnList> {
+  const response = await baseaxios.get<ColumnList>(`/columns`, {
+    params: {
+      dashboardId,
     },
-  );
+  });
   return response.data;
 }
+// export async function getColumns(
+//   dashboardId: number,
+// ): Promise<{ result: string; data: Column[] }> {
+//   const response = await baseaxios.get<{ result: string; data: Column[] }>(
+//     `/columns`,
+//     {
+//       params: {
+//         dashboardId,
+//       },
+//     },
+//   );
+//   return response.data;
+// }
 // 기존 컬럼을 수정하는 함수
 export async function updateColumn(columnId: number, columnData: ColumnData) {
   const response = await baseaxios.put(`/columns/${columnId}`, columnData);

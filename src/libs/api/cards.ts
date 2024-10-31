@@ -63,7 +63,7 @@ interface GetResponse {
 }
 
 // 카드 목록 조회
-export async function GetCardList(columnId: number) {
+export async function getCardList(columnId: number) {
   try {
     const response = await baseaxios.get(`/cards?size=10&columnId=${columnId}`);
     return response.data as GetResponse;

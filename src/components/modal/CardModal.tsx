@@ -45,10 +45,10 @@ interface CommentInfo {
   author: Author;
 }
 
-interface CommentsResponse {
-  cursorId: number;
-  comments: CommentInfo[];
-}
+// interface CommentsResponse {
+//   cursorId: number;
+//   comments: CommentInfo[];
+// }
 
 interface CardModalProps {
   isOpen: boolean;
