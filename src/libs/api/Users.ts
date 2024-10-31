@@ -40,6 +40,12 @@ function handleAxiosError(error: unknown) {
   throw new Error("An unknown error occurred.");
 }
 
+interface UserProfileImageResponse {
+  success: boolean;
+  message?: string;
+  imageUrl?: string;
+}
+
 export async function signUp(registerData: RegisterPayloadType) {
   try {
     const { email, nickname, password } = registerData;
@@ -98,5 +104,27 @@ export async function updateUserInfo(updateData: UpdateInformationPayloadType) {
     };
   } catch (error) {
     handleAxiosError(error);
+  }
+}
+
+export async function createUserProfileImg(
+  file: File,
+): Promise<UserProfileImageResponse> {
+  try {
+    const formData = new FormData();
+    formData.append("image", file);
+    const response = await baseaxios.post<UserProfileImageResponse>(
+      "users/me/image",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      },
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error uploading profile image:", error);
+    throw error;
   }
 }

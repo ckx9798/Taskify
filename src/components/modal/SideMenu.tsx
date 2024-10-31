@@ -75,7 +75,7 @@ export default function SideMenu() {
           })}
         </ul>
         {/* 페이지네이션 버튼 */}
-        <div className="mt-auto">
+        <div className="fixed bottom-3">
           <DashboardPagination
             dashboardCount={dashboardCount}
             dashboardPage={dashboardPage}

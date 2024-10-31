@@ -16,8 +16,9 @@ export default function DashboardPagination({
   setDashboardPage,
   data,
 }: DashboardPaginationProps) {
+  
   const lastPage = Math.ceil(dashboardCount / data);
-
+  
   const handleForwardClick = () => {
     if (dashboardPage > 1) {
       setDashboardPage(dashboardPage - 1);
