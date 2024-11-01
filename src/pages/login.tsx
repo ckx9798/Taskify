@@ -53,7 +53,6 @@ export function SigninForm() {
   const [modalMessage, setModalMessage] = useState<string | null>(null);
   const [, setUser] = useAtom(userAtom);
 
-
   const onSubmit = async () => {
     setIsPending(true);
     const data = {
@@ -67,10 +66,11 @@ export function SigninForm() {
       const accessToken = response?.accessToken; // response의 구조에 맞게 수정
       if (accessToken) {
         setCookie("accessToken", accessToken);
-      toast.success("로그인 성공!");
-    } else {
+        setModalMessage("성공적으로 로그인되었습니다.");
+      } else {
         setModalMessage("비밀번호가 일치하지 않습니다!");
-      }catch (error) {
+      }
+    } catch (error) {
       console.error(error);
       setModalMessage("비밀번호가 일치하지 않습니다!");
     } finally {
