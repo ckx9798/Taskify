@@ -33,10 +33,7 @@ export default function EditDashboardCard({
       <div className="h-[344px] w-[620px] gap-3 rounded-2xl bg-white p-9 shadow-lg">
         {/* 대시보드 title을 받아서 출력 */}
         <div>
-          <h2 className="mb-7 text-2xl font-bold">
-            비브리지
-            {dashboardTitle}
-          </h2>
+          <h2 className="mb-7 text-2xl font-bold">{dashboardTitle}</h2>
           <label htmlFor="대시보드" className={"text-lg font-medium"}>
             대시보드 이름
           </label>
