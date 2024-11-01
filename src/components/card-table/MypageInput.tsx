@@ -26,7 +26,7 @@ const MypageInput: React.FC<MypageInputProps> = ({
     <div className="flex flex-col gap-2">
       <label htmlFor={labelId}>{inputText}</label>
       <input
-        className={`h-12 w-full rounded-lg border p-4 ${error ? "border-red" : "border-gray-100"} bg-white`}
+        className={`h-12 w-full rounded-lg border p-4 ${error ? "border-red" : "border-gray-200"} bg-white`}
         type={inputType}
         placeholder={placeholder}
         id={labelId}
