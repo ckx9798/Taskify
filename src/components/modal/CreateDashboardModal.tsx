@@ -1,6 +1,7 @@
 import { useState } from "react";
 import SelectColorCircle from "./SelectColorCircle";
 import { createDashboard } from "@/libs/api/dashboards";
+import { createPortal } from "react-dom";
 
 interface CreateDashboardModalProps {
   isOpen: boolean;
@@ -27,7 +28,7 @@ export default function CreateDashboardModal({
       //모달닫기
       closeModal();
       //색선택 초기화
-      setSelectedColor("");
+      setSelectedColor("#7AC555");
       window.location.reload();
     } catch (error) {
       console.log("대시보드 생성 에러", error);
@@ -38,8 +39,8 @@ export default function CreateDashboardModal({
   if (!isOpen) return null;
 
   // 새로운 대시보드 생성 모달창
-  return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+  return createPortal(
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bottom-0 left-0 right-0 top-0 h-[360px] w-[347px] rounded-2xl bg-white p-5 shadow-lg md:h-[344px] md:w-[584px] md:p-9">
         <div>
           <h2 className="mb-7 text-xl font-bold md:text-2xl">
@@ -86,6 +87,7 @@ export default function CreateDashboardModal({
               취소
             </button>
             <button
+              type="button"
               className={
                 "w-1/2 rounded bg-gray-100 px-4 py-2 hover:bg-violet hover:text-white"
               }
@@ -96,6 +98,7 @@ export default function CreateDashboardModal({
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
