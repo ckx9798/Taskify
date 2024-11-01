@@ -13,9 +13,9 @@ export default function CreateDashboardModal({
   refresh,
   closeModal,
 }: CreateDashboardModalProps) {
-  const [title, setTitle] = useState<string>("");
-  const [color, setColor] = useState<string>("");
-  const [selectedColor, setSelectedColor] = useState<string>("");
+  const [title, setTitle] = useState<string>("비브리지");
+  const [color, setColor] = useState<string>("#7AC555");
+  const [selectedColor, setSelectedColor] = useState<string>("#7AC555");
 
   // 대시보드 생성 api 함수
   const handleCreateSubmit = async (e: React.FormEvent) => {
@@ -28,6 +28,7 @@ export default function CreateDashboardModal({
       closeModal();
       //색선택 초기화
       setSelectedColor("");
+      window.location.reload();
     } catch (error) {
       console.log("대시보드 생성 에러", error);
     }
@@ -39,16 +40,22 @@ export default function CreateDashboardModal({
   // 새로운 대시보드 생성 모달창
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="h-[21.5rem] w-[36.5rem] rounded-2xl bg-white p-9 shadow-lg">
+      <div className="bottom-0 left-0 right-0 top-0 h-[360px] w-[347px] rounded-2xl bg-white p-5 shadow-lg md:h-[344px] md:w-[584px] md:p-9">
         <div>
-          <h2 className="mb-7 text-2xl font-bold">새로운 대시보드</h2>
-          <label htmlFor="대시보드" className={"text-lg font-medium"}>
+          <h2 className="mb-7 text-xl font-bold md:text-2xl">
+            새로운 대시보드
+          </h2>
+          <label
+            htmlFor="대시보드"
+            className={"text-base font-medium md:text-lg"}
+          >
             대시보드 이름
           </label>
           <input
             type="text"
             placeholder="생성할 대시보드 이름을 입력해 주세요"
-            className="mb-5 mt-4 w-full rounded-lg border p-2"
+            className="mb-5 mt-4 w-full rounded-lg border p-3 placeholder:text-sm md:placeholder:text-lg"
+            required
             onChange={(e) => {
               setTitle(e.target.value);
             }}
