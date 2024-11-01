@@ -3,7 +3,7 @@ import Image from "next/image";
 interface Props {
   size: "large" | "medium" | "small" | "smallest";
   nickName: string;
-  imageUrl?: string;
+  imageUrl?: string | null;
 }
 
 export default function ProfileImage({ size, nickName, imageUrl }: Props) {

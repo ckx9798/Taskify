@@ -53,7 +53,7 @@ export default function BoardCard({
         : "gap-y-1";
 
   const dateProfileGap =
-    screenSize === "tablet" ? (imageUrl ? "gap-x-[125px]" : "gap-[235px]") : "";
+    screenSize === "tablet" ? (imageUrl ? "gap-x-[63px]" : "gap-[188px]") : "";
 
   useEffect(() => {
     const handleResize = () => {
@@ -92,9 +92,11 @@ export default function BoardCard({
           className={`flex flex-col gap-y-1.5 md:flex-row md:gap-x-4 xl:flex-col xl:gap-y-2`}
         >
           <div className="flex gap-x-1.5">
-            {tags?.map((tagName, index) => (
-              <TagItem key={index} tagName={tagName} />
-            ))}
+            {tags
+              ?.slice(0, 3)
+              .map((tagName, index) => (
+                <TagItem key={index} tagName={tagName} />
+              ))}
           </div>
           <div className={`flex justify-between ${dateProfileGap}`}>
             <div className="flex items-center gap-x-1">
@@ -106,6 +108,7 @@ export default function BoardCard({
             <ProfileImage
               size={screenSize === "mobile" ? "smallest" : "small"}
               nickName={assignee.nickname}
+              imageUrl={assignee.profileImageUrl}
             />
           </div>
         </div>

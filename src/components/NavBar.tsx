@@ -6,8 +6,9 @@ import settingIcon from "@/../public/icons/setting.svg";
 import addBoxIcon from "@/../public/icons/addBox.svg";
 
 interface Props {
-  myNickName: string;
+  myNickName: string | undefined;
   members?: string[];
+  myProfileImage: string | undefined;
   children: ReactNode;
 }
 
@@ -19,7 +20,12 @@ interface BoxButtonProps {
   fontSize: "12" | "14" | "16" | "18";
 }
 
-export default function NavBar({ myNickName, members = [], children }: Props) {
+export default function NavBar({
+  myNickName,
+  members = [],
+  myProfileImage,
+  children,
+}: Props) {
   const [screenSize, setScreenSize] = useState<string>("mobile");
   const [displayCount, setDisplayCount] = useState(2);
 
@@ -140,7 +146,11 @@ export default function NavBar({ myNickName, members = [], children }: Props) {
             )}
           </div>
         )}
-        <ProfileImage size={profileImageSize} nickName={myNickName} />
+        <ProfileImage
+          size={profileImageSize}
+          nickName={myNickName as string}
+          imageUrl={myProfileImage}
+        />
         {screenSize !== "mobile" && (
           <span className="pl-3 text-base">{myNickName}</span>
         )}

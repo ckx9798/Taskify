@@ -1,76 +1,10 @@
-// import Column from "@/components/Column";
-// import { getColumns } from "@/libs/api/columns";
-// import { GetServerSideProps } from "next/types";
-
-// interface Column {
-//   id: number;
-//   title: string;
-//   teamId: string;
-//   dashboardId: number;
-//   createdAt: string;
-//   updatedAt: string;
-// }
-
-// interface PageProps {
-//   columns: Column[];
-// }
-
-// export const getServerSideProps: GetServerSideProps = async (context) => {
-//   const { dashboardid } = context.params ?? {};
-//   console.log("Dashboard ID:", dashboardid);
-//   if (!dashboardid || Array.isArray(dashboardid)) {
-//     return {
-//       notFound: true,
-//     };
-//   }
-
-//   const id = Number(dashboardid);
-
-//   if (isNaN(id)) {
-//     return {
-//       notFound: true,
-//     };
-//   }
-
-//   try {
-//     const columnData = await getColumns(id);
-//     console.log("Column Data:", columnData); // 추가: 데이터 출력 확인
-//     return {
-//       props: {
-//         columns: columnData.data,
-//       },
-//     };
-//   } catch (error) {
-//     console.error("컬럼 목록 조회 실패:", error);
-//     return {
-//       notFound: true,
-//     };
-//   }
-// };
-
-// export default function Page({ columns }: PageProps) {
-//   return (
-//     <div>
-//       <ul>
-//         {columns?.map((column) => (
-//           <Column
-//             key={column.id}
-//             columnId={column.id}
-//             columnTitle={column.title}
-//           />
-//         ))}
-//       </ul>
-//     </div>
-//   );
-// }
-
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Column from "@/components/Column";
 import { getColumns } from "@/libs/api/columns";
-import CardModal from "@/components/modal/CardModal";
 import CustomBtn from "@/components/CustomBtn";
 import CreateColumn from "@/components/modal/CreateColumn";
+import Layout from "@/components/Layout";
 
 interface Column {
   id: number;
@@ -132,8 +66,8 @@ export default function Page() {
   }, []);
 
   return (
-    <main>
-      <ul className="ml-auto flex w-[308px] flex-col bg-gray-100 md:w-[584px]">
+    <div className="min-h-screen bg-gray-100">
+      <ul className="flex w-[308px] flex-col md:w-[584px] xl:w-[354px] xl:flex-row">
         {columnList?.map((column, index) => (
           <Column
             key={column.id}
@@ -142,16 +76,20 @@ export default function Page() {
             isFirst={index === 0}
           />
         ))}
-        <li className="h-fit px-3 pb-[49px] pt-4 md:p-5">
+        <li className="h-fit px-3 pb-[49px] pt-4 md:p-5 xl:pl-0 xl:pt-[75px]">
           <CustomBtn
             content={"새로운 컬럼 추가하기"}
-            paddingTopBottom={screenSize === "mobile" ? 20 : 22}
-            paddingRightLeft={
-              screenSize === "mobile" ? 62 : screenSize === "tablet" ? 168 : 85
+            width={
+              screenSize === "mobile"
+                ? 284
+                : screenSize === "tablet"
+                  ? 544
+                  : 354
             }
-            fontSize={screenSize === "mobile" ? 13 : 18}
+            height={screenSize === "mobile" ? 66 : 70}
+            fontSize={screenSize === "mobile" ? "14" : "18"}
             fontWeight={"700"}
-            borderRadius={8}
+            borderRadius={"8"}
             onClick={handleCreateColumnModalOpen}
           />
         </li>
@@ -163,6 +101,10 @@ export default function Page() {
           dashboardId={id}
         />
       )}
-    </main>
+    </div>
   );
 }
+
+const getLayout = (page: React.ReactElement) => <Layout>{page}</Layout>;
+
+Page.getLayout = getLayout;

@@ -15,8 +15,15 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div>
       <SideMenu />
-      <NavBar myNickName={user?.nickname}>{null}</NavBar>
-      <main className="ml-[280px] mt-[63px] md:mt-[75px]">{children}</main>
+      <NavBar
+        myNickName={user?.nickname}
+        myProfileImage={user?.profileImageUrl}
+      >
+        {null}
+      </NavBar>
+      <main className="ml-[287px] mt-[64px] md:ml-[289px] md:mt-[75px]">
+        {children}
+      </main>
     </div>
   );
 };

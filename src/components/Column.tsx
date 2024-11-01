@@ -48,9 +48,9 @@ export default function Column({
 
   return (
     <div
-      className={`flex h-fit flex-col bg-gray-100 px-3 md:w-[584px] md:p-5 ${isFirst ? "pt-4" : ""}`}
+      className={`flex h-fit flex-col bg-gray-100 px-3 pt-8 md:w-[584px] md:px-5 ${isFirst ? "pt-4" : ""} ${isFirst ? "md:pt-[22px]" : "md:pt-0"} md:pb-[22px] xl:pr-0 xl:pt-[22px]`}
     >
-      <ul className="flex flex-col gap-y-8">
+      <ul className="flex flex-col gap-y-8 xl:gap-y-4">
         {cardList?.map((item, index) => (
           <ColumnItem
             key={item.id}

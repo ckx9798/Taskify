@@ -7,16 +7,18 @@ import TagItem from "../TagItem";
 import BoxButton from "../BoxButton";
 import CommentItem from "../CommentItem";
 import DropDownMenu from "../DropDownMenu";
-import { DeleteCard, GetDetailCard } from "@/libs/api/cards";
+import { DeleteCard, getDetailCard } from "@/libs/api/cards";
 import {
   createComment,
   deleteComment,
   getComments,
   updateComment,
 } from "@/libs/api/comments";
+import useDateFormat from "@/hooks/useDateFormat";
+import TaskEditModal from "./TaskEditModal";
 
 interface Author {
-  profileImageUrl: string;
+  profileImageUrl: string | null;
   nickname: string;
   id: number;
 }
@@ -45,11 +47,6 @@ interface CommentInfo {
   author: Author;
 }
 
-// interface CommentsResponse {
-//   cursorId: number;
-//   comments: CommentInfo[];
-// }
-
 interface CardModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -67,12 +64,14 @@ export default function CardModal({
   const [comments, setComments] = useState<CommentInfo[]>([]);
   const [newComment, setNewComment] = useState<string>("");
   const [showOptions, setShowOptions] = useState(false); // 드롭다운 상태
+  const [showTaskEdit, setShowTaskEdit] = useState(false);
+  const formattedDate = cardDetail ? useDateFormat(cardDetail.dueDate) : "";
 
   // 카드 상세 및 댓글 데이터 조회
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const cardData = await GetDetailCard(cardId);
+        const cardData = await getDetailCard(cardId);
         setCardDetail(cardData);
         const fetchedComments = await getComments(cardId);
         setComments(fetchedComments.comments);
@@ -92,6 +91,9 @@ export default function CardModal({
       document.body.style.overflow = "";
     };
   }, [isOpen, cardId]);
+
+  // 카드 수정
+  const handleCardUpdate = () => {};
 
   // 댓글 생성
   const handleCommentSubmit = async () => {
@@ -156,7 +158,7 @@ export default function CardModal({
   if (!isOpen || !cardDetail) return null;
 
   const options = [
-    { label: "수정하기", onClick: () => console.log("수정하기 클릭됨") },
+    { label: "수정하기", onClick: () => setShowTaskEdit(true) },
     { label: "삭제하기", onClick: handleCardDelete },
   ];
 
@@ -166,7 +168,7 @@ export default function CardModal({
       onClick={() => setShowOptions(false)}
     >
       {/* 오버레이 */}
-      <div className="absolute inset-0 bg-gray-100 opacity-80"></div>
+      <div className="absolute inset-0 bg-black opacity-80"></div>
 
       <div className="fixed z-50 h-[710px] w-[342px] overflow-y-auto rounded-lg bg-white p-4 md:h-[766px] md:w-[693px] md:px-8 md:py-6 xl:h-[763px] xl:w-[745px]">
         <div className="absolute right-4 top-4 flex items-center gap-x-4 md:right-8 md:top-6">
@@ -206,7 +208,7 @@ export default function CardModal({
                 <ProfileImage
                   size="smallest"
                   nickName={cardDetail.assignee.nickname}
-                  imageUrl={cardDetail.assignee.profileImageUrl}
+                  imageUrl={cardDetail?.assignee.profileImageUrl}
                 ></ProfileImage>
                 <span className="text-xs text-black-200 md:text-sm">
                   {cardDetail.assignee.nickname}
@@ -218,7 +220,7 @@ export default function CardModal({
                 마감일
               </span>
               <span className="text-xs text-black-200 md:text-sm">
-                {cardDetail.dueDate}
+                {formattedDate}
               </span>
             </div>
           </div>
@@ -239,9 +241,11 @@ export default function CardModal({
             <p className="mt-4 text-xs text-black-400 md:text-sm">
               {cardDetail.description}
             </p>
-            <div className="relative mt-8 h-[168px] w-full overflow-hidden rounded-md md:mt-4 md:h-[246px] xl:h-[260px]">
-              <Image fill src={cardDetail.imageUrl} alt="카드 이미지" />
-            </div>
+            {cardDetail.imageUrl && (
+              <div className="relative mt-8 h-[168px] w-full overflow-hidden rounded-md md:mt-4 md:h-[246px] xl:h-[260px]">
+                <Image fill src={cardDetail.imageUrl} alt="카드 이미지" />
+              </div>
+            )}
             <div className="relative flex flex-col gap-y-1">
               <label
                 className="mt-6 w-fit text-sm font-medium text-black-200 md:text-base xl:mt-4"
@@ -285,6 +289,12 @@ export default function CardModal({
           </div>
         </div>
       </div>
+      {/* <TaskEditModal
+        isOpen={showTaskEdit}
+        onClose={() => setShowTaskEdit(false)}
+        cardId={cardId}
+        onUpdate={}
+      /> */}
     </div>
   );
 }
