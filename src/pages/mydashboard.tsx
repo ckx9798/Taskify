@@ -1,11 +1,9 @@
 import InvitedDashboard from "@/components/card-table/InvitedDashboard";
-import CustomBtn from "@/components/CustomBtn";
 import CreateDashboardModal from "@/components/modal/CreateDashboardModal";
 import DashboardCard from "@/components/modal/DashboardCard";
 import DashboardPagination from "@/components/modal/DashboardPagination";
-import SideMenu from "@/components/modal/SideMenu";
-import NavBar from "@/components/NavBar";
 import { Dashboard, getDashboardList } from "@/libs/api/dashboards";
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
 export default function Mydashboard() {
@@ -33,28 +31,24 @@ export default function Mydashboard() {
   }, [dashboardPage]);
 
   return (
-    <div className={"min-w-screen flex min-h-screen"}>
-      <div>
-        <SideMenu />
-      </div>
+    <div className={"min-w-screen mb-5 flex h-full bg-gray-100"}>
+      <div>{/* <SideMenu /> */}</div>
       <div className={"flex w-screen grow flex-col items-center"}>
-        <NavBar myNickName="qwe" />
+        {/* <NavBar myNickName="qwe" /> */}
 
-        <main
-          className={"flex h-screen w-screen grow flex-col bg-gray-100 p-10"}
-        >
+        <main className={"flex h-screen w-screen grow flex-col p-10"}>
           <section>
-            <ul className={"grid w-[1022px] grid-cols-3 grid-rows-3 gap-2"}>
-              <li>
-                <CustomBtn
-                  borderRadius={"8"}
-                  content="새로운 대시보드"
-                  fontSize={"16"}
-                  fontWeight="600"
-                  width={354}
-                  height={70}
+            <ul className="grid w-full grid-rows-1 gap-2 xl:max-w-[1024px] xl:grid-cols-3 xl:grid-rows-3">
+              <li className={"w-full"}>
+                <button
+                  className={
+                    "flex h-full w-full items-center justify-center gap-3 rounded-lg border border-gray-300 bg-white p-5"
+                  }
                   onClick={openModal}
-                />
+                >
+                  새로운 대시보드
+                  <Image src="/svg/plus.svg" alt="+" width={20} height={20} />
+                </button>
               </li>
               {dashboardData.map((dashboard) => {
                 return (
@@ -62,11 +56,15 @@ export default function Mydashboard() {
                     key={dashboard.id}
                     className={"rounded-lg border border-gray-300 bg-white"}
                   >
-                    <DashboardCard dashboard={dashboard} isArrow={true} />
+                    <DashboardCard
+                      dashboard={dashboard}
+                      isArrow={true}
+                      isResponse={true}
+                    />
                   </li>
                 );
               })}
-              <div className="col-span-3 flex max-h-10 justify-end">
+              <div className="flex max-h-10 justify-end md:col-span-2 xl:col-span-3">
                 {/* 페이지네이션 버튼 */}
                 <DashboardPagination
                   dashboardCount={dashboardCount}
@@ -77,7 +75,9 @@ export default function Mydashboard() {
               </div>
             </ul>
           </section>
-          <section className={"h-[500px] w-[1022px]"}>
+          <section
+            className={"mt-12 h-[500px] w-full rounded-lg xl:max-w-[1024px]"}
+          >
             <InvitedDashboard />
           </section>
 

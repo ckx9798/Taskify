@@ -1,11 +1,18 @@
-import SideMenu from "@/components/modal/SideMenu";
 import ProfileCard from "@/components/card-table/ProfileCard";
 import PasswordChangeCard from "@/components/card-table/PasswordChangeCard";
 import { updateUserInfo } from "@/libs/api/Users";
 import Layout from "@/components/Layout";
 
-export default function mypage() {
-  const handliClickSave = async ({ nickname, profileImageUrl }) => {
+interface UpdateUserProfileData {
+  nickname: string;
+  profileImageUrl: string | null;
+}
+
+export default function Mypage() {
+  const handleClickSave = async ({
+    nickname,
+    profileImageUrl,
+  }: UpdateUserProfileData): Promise<void> => {
     //api
     const data = await updateUserInfo({
       nickname: nickname,
@@ -14,11 +21,11 @@ export default function mypage() {
     console.log(data);
   };
   return (
-    <div className={"flex"}>
+    <div className={"flex h-screen w-screen bg-gray-100"}>
       <div>
-        <div className={"flex h-full w-screen flex-col gap-7 bg-gray-100 p-5"}>
+        <div className={"h-sreen flex flex-col gap-7 p-5"}>
           <section>
-            <ProfileCard updateUserProfile={handliClickSave} />
+            <ProfileCard updateUserProfile={handleClickSave} />
           </section>
           <section>
             <PasswordChangeCard />
@@ -30,4 +37,4 @@ export default function mypage() {
 }
 const getLayout = (page: React.ReactElement) => <Layout>{page}</Layout>;
 
-mypage.getLayout = getLayout;
+Mypage.getLayout = getLayout;
