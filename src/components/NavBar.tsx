@@ -6,8 +6,9 @@ import settingIcon from "@/../public/icons/setting.svg";
 import addBoxIcon from "@/../public/icons/addBox.svg";
 
 interface Props {
-  myNickName: string;
+  myNickName: string | undefined;
   members?: string[];
+  myProfileImage: string | undefined;
   children: ReactNode;
 }
 
@@ -19,7 +20,12 @@ interface BoxButtonProps {
   fontSize: "12" | "14" | "16" | "18";
 }
 
-export default function NavBar({ myNickName, members = [], children }: Props) {
+export default function NavBar({
+  myNickName,
+  members = [],
+  myProfileImage,
+  children,
+}: Props) {
   const [screenSize, setScreenSize] = useState<string>("mobile");
   const [displayCount, setDisplayCount] = useState(2);
 
@@ -62,7 +68,7 @@ export default function NavBar({ myNickName, members = [], children }: Props) {
   }, []);
 
   return (
-    <nav className="flex w-full items-center justify-between border-b border-solid border-gray-300 bg-white py-3.5 pl-[56px] pr-3 md:py-4 md:pl-[200px] md:pr-10 xl:py-4 xl:pl-[340px] xl:pr-20">
+    <nav className="fixed top-0 flex w-full items-center justify-between border-b border-solid border-gray-300 bg-white py-3.5 pl-[56px] pr-3 md:py-4 md:pl-[200px] md:pr-10 xl:py-4 xl:pl-[340px] xl:pr-20">
       {(screenSize === "pc" || members.length === 0) && (
         <span
           className={`flex items-center gap-x-2 ${screenSize === "mobile" ? "text-[16px]" : "text-[20px]"} font-bold`}
@@ -140,7 +146,11 @@ export default function NavBar({ myNickName, members = [], children }: Props) {
             )}
           </div>
         )}
-        <ProfileImage size={profileImageSize} nickName={myNickName} />
+        <ProfileImage
+          size={profileImageSize}
+          nickName={myNickName as string}
+          imageUrl={myProfileImage}
+        />
         {screenSize !== "mobile" && (
           <span className="pl-3 text-base">{myNickName}</span>
         )}

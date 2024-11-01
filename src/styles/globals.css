@@ -134,6 +134,10 @@ q:after {
   content: none;
 }
 
+body {
+  background-color: #fafafa;
+}
+
 table {
   border-collapse: collapse;
   border-spacing: 0;

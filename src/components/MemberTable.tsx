@@ -4,19 +4,15 @@ import backButton from "@/../public/icons/arrow_back_gray_icon.svg";
 import Image from "next/image";
 import MemberTableItem from "./MemberListItem";
 import { useEffect, useState } from "react";
-
-interface User {
-  id: number;
-  nickName: string;
-}
+import { MemberType } from "@/libs/api/Members";
 
 interface MemberTableProps {
-  members: User[];
+  members: MemberType[];
   totalPage: number;
   currentPage: number;
   onClickForward: () => void;
   onClickBack: () => void;
-  onClickDelete: () => void;
+  onClickDelete: (memberId: number) => void;
 }
 
 export default function MemberTable({
@@ -55,7 +51,7 @@ export default function MemberTable({
         <div className="flex items-center justify-between pb-[18px]">
           <h3 className="text-xl font-bold md:text-2xl">구성원</h3>
           <div className="flex items-center gap-x-3">
-            <p className="text-black-200 text-xs font-normal md:text-sm">
+            <p className="text-xs font-normal text-black-200 md:text-sm">
               {totalPage} 페이지 중 {currentPage}
             </p>
             <PaginationButton
@@ -77,8 +73,10 @@ export default function MemberTable({
           members.map((item) => (
             <MemberTableItem
               key={item.id}
-              memberName={item.nickName}
-              onClick={onClickDelete}
+              memberId={item.id}
+              isOwner={item.isOwner}
+              memberName={item.nickname}
+              onClick={() => onClickDelete(item.id)}
             />
           ))}
       </ul>

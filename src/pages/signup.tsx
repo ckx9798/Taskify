@@ -12,6 +12,13 @@ import {
 } from "../components/input/formInputValidationRules";
 import OneButton from "../components/modal/OneButton";
 
+// signUp 함수의 반환 타입 정의
+interface SignUpResponse {
+  data: unknown;
+  status: number;
+  error?: string; // error 속성을 optional로 정의
+}
+
 const Signup = () => {
   const router = useRouter();
   const [values, setValues] = useState({
@@ -87,7 +94,8 @@ const Signup = () => {
       password: values.password,
     };
     try {
-      const response = await signUp(registerData);
+
+      const response: SignUpResponse | undefined = await signUp(registerData);
       if (response && response.status === 201) {
         setModalMessage("회원가입이 성공적으로 완료되었습니다!");
       }
@@ -102,6 +110,8 @@ const Signup = () => {
       } else {
         console.error("Unexpected error:", error);
         setModalMessage("회원가입 중 알 수 없는 오류가 발생했습니다.");
+
+
       }
     } finally {
       setIsPending(false);

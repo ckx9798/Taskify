@@ -13,6 +13,8 @@ import {
   emailValidationRules,
   passwordValidationRules,
 } from "../components/input/formInputValidationRules";
+import { useAtom } from "jotai";
+import { User, userAtom } from "@/atoms/userAtom";
 
 // Cookie 관련 함수들
 const cookies = new Cookies();
@@ -49,6 +51,8 @@ export function SigninForm() {
   const router = useRouter();
   const [isPending, setIsPending] = useState(false);
   const [modalMessage, setModalMessage] = useState<string | null>(null);
+  const [, setUser] = useAtom(userAtom);
+
 
   const onSubmit = async () => {
     setIsPending(true);
@@ -59,14 +63,14 @@ export function SigninForm() {
 
     try {
       const response = await postLogin(data);
-      const accessToken = response?.accessToken;
+      setUser(response.user);
+      const accessToken = response?.accessToken; // response의 구조에 맞게 수정
       if (accessToken) {
         setCookie("accessToken", accessToken);
-        router.push("/mydashboard");
-      } else {
+      toast.success("로그인 성공!");
+    } else {
         setModalMessage("비밀번호가 일치하지 않습니다!");
-      }
-    } catch (error) {
+      }catch (error) {
       console.error(error);
       setModalMessage("비밀번호가 일치하지 않습니다!");
     } finally {

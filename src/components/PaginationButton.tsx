@@ -3,8 +3,8 @@ import React from "react";
 interface PaginationButtonProps {
   size: "large" | "small";
   children: React.ReactNode;
-  onClickForward: () => void;
-  onClickBack: () => void;
+  onClickForward?: () => void;
+  onClickBack?: () => void;
 }
 
 export default function PaginationButton({

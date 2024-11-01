@@ -1,8 +1,7 @@
-import SideMenu from "@/components/modal/SideMenu";
 import ProfileCard from "@/components/card-table/ProfileCard";
 import PasswordChangeCard from "@/components/card-table/PasswordChangeCard";
 import { updateUserInfo } from "@/libs/api/Users";
-import NavBar from "@/components/NavBar";
+import Layout from "@/components/Layout";
 
 export default function mypage() {
   const handliClickSave = async ({ nickname, profileImageUrl }) => {
@@ -15,10 +14,7 @@ export default function mypage() {
   };
   return (
     <div className={"flex"}>
-      <SideMenu />
-
       <div>
-        <NavBar myNickName="qwe" />
         <div className={"flex h-full w-screen flex-col gap-7 bg-gray-100 p-5"}>
           <section>
             <ProfileCard updateUserProfile={handliClickSave} />
@@ -31,3 +27,6 @@ export default function mypage() {
     </div>
   );
 }
+const getLayout = (page: React.ReactElement) => <Layout>{page}</Layout>;
+
+mypage.getLayout = getLayout;
