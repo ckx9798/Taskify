@@ -125,14 +125,14 @@ export default function ProfileCard({ updateUserProfile }: ProfileCardProps) {
     <>
       <div
         className={
-          "flex h-96 w-full max-w-[672px] flex-col gap-6 rounded-2xl bg-white p-6"
+          "flex h-auto w-full max-w-[672px] flex-col gap-6 rounded-2xl bg-white p-6"
         }
       >
         <div>
           <h2 className={"text-2xl font-bold"}>프로필</h2>
         </div>
 
-        <div className={"flex gap-11"}>
+        <div className={"flex flex-col gap-11 md:flex-row"}>
           {/* 이미지 선택 컴포넌트  */}
           <ProfileImageUploader
             profileImage={profileImage}
@@ -148,7 +148,7 @@ export default function ProfileCard({ updateUserProfile }: ProfileCardProps) {
             accept="image/*"
             onChange={handleFileChange}
           />
-          <form className={"flex w-full max-w-[400px] flex-col gap-3"}>
+          <form className={"flex w-full flex-col gap-3 md:max-w-[400px]"}>
             {/* 이메일 */}
             <div className={"flex flex-col gap-2"}>
               <MypageInput

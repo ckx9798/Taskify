@@ -38,22 +38,36 @@ export default function SideMenu() {
 
       <div
         className={
-          "flex h-screen w-72 min-w-72 flex-col gap-2.5 bg-white px-2 py-5"
+          "flex h-screen w-[68px] min-w-[68px] flex-col gap-2.5 bg-white px-2 py-5 md:w-40 md:min-w-40 xl:w-72 xl:min-w-72"
         }
       >
         {/* 상단  */}
-        <div className={"mb-9"}>
+        <div className={"mb-9 flex justify-center"}>
           <Link href={"/"}>
             <Image
               src="/logo/midLogo.svg"
               alt="로고이미지"
               width={109}
               height={33}
+              className={"hidden md:block"}
+            />
+            <Image
+              src="/logo/smallLogo.svg"
+              alt="로고이미지"
+              width={27}
+              height={30}
+              className={"block md:hidden"}
             />
           </Link>
         </div>
-        <div className={"flex items-center justify-between"}>
-          <span className={"text-xs font-semibold text-gray-500"}>
+        <div
+          className={"flex items-center justify-center px-5 md:justify-between"}
+        >
+          <span
+            className={
+              "hidden text-xs font-semibold text-gray-500 md:inline md:text-base"
+            }
+          >
             Dash Boards
           </span>
           <button onClick={openModal}>
@@ -64,6 +78,25 @@ export default function SideMenu() {
               height={20}
             />
           </button>
+        </div>
+
+        <div
+          className={
+            "mt-2 flex flex-col gap-5 border-b border-t border-b-gray-300 border-t-gray-300 p-5"
+          }
+        >
+          <Link href={"/mydashboard"}>
+            <div className={"flex justify-center gap-5 md:justify-start"}>
+              <span>📝</span>
+              <span className={"hidden md:block"}> 내 대시보드</span>
+            </div>
+          </Link>
+          <Link href={"/mypage"}>
+            <div className={"flex justify-center gap-6 md:justify-start"}>
+              <span>🎈</span>
+              <span className={"hidden md:block"}> 내 계정</span>
+            </div>
+          </Link>
         </div>
 
         {/* 대시보드 목록  */}
@@ -77,7 +110,7 @@ export default function SideMenu() {
           })}
         </ul>
         {/* 페이지네이션 버튼 */}
-        <div className="fixed bottom-3">
+        <div className="fixed bottom-3 hidden md:block">
           <DashboardPagination
             dashboardCount={dashboardCount}
             dashboardPage={dashboardPage}

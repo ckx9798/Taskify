@@ -11,7 +11,7 @@ interface MypageInputProps {
 }
 
 // 마이페이지 내 비밀번호 변경에 쓰이는 input
-const MypageInput: React.FC<MypageInputProps> = ({
+export default function MypageInput({
   inputText,
   inputType,
   labelId,
@@ -21,12 +21,12 @@ const MypageInput: React.FC<MypageInputProps> = ({
   onBlur,
   error,
   disabled,
-}) => {
+}: MypageInputProps) {
   return (
     <div className="flex flex-col gap-2">
       <label htmlFor={labelId}>{inputText}</label>
       <input
-        className={`h-12 w-full rounded-lg border p-4 ${error ? "border-red" : "border-gray-100"} bg-white`}
+        className={`h-12 w-full rounded-lg border p-4 ${error ? "border-red" : "border-gray-200"} bg-white`}
         type={inputType}
         placeholder={placeholder}
         id={labelId}
@@ -37,6 +37,4 @@ const MypageInput: React.FC<MypageInputProps> = ({
       />
     </div>
   );
-};
-
-export default MypageInput;
+}
