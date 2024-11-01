@@ -6,7 +6,7 @@ import settingIcon from "@/../public/icons/setting.svg";
 import addBoxIcon from "@/../public/icons/addBox.svg";
 
 interface Props {
-  myNickName: string;
+  myNickName: string | undefined;
   members?: string[];
   children: ReactNode;
 }

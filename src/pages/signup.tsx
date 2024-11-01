@@ -7,6 +7,13 @@ import largeLogo from "../../public/logo/largeLogo.svg";
 import Image from "next/image";
 import { signUp } from "@/libs/api/Users";
 
+// signUp 함수의 반환 타입 정의
+interface SignUpResponse {
+  data: unknown;
+  status: number;
+  error?: string; // error 속성을 optional로 정의
+}
+
 const Signup = () => {
   const router = useRouter();
   const [values, setValues] = useState({
@@ -109,13 +116,13 @@ const Signup = () => {
       password: values.password,
     };
     try {
-      const response = await signUp(registerData);
+      const response: SignUpResponse | undefined = await signUp(registerData);
 
-      if (response.status === 201) {
+      if (response && response.status === 201) {
         alert("회원가입이 성공적으로 완료되었습니다.");
         router.push("/login");
       } else {
-        alert(response.error || "회원가입에 실패했습니다. 다시 시도해주세요.");
+        alert(response?.error || "회원가입에 실패했습니다. 다시 시도해주세요.");
       }
     } catch (error) {
       console.error("회원가입 중 오류 발생:", error);
