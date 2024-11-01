@@ -5,6 +5,7 @@ import DashboardPagination from "@/components/modal/DashboardPagination";
 import { Dashboard, getDashboardList } from "@/libs/api/dashboards";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import Layout from "@/components/Layout";
 
 export default function Mydashboard() {
   // 새로운 대시보드 모달창 열기

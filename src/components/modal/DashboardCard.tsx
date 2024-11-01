@@ -19,7 +19,7 @@ export default function DashboardCard({
 }: DashboardCardProps) {
   return (
     <div
-      className={`flex items-center py-5 xl:px-5 ${isResponse ? "justify-between px-7" : "justify-center px-2"} md:justify-between`}
+      className={`flex items-center py-4 xl:px-5 ${isResponse ? "justify-between px-7" : "justify-center px-2"} md:justify-between`}
     >
       <div className="flex items-center gap-3 md:w-full md:gap-3 xl:max-w-[250px] xl:gap-6">
         <span

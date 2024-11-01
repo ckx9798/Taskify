@@ -40,14 +40,14 @@ export default function SideMenu() {
   };
 
   return (
-    <div className="fixed left-0 top-0 z-10 h-screen w-[68px] overflow-y-auto md:w-52 xl:w-72">
+    <div className="fixed left-0 top-0 z-20 h-screen w-[68px] overflow-y-auto md:w-52 xl:w-72">
       <div
         className={
           "flex h-full w-[68px] min-w-[68px] flex-col gap-2.5 border-r border-r-gray-300 bg-white px-2 py-5 md:w-52 md:min-w-52 xl:w-72 xl:min-w-72"
         }
       >
         {/* 상단  */}
-        <div className={"mb-9 flex justify-center"}>
+        <div className={"mb-5 ml-2 flex justify-center md:justify-start"}>
           <Link href={"/"}>
             <Image
               src="/logo/midLogo.svg"
@@ -59,7 +59,7 @@ export default function SideMenu() {
             <Image
               src="/logo/smallLogo.svg"
               alt="로고이미지"
-              width={27}
+              width={30}
               height={30}
               className={"block md:hidden"}
             />
@@ -67,12 +67,12 @@ export default function SideMenu() {
         </div>
         <div
           className={
-            "flex items-center justify-center md:justify-between md:px-3 xl:px-5"
+            "flex items-center justify-center md:justify-between md:px-2 xl:px-3"
           }
         >
           <span
             className={
-              "hidden text-xs font-semibold text-gray-500 md:inline xl:text-base"
+              "hidden text-xs font-bold text-gray-500 md:inline xl:text-base"
             }
           >
             Dash Boards
@@ -103,10 +103,10 @@ export default function SideMenu() {
               <span>📝</span>
               <span
                 className={
-                  "hidden whitespace-nowrap md:block md:text-sm xl:text-lg"
+                  "hidden whitespace-nowrap font-medium md:block md:text-sm xl:text-lg"
                 }
               >
-                내 대시보드
+                My Dashboard
               </span>
             </div>
           </Link>
@@ -119,10 +119,10 @@ export default function SideMenu() {
               <span>🎈</span>
               <span
                 className={
-                  "hidden whitespace-nowrap md:block md:text-sm xl:text-lg"
+                  "hidden whitespace-nowrap font-medium md:block md:text-sm xl:text-lg"
                 }
               >
-                내 계정
+                My Account
               </span>
             </div>
           </Link>

@@ -161,7 +161,7 @@ export default function ProfileCard({ updateUserProfile }: ProfileCardProps) {
           </div>
 
           {/* 닉네임 */}
-          <div className={"flex flex-col"}>
+          <div className={"relative mt-2"}>
             <MypageInput
               inputText="닉네임"
               inputType="text"
@@ -170,13 +170,19 @@ export default function ProfileCard({ updateUserProfile }: ProfileCardProps) {
               error={nicknameError}
               onChange={nicknameValidation}
             />
-            <p className={"mt-2 text-sm text-red"}>{nicknameError}</p>
+            <p
+              className={
+                "absolute top-[84px] whitespace-nowrap text-xs text-red md:left-2 md:text-sm"
+              }
+            >
+              {nicknameError}
+            </p>
           </div>
 
           {/* 저장버튼 */}
           <label
             className={
-              "mt-4 flex h-12 w-full items-center justify-center rounded-lg bg-violet p-4 font-semibold text-white"
+              "mb-5 mt-5 flex h-12 w-full items-center justify-center rounded-lg bg-violet p-4 font-semibold text-white"
             }
             htmlFor="저장버튼"
           >

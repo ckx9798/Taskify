@@ -34,6 +34,7 @@ export default function MypageInput({
         value={value}
         onBlur={onBlur}
         disabled={disabled}
+        required
       />
     </div>
   );
