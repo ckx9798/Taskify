@@ -43,5 +43,3 @@ export const nicknameValidationRules = {
 };
 
 export const imgFileValidationRules = {};
-
-// 정규식을 모아두는 파일
