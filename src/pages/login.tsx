@@ -11,6 +11,8 @@ import {
   emailValidationRules,
   passwordValidationRules,
 } from "../components/input/formInputValidationRules";
+import { useAtom } from "jotai";
+import { User, userAtom } from "@/atoms/userAtom";
 
 // Cookie 관련 함수들
 const cookies = new Cookies();
@@ -107,6 +109,7 @@ export function SigninForm() {
   } = useForm<SignInDataType>({ mode: "all" });
   const router = useRouter();
   const [isPending, setIsPending] = useState(false);
+  const [, setUser] = useAtom(userAtom);
 
   const onSubmit = async () => {
     setIsPending(true);
@@ -117,6 +120,7 @@ export function SigninForm() {
 
     try {
       const response = await postLogin(data);
+      setUser(response.user);
       const accessToken = response?.accessToken; // response의 구조에 맞게 수정
       if (accessToken) setCookie("accessToken", accessToken);
       toast.success("로그인 성공!");

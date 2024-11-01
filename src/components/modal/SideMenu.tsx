@@ -33,7 +33,7 @@ export default function SideMenu() {
   }, [dashboardPage]);
 
   return (
-    <>
+    <div className="fixed left-0 top-0">
       <div
         className={
           "flex h-screen w-[68px] min-w-[68px] flex-col gap-2.5 bg-white px-2 py-5 md:w-40 md:min-w-40 xl:w-72 xl:min-w-72"
@@ -123,6 +123,6 @@ export default function SideMenu() {
         refresh={loadDashboard}
         closeModal={closeModal}
       />
-    </>
+    </div>
   );
 }
