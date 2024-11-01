@@ -8,6 +8,7 @@ export default function NotFound() {
     <div className={"relative h-screen w-full"}>
       <Head>
         <title>Taskify | 404</title>
+        <link rel="icon" href="/favicon.svg" />
       </Head>
       <Link href={"/"} className="btn-violet w-full py-5 text-xl font-bold">
         <div>
