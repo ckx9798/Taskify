@@ -1,9 +1,10 @@
 import { useState } from "react";
 import ProfileImage from "./ProfileImage";
 import BoxButton from "./BoxButton";
+import useFormattedDate from "@/hooks/useDateFormat";
 
 interface Author {
-  profileImageUrl: string;
+  profileImageUrl: string | null;
   nickname: string;
   id: number;
 }
@@ -27,7 +28,7 @@ export default function CommentItem({
 }: CommentItemProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(content);
-
+  const formattedDate = useFormattedDate(createdAt);
   const handleEditClick = () => {
     setIsEditing(true);
   };
@@ -55,7 +56,7 @@ export default function CommentItem({
             {author?.nickname}
           </span>
           <span className="text-[10px] text-gray-400 md:text-xs">
-            {createdAt}
+            {formattedDate}
           </span>
         </div>
         {isEditing ? (
