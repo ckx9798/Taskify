@@ -25,6 +25,8 @@ export interface BoardCardProps {
   columnId: number;
   totalCard: number;
   isFirst: boolean;
+  isLast: boolean;
+  onClickReRender: () => void;
 }
 
 export default function ColumnItem({
@@ -38,6 +40,8 @@ export default function ColumnItem({
   columnId,
   totalCard,
   isFirst,
+  isLast,
+  onClickReRender,
 }: BoardCardProps) {
   const [showCardModal, setShowCardModal] = useState(false);
   const [showColumnManager, setShowColumnManager] = useState(false);
@@ -91,9 +95,11 @@ export default function ColumnItem({
   };
 
   return (
-    <li className="w-full border-b border-solid border-gray-200 pb-6 text-black md:pb-5 xl:border-b-0 xl:border-r xl:pb-0 xl:pr-5">
+    <li
+      className={`${isLast ? "border-gray-200 md:border-b md:border-solid md:pb-5" : "md:border-none md:pb-0"} w-full border-b border-solid border-gray-200 pb-6 text-black xl:pb-0 xl:pr-5`}
+    >
       {/* 모바일이거나 첫 번째 ColumnItem일 때 상단 요소 렌더링 */}
-      {(screenSize === "mobile" || isFirst) && (
+      {(screenSize === "mobile" || isFirst || !id) && (
         <>
           <div className="mb-6 flex items-center justify-between xl:mb-[25px]">
             <div className="flex items-center gap-x-2">
@@ -132,41 +138,46 @@ export default function ColumnItem({
           </div>
         </>
       )}
-      <BoardCard
-        id={id}
-        title={title}
-        tags={tags}
-        dueDate={dueDate}
-        assignee={assignee}
-        imageUrl={imageUrl}
-        onClick={handleModalOpen}
-      />
-
-      {showCardModal && (
-        <CardModal
-          isOpen={showCardModal}
-          onClose={handleModalClose}
-          columnTitle={columnTitle}
-          cardId={id}
-        />
-      )}
-
-      {/* {showTaskFormModal && (
-        <TaskFormModal
-          isOpen={showTaskFormModal}
-          onClose={handleShowTaskFormModalClose}
-          column={columnId}
-          dashboardId={dasboardId}
-        />
-      )} */}
-
       {showColumnManager && (
         <ColumnManager
           isOpen={showColumnManager}
           onClose={handleUpdateColumnModalClose}
           dashboardId={dasboardId}
           columnId={columnId}
+          onClickReRender={onClickReRender}
         />
+      )}
+      {showTaskFormModal && (
+        <TaskFormModal
+          isOpen={showTaskFormModal}
+          onClose={handleShowTaskFormModalClose}
+          column={columnId}
+          dashboardId={dasboardId}
+          onClickReRender={onClickReRender}
+        />
+      )}
+
+      {id && id !== 0 && totalCard > 0 && (
+        <>
+          <BoardCard
+            title={title}
+            tags={tags}
+            dueDate={dueDate}
+            assignee={assignee}
+            imageUrl={imageUrl}
+            onClick={handleModalOpen}
+          />
+
+          {showCardModal && (
+            <CardModal
+              isOpen={showCardModal}
+              onClose={handleModalClose}
+              columnTitle={columnTitle}
+              cardId={id}
+              onClickReRender={onClickReRender}
+            />
+          )}
+        </>
       )}
     </li>
   );
