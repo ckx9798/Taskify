@@ -5,6 +5,7 @@ import Image from "next/image";
 import CreateDashboardModal from "./CreateDashboardModal";
 import DashboardPagination from "./DashboardPagination";
 import DashboardCard from "./DashboardCard";
+import { useRouter } from "next/router";
 
 // 왼쪽 사이드바에서 대시보드 목록을 보여주고 생성하는 컴포넌트
 export default function SideMenu() {
@@ -17,6 +18,7 @@ export default function SideMenu() {
   const [dashboardData, setDashboardData] = useState<Dashboard[]>([]);
   const [dashboardPage, setDashboardPage] = useState<number>(1);
   const [dashboardCount, setDashboardCount] = useState<number>(0);
+  const router = useRouter();
 
   const loadDashboard = async (): Promise<void> => {
     const data = await getDashboardList({
@@ -32,11 +34,16 @@ export default function SideMenu() {
     loadDashboard();
   }, [dashboardPage]);
 
+  // 대시보드 상세페이지 이동
+  const handleNavigate = (id: number | string) => {
+    router.push(`dashboard/${id}`);
+  };
+
   return (
-    <div className="fixed left-0 top-0 z-10">
+    <div className="fixed left-0 top-0 z-10 h-screen w-[68px] overflow-y-auto md:w-52 xl:w-72">
       <div
         className={
-          "flex h-screen w-[68px] min-w-[68px] flex-col gap-2.5 border-r border-r-gray-300 bg-white px-2 py-5 md:w-52 md:min-w-52 xl:w-72 xl:min-w-72"
+          "flex h-full w-[68px] min-w-[68px] flex-col gap-2.5 border-r border-r-gray-300 bg-white px-2 py-5 md:w-52 md:min-w-52 xl:w-72 xl:min-w-72"
         }
       >
         {/* 상단  */}
@@ -125,7 +132,10 @@ export default function SideMenu() {
         <ul className="space-y-1">
           {dashboardData.map((dashboard) => {
             return (
-              <li key={dashboard.id}>
+              <li
+                key={dashboard.id}
+                onClick={() => handleNavigate(dashboard.id)}
+              >
                 <DashboardCard dashboard={dashboard} />
               </li>
             );
