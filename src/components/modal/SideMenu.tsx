@@ -33,12 +33,10 @@ export default function SideMenu() {
   }, [dashboardPage]);
 
   return (
-
     <div className="fixed left-0 top-0 z-10">
-
       <div
         className={
-          "flex h-screen w-[68px] min-w-[68px] flex-col gap-2.5 bg-white px-2 py-5 md:w-40 md:min-w-40 xl:w-72 xl:min-w-72"
+          "flex h-screen w-[68px] min-w-[68px] flex-col gap-2.5 border-r border-r-gray-300 bg-white px-2 py-5 md:w-52 md:min-w-52 xl:w-72 xl:min-w-72"
         }
       >
         {/* 상단  */}
@@ -61,11 +59,13 @@ export default function SideMenu() {
           </Link>
         </div>
         <div
-          className={"flex items-center justify-center px-5 md:justify-between"}
+          className={
+            "flex items-center justify-center md:justify-between md:px-3 xl:px-5"
+          }
         >
           <span
             className={
-              "hidden text-xs font-semibold text-gray-500 md:inline md:text-base"
+              "hidden text-xs font-semibold text-gray-500 md:inline xl:text-base"
             }
           >
             Dash Boards
@@ -73,28 +73,50 @@ export default function SideMenu() {
           <button onClick={openModal}>
             <Image
               src="/icons/sideMenuPlus.svg"
-              alt="+"
-              width={20}
-              height={20}
+              alt="작은 +"
+              width={25}
+              height={25}
+              className={"block md:block"}
             />
           </button>
         </div>
 
+        {/* 페이지 이동 버튼 */}
         <div
           className={
-            "mt-2 flex flex-col gap-5 border-b border-t border-b-gray-300 border-t-gray-300 p-5"
+            "mt-2 flex flex-col gap-5 border-b border-t border-b-gray-300 border-t-gray-300 py-4 md:px-1 md:py-5 xl:gap-6 xl:px-4"
           }
         >
           <Link href={"/mydashboard"}>
-            <div className={"flex justify-center gap-5 md:justify-start"}>
+            <div
+              className={
+                "flex items-center justify-center md:justify-start md:gap-3 xl:gap-5"
+              }
+            >
               <span>📝</span>
-              <span className={"hidden md:block"}> 내 대시보드</span>
+              <span
+                className={
+                  "hidden whitespace-nowrap md:block md:text-sm xl:text-lg"
+                }
+              >
+                내 대시보드
+              </span>
             </div>
           </Link>
           <Link href={"/mypage"}>
-            <div className={"flex justify-center gap-6 md:justify-start"}>
+            <div
+              className={
+                "flex items-center justify-center gap-4 md:justify-start xl:gap-6"
+              }
+            >
               <span>🎈</span>
-              <span className={"hidden md:block"}> 내 계정</span>
+              <span
+                className={
+                  "hidden whitespace-nowrap md:block md:text-sm xl:text-lg"
+                }
+              >
+                내 계정
+              </span>
             </div>
           </Link>
         </div>
@@ -110,7 +132,7 @@ export default function SideMenu() {
           })}
         </ul>
         {/* 페이지네이션 버튼 */}
-        <div className="fixed bottom-3 hidden md:block">
+        <div className="hidden md:block">
           <DashboardPagination
             dashboardCount={dashboardCount}
             dashboardPage={dashboardPage}

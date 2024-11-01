@@ -78,7 +78,7 @@ export default function PasswordChangeCard() {
         }
       >
         <div>
-          <h2 className={"text-we text-2xl font-bold"}>비밀번호 변경</h2>
+          <h2 className={"text-xl font-bold md:text-2xl"}>비밀번호 변경</h2>
         </div>
 
         <div className={"flex gap-11"}>
@@ -124,7 +124,7 @@ export default function PasswordChangeCard() {
             {/* 비밀번호 변경 버튼 */}
             <label
               className={
-                "flex h-12 w-full items-center justify-center rounded-lg bg-blue p-4 font-semibold text-white"
+                "flex h-12 w-full items-center justify-center rounded-lg bg-violet p-4 font-semibold text-white"
               }
               htmlFor="clickButton"
             >
