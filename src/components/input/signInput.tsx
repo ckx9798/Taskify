@@ -8,7 +8,7 @@ export interface SignInputProps {
   onBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
   name: string;
   hasError?: unknown; // hasError를 unknown으로 변경
-  style?: React.CSSProperties;
+  className?: string; // className 속성 추가
 }
 
 const PasswordInput = forwardRef<HTMLInputElement, SignInputProps>(
