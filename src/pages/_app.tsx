@@ -8,6 +8,7 @@ import { getCookie } from "./login";
 import Router from "next/router";
 import { NextPage } from "next";
 
+
 type AppPropsWithLayout = AppProps & {
   Component: NextPage & {
     getLayout?: (page: React.ReactElement) => React.ReactNode;
