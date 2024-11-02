@@ -1,9 +1,14 @@
 import { ReactNode, useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import Image from "next/image";
 import BoxButton from "./BoxButton";
 import ProfileImage from "./ProfileImage";
 import settingIcon from "@/../public/icons/setting.svg";
 import addBoxIcon from "@/../public/icons/addBox.svg";
+import DashboardInvite from "./modal/DashboardInvite";
+import { useAtom } from "jotai";
+import { dashboardInfoAtom } from "@/atoms/dashboardInfoAtom";
+import crownIcon from "@/../public/icons/crown_icon.svg";
 
 interface Props {
   myNickName: string | undefined;
@@ -26,8 +31,14 @@ export default function NavBar({
   myProfileImage,
   children,
 }: Props) {
+  const router = useRouter();
+  const boardId = Number(router.query["dashboardid"]);
+  const mydashboard = router.pathname === "/mydashboard";
+
+  const [dashboardInfo] = useAtom(dashboardInfoAtom);
   const [screenSize, setScreenSize] = useState<string>("mobile");
   const [displayCount, setDisplayCount] = useState(2);
+  const [showInviteModal, setShowInviteModal] = useState(false);
 
   const visibleMembers = members?.slice(0, displayCount);
   const remainingCount = members.length - displayCount;
@@ -68,93 +79,107 @@ export default function NavBar({
   }, []);
 
   return (
-    <nav className="fixed top-0 flex w-full items-center justify-between border-b border-solid border-gray-300 bg-white py-3.5 pl-[56px] pr-3 md:py-4 md:pl-[200px] md:pr-10 xl:py-4 xl:pl-[340px] xl:pr-20">
-      {(screenSize === "pc" || members.length === 0) && (
-        <span
-          className={`flex items-center gap-x-2 ${screenSize === "mobile" ? "text-[16px]" : "text-[20px]"} font-bold`}
-        >
-          {children}
-        </span>
-      )}
-      <div className="flex items-center">
-        <div
-          className={`${buttonBorder} flex gap-x-1.5 md:mr-8 md:gap-x-3 xl:mr-10 xl:gap-x-4`}
-        >
-          {screenSize === "mobile" ? (
-            <BoxButton
-              {...buttonProps}
-              disabled={false}
-              onClick={() => {
-                alert("관리");
-              }}
+    <>
+      <nav className="fixed top-0 flex w-full items-center border-b border-solid border-gray-300 bg-white py-3.5 pl-[56px] pr-3 md:py-4 md:pl-[200px] md:pr-10 xl:py-4 xl:pl-[340px] xl:pr-20">
+        {(screenSize === "pc" || mydashboard) && (
+          <div className="flex items-center gap-x-2">
+            <div
+              className={`${screenSize === "mobile" ? "text-[16px]" : "text-[20px]"} font-bold`}
             >
-              관리
-            </BoxButton>
-          ) : (
-            <BoxButton
-              {...buttonProps}
-              disabled={false}
-              onClick={() => {
-                alert("관리");
-              }}
-            >
-              <div>
-                <Image src={settingIcon} alt="설정" />
+              {children}
+            </div>
+            {dashboardInfo?.createdByMe && (
+              <div className="relative h-4 w-5">
+                <Image fill src={crownIcon} alt="왕관" />
               </div>
-              관리
-            </BoxButton>
-          )}
-          {screenSize === "mobile" ? (
-            <BoxButton
-              {...buttonProps}
-              disabled={false}
-              onClick={() => {
-                alert("초대하기");
-              }}
-            >
-              초대하기
-            </BoxButton>
-          ) : (
-            <BoxButton
-              {...buttonProps}
-              disabled={false}
-              onClick={() => {
-                alert("관리");
-              }}
-            >
-              <div>
-                <Image src={addBoxIcon} alt="초대하기" />
-              </div>
-              초대하기
-            </BoxButton>
-          )}
-        </div>
-        {members.length !== 0 && (
-          <div className="mr-3 flex -space-x-2 border-r border-solid border-gray-300 pr-3 md:mr-6 md:pr-6 xl:mr-9 xl:pr-9">
-            {visibleMembers?.map((item, index) => (
-              <ProfileImage
-                key={index}
-                size={profileImageSize}
-                nickName={item}
-              />
-            ))}
-            {remainingCount > 0 && (
-              <ProfileImage
-                size={profileImageSize}
-                nickName={"+" + remainingCount.toString()}
-              />
             )}
           </div>
         )}
-        <ProfileImage
-          size={profileImageSize}
-          nickName={myNickName as string}
-          imageUrl={myProfileImage}
-        />
-        {screenSize !== "mobile" && (
-          <span className="pl-3 text-base">{myNickName}</span>
-        )}
-      </div>
-    </nav>
+        <div className="ml-auto flex items-center">
+          <div
+            className={`${buttonBorder} flex gap-x-1.5 md:mr-8 md:gap-x-3 xl:mr-10 xl:gap-x-4`}
+          >
+            {screenSize === "mobile" ? (
+              <BoxButton
+                {...buttonProps}
+                disabled={false}
+                onClick={() => {
+                  router.push(`/dashboard/${boardId}/edit`); // 관리 페이지로 이동
+                }}
+              >
+                관리
+              </BoxButton>
+            ) : (
+              <BoxButton
+                {...buttonProps}
+                disabled={false}
+                onClick={() => {
+                  router.push(`/dashboard/${boardId}/edit`); // 관리 페이지로 이동
+                }}
+              >
+                <div>
+                  <Image src={settingIcon} alt="설정" />
+                </div>
+                관리
+              </BoxButton>
+            )}
+            {screenSize === "mobile" ? (
+              <BoxButton
+                {...buttonProps}
+                disabled={false}
+                onClick={() => {
+                  setShowInviteModal(true);
+                }}
+              >
+                초대하기
+              </BoxButton>
+            ) : (
+              <BoxButton
+                {...buttonProps}
+                disabled={false}
+                onClick={() => {
+                  setShowInviteModal(true);
+                }}
+              >
+                <div>
+                  <Image src={addBoxIcon} alt="초대하기" />
+                </div>
+                초대하기
+              </BoxButton>
+            )}
+          </div>
+          {members.length !== 0 && (
+            <div className="mr-3 flex -space-x-2 border-r border-solid border-gray-300 pr-3 md:mr-6 md:pr-6 xl:mr-9 xl:pr-9">
+              {visibleMembers?.map((item, index) => (
+                <ProfileImage
+                  key={index}
+                  size={profileImageSize}
+                  nickName={item}
+                />
+              ))}
+              {remainingCount > 0 && (
+                <ProfileImage
+                  size={profileImageSize}
+                  nickName={"+" + remainingCount.toString()}
+                />
+              )}
+            </div>
+          )}
+          <ProfileImage
+            size={profileImageSize}
+            nickName={myNickName as string}
+            imageUrl={myProfileImage}
+          />
+          {screenSize !== "mobile" && (
+            <span className="pl-3 text-base">{myNickName}</span>
+          )}
+        </div>
+      </nav>
+      <DashboardInvite
+        isOpen={showInviteModal}
+        onClose={() => setShowInviteModal(false)}
+        dashboardId={boardId}
+      />
+    </>
   );
 }

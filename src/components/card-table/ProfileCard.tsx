@@ -122,87 +122,91 @@ export default function ProfileCard({ updateUserProfile }: ProfileCardProps) {
   };
 
   return (
-    <>
-      <div
-        className={
-          "flex h-auto w-full max-w-[672px] flex-col gap-6 rounded-2xl bg-white p-6"
-        }
-      >
-        <div>
-          <h2 className={"text-2xl font-bold"}>프로필</h2>
-        </div>
-
-        <div className={"flex flex-col gap-11 md:flex-row"}>
-          {/* 이미지 선택 컴포넌트  */}
-          <ProfileImageUploader
-            profileImage={profileImage}
-            handleProfileImg={handleProfileImg}
-            handleFileChange={handleFileChange}
-            deleteImg={deleteImg}
-            fileInputRef={fileInputRef}
-          />
-          <input
-            type="file"
-            ref={fileInputRef}
-            className={"hidden"}
-            accept="image/*"
-            onChange={handleFileChange}
-          />
-          <form className={"flex w-full flex-col gap-3 md:max-w-[400px]"}>
-            {/* 이메일 */}
-            <div className={"flex flex-col gap-2"}>
-              <MypageInput
-                inputText="이메일"
-                inputType="text"
-                value={userEmail}
-                labelId="email"
-                error=""
-                disabled={true}
-              />
-            </div>
-
-            {/* 닉네임 */}
-            <div className={"flex flex-col"}>
-              <MypageInput
-                inputText="닉네임"
-                inputType="text"
-                labelId="nickname"
-                value={nickName}
-                error={nicknameError}
-                onChange={nicknameValidation}
-              />
-              <p className={"mt-2 text-sm text-red"}>{nicknameError}</p>
-            </div>
-
-            {/* 저장버튼 */}
-            <label
-              className={
-                "mt-4 flex h-12 w-full items-center justify-center rounded-lg bg-blue p-4 font-semibold text-white"
-              }
-              htmlFor="저장버튼"
-            >
-              <button
-                type="submit"
-                onClick={handleClickSave}
-                disabled={isNicknameInputError()}
-                id="저장버튼"
-              >
-                저장
-              </button>
-            </label>
-            {/* 에러 메시지 보여주는 모달 */}
-            {isModalOpen && (
-              <ErrorMessageModal
-                errorMessage={errorMessage}
-                successMessage={successMessage}
-                width={"368px"}
-                height={"192px"}
-                modalClose={modalClose}
-              />
-            )}
-          </form>
-        </div>
+    <div
+      className={
+        "flex h-auto w-full max-w-[672px] flex-col gap-6 rounded-2xl bg-white p-6"
+      }
+    >
+      <div>
+        <h2 className={"text-xl font-bold md:text-2xl"}>프로필</h2>
       </div>
-    </>
+
+      <div className={"flex flex-col gap-7 md:flex-row md:gap-11"}>
+        {/* 이미지 선택 컴포넌트  */}
+        <ProfileImageUploader
+          profileImage={profileImage}
+          handleProfileImg={handleProfileImg}
+          handleFileChange={handleFileChange}
+          deleteImg={deleteImg}
+          fileInputRef={fileInputRef}
+        />
+        <input
+          type="file"
+          ref={fileInputRef}
+          className={"hidden"}
+          accept="image/*"
+          onChange={handleFileChange}
+        />
+        <form className={"flex w-full flex-col gap-3 md:max-w-[400px]"}>
+          {/* 이메일 */}
+          <div className={"flex flex-col gap-2"}>
+            <MypageInput
+              inputText="이메일"
+              inputType="text"
+              value={userEmail}
+              labelId="email"
+              error=""
+              disabled={true}
+            />
+          </div>
+
+          {/* 닉네임 */}
+          <div className={"relative mt-2"}>
+            <MypageInput
+              inputText="닉네임"
+              inputType="text"
+              labelId="nickname"
+              value={nickName}
+              error={nicknameError}
+              onChange={nicknameValidation}
+            />
+            <p
+              className={
+                "absolute top-[84px] whitespace-nowrap text-xs text-red md:left-2 md:text-sm"
+              }
+            >
+              {nicknameError}
+            </p>
+          </div>
+
+          {/* 저장버튼 */}
+          <label
+            className={
+              "mb-5 mt-5 flex h-12 w-full items-center justify-center rounded-lg bg-violet p-4 font-semibold text-white"
+            }
+            htmlFor="저장버튼"
+          >
+            <button
+              type="submit"
+              onClick={handleClickSave}
+              disabled={isNicknameInputError()}
+              id="저장버튼"
+            >
+              저장
+            </button>
+          </label>
+          {/* 에러 메시지 보여주는 모달 */}
+          {isModalOpen && (
+            <ErrorMessageModal
+              errorMessage={errorMessage}
+              successMessage={successMessage}
+              width={"368px"}
+              height={"192px"}
+              modalClose={modalClose}
+            />
+          )}
+        </form>
+      </div>
+    </div>
   );
 }

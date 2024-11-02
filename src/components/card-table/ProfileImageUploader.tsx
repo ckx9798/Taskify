@@ -20,7 +20,7 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
     <div className={"flex gap-11"}>
       <button
         className={
-          "relative flex h-44 w-44 min-w-[182px] items-center justify-center rounded-md bg-gray-200 text-gray-100"
+          "relative flex h-28 w-28 items-center justify-center rounded-md bg-gray-200 text-gray-100 md:h-44 md:w-44 md:min-w-[182px]"
         }
         onClick={handleProfileImg}
       >
@@ -30,8 +30,8 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
               src={profileImage}
               alt="프로필 이미지"
               className="static h-full w-full rounded-lg object-cover"
-              width={30}
-              height={30}
+              width={182}
+              height={182}
             />
             <button className={"absolute right-2 top-2"} onClick={deleteImg}>
               ❌

@@ -52,6 +52,7 @@ interface CardModalProps {
   onClose: () => void;
   columnTitle: string;
   cardId: number;
+  onClickReRender: () => void;
 }
 
 export default function CardModal({
@@ -59,6 +60,7 @@ export default function CardModal({
   onClose,
   columnTitle,
   cardId,
+  onClickReRender,
 }: CardModalProps) {
   const [cardDetail, setCardDetail] = useState<CardDetail>();
   const [comments, setComments] = useState<CommentInfo[]>([]);
@@ -66,6 +68,10 @@ export default function CardModal({
   const [showOptions, setShowOptions] = useState(false); // 드롭다운 상태
   const [showTaskEdit, setShowTaskEdit] = useState(false);
   const formattedDate = cardDetail ? useDateFormat(cardDetail.dueDate) : "";
+
+  const cardUpdate = (card: CardDetail) => {
+    setCardDetail(card);
+  };
 
   // 카드 상세 및 댓글 데이터 조회
   useEffect(() => {
@@ -90,10 +96,7 @@ export default function CardModal({
     return () => {
       document.body.style.overflow = "";
     };
-  }, [isOpen, cardId]);
-
-  // 카드 수정
-  const handleCardUpdate = () => {};
+  }, [isOpen, cardDetail?.id]);
 
   // 댓글 생성
   const handleCommentSubmit = async () => {
@@ -150,6 +153,7 @@ export default function CardModal({
     try {
       await DeleteCard(cardId);
       onClose();
+      onClickReRender();
     } catch (error) {
       console.error("카드 삭제 실패:", error);
     }
@@ -158,13 +162,18 @@ export default function CardModal({
   if (!isOpen || !cardDetail) return null;
 
   const options = [
-    { label: "수정하기", onClick: () => setShowTaskEdit(true) },
+    {
+      label: "수정하기",
+      onClick: () => {
+        setShowTaskEdit(true);
+      },
+    },
     { label: "삭제하기", onClick: handleCardDelete },
   ];
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center"
+      className="fixed inset-0 z-10 flex items-center justify-center"
       onClick={() => setShowOptions(false)}
     >
       {/* 오버레이 */}
@@ -289,12 +298,13 @@ export default function CardModal({
           </div>
         </div>
       </div>
-      {/* <TaskEditModal
+
+      <TaskEditModal
         isOpen={showTaskEdit}
         onClose={() => setShowTaskEdit(false)}
         cardId={cardId}
-        onUpdate={}
-      /> */}
+        onUpdate={cardUpdate}
+      />
     </div>
   );
 }

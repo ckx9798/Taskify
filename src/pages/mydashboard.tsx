@@ -6,6 +6,7 @@ import { Dashboard, getDashboardList } from "@/libs/api/dashboards";
 import Head from "next/head";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import Layout from "@/components/Layout";
 
 export default function Mydashboard() {
   // 새로운 대시보드 모달창 열기
@@ -39,9 +40,7 @@ export default function Mydashboard() {
       </Head>
       <div>{/* <SideMenu /> */}</div>
       <div className={"flex w-screen grow flex-col items-center"}>
-        {/* <NavBar myNickName="qwe" /> */}
-
-        <main className={"flex h-screen w-screen grow flex-col p-10"}>
+        <main className={"flex h-screen w-screen grow flex-col p-5"}>
           <section>
             <ul className="grid w-full grid-rows-1 gap-2 xl:max-w-[1024px] xl:grid-cols-3 xl:grid-rows-3">
               <li className={"w-full"}>
@@ -97,3 +96,7 @@ export default function Mydashboard() {
     </div>
   );
 }
+
+const getLayout = (page: React.ReactElement) => <Layout>{page}</Layout>;
+
+Mydashboard.getLayout = getLayout;
