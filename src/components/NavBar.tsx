@@ -9,6 +9,7 @@ import DashboardInvite from "./modal/DashboardInvite";
 import { useAtom } from "jotai";
 import { dashboardInfoAtom } from "@/atoms/dashboardInfoAtom";
 import crownIcon from "@/../public/icons/crown_icon.svg";
+import LogoutDropdown from "./LogoutDropdown";
 
 interface Props {
   myNickName: string | undefined;
@@ -39,6 +40,7 @@ export default function NavBar({
   const [screenSize, setScreenSize] = useState<string>("mobile");
   const [displayCount, setDisplayCount] = useState(2);
   const [showInviteModal, setShowInviteModal] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const visibleMembers = members?.slice(0, displayCount);
   const remainingCount = members.length - displayCount;
@@ -169,9 +171,15 @@ export default function NavBar({
             size={profileImageSize}
             nickName={myNickName as string}
             imageUrl={myProfileImage}
+            onClick={() => setIsMenuOpen(true)}
           />
           {screenSize !== "mobile" && (
-            <span className="pl-3 text-base">{myNickName}</span>
+            <span
+              className="pl-3 text-base"
+              onClick={() => setIsMenuOpen(true)}
+            >
+              {myNickName}
+            </span>
           )}
         </div>
       </nav>
@@ -180,6 +188,9 @@ export default function NavBar({
         onClose={() => setShowInviteModal(false)}
         dashboardId={boardId}
       />
+      {isMenuOpen && (
+        <LogoutDropdown isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
+      )}
     </>
   );
 }
