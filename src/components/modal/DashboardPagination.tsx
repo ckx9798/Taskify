@@ -16,9 +16,8 @@ export default function DashboardPagination({
   setDashboardPage,
   data,
 }: DashboardPaginationProps) {
-  
   const lastPage = Math.ceil(dashboardCount / data);
-  
+
   const handleForwardClick = () => {
     if (dashboardPage > 1) {
       setDashboardPage(dashboardPage - 1);
@@ -31,8 +30,8 @@ export default function DashboardPagination({
     <div className={"flex justify-start gap-3"}>
       {data === 5 ? (
         <div className={"flex items-center justify-center gap-3"}>
-          <span className={""}>
-            {lastPage}페이지 중 {dashboardPage}
+          <span className={"text-gray-500"}>
+            Page {dashboardPage} of {lastPage}
           </span>
         </div>
       ) : null}

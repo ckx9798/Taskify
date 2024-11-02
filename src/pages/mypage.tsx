@@ -22,7 +22,7 @@ export default function Mypage() {
     console.log(data);
   };
   return (
-    <div className={"mb-10 min-h-screen bg-gray-100"}>
+    <div className={"mb-10 min-h-screen bg-gray-100 p-2"}>
       <Head>
         <title> Taskify | mypage</title>
         <link rel="icon" href="/favicon.svg" />
