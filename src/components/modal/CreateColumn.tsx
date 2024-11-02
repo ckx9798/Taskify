@@ -7,12 +7,14 @@ interface CreateColumnProps {
   isOpen: boolean;
   onClose: () => void;
   dashboardId: number;
+  onClick: () => void;
 }
 
 const CreateColumn: React.FC<CreateColumnProps> = ({
   isOpen,
   onClose,
   dashboardId,
+  onClick,
 }) => {
   const [columnName, setColumnName] = useState("");
   const [isDuplicate, setIsDuplicate] = useState(false);
@@ -54,6 +56,7 @@ const CreateColumn: React.FC<CreateColumnProps> = ({
       onClose();
       setColumnName("");
       setIsDuplicate(false);
+      onClick();
     } catch (error) {
       console.error("Error creating column:", error);
     }

@@ -18,7 +18,7 @@ interface TaskFormModalProps {
   onClose: () => void;
   column: number;
   dashboardId: number;
-  onCreate: (card: PostResponse) => void;
+  onClickReRender: () => void;
 }
 
 // 태그 색상 매핑
@@ -38,7 +38,7 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
   onClose,
   column,
   dashboardId,
-  onCreate,
+  onClickReRender,
 }) => {
   const [formData, setFormData] = useState<PostCard>({
     assigneeUserId: 0,
@@ -230,8 +230,9 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
 
     try {
       const response = await createCard(postCard); // PostCard 전달
-      onCreate(response);
+      // onCreate(response);
       handleCloseModal();
+      onClickReRender();
     } finally {
       setIsLoading(false); // 로딩 종료
     }
