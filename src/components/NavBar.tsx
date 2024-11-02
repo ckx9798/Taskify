@@ -80,19 +80,24 @@ export default function NavBar({
 
   return (
     <>
-      <nav className="fixed top-0 flex w-full items-center border-b border-solid border-gray-300 bg-white py-3.5 pl-[56px] pr-3 md:py-4 md:pl-[200px] md:pr-10 xl:py-4 xl:pl-[340px] xl:pr-20">
-        {(screenSize === "pc" || mydashboard) && (
+      <nav className="fixed top-0 flex w-full items-center border-b border-solid border-gray-300 bg-white py-3.5 pl-[90px] pr-3 md:py-4 md:pl-[235px] md:pr-10 xl:py-4 xl:pl-[320px] xl:pr-20">
+        {screenSize === "pc" && !mydashboard && (
           <div className="flex items-center gap-x-2">
-            <div
-              className={`${screenSize === "mobile" ? "text-[16px]" : "text-[20px]"} font-bold`}
-            >
-              {children}
-            </div>
+            <div className="text-[20px] font-bold">{children}</div>
             {dashboardInfo?.createdByMe && (
               <div className="relative h-4 w-5">
                 <Image fill src={crownIcon} alt="왕관" />
               </div>
             )}
+          </div>
+        )}
+        {mydashboard && (
+          <div>
+            <span
+              className={`${screenSize === "mobile" ? "text-[16px]" : "text-[20px]"} font-bold`}
+            >
+              내 대시보드
+            </span>
           </div>
         )}
         <div className="ml-auto flex items-center">
@@ -148,7 +153,7 @@ export default function NavBar({
               </BoxButton>
             )}
           </div>
-          {members.length !== 0 && (
+          {members.length !== 0 && !mydashboard && (
             <div className="mr-3 flex -space-x-2 border-r border-solid border-gray-300 pr-3 md:mr-6 md:pr-6 xl:mr-9 xl:pr-9">
               {visibleMembers?.map((item, index) => (
                 <ProfileImage
