@@ -25,6 +25,31 @@ export default function Page() {
   const [columnList, setColumnList] = useState<Column[]>([]);
   const [showCreateColumnModal, setShowCreateModal] = useState(false);
   const [screenSize, setScreenSize] = useState<string>("mobile");
+  const [please, setPlease] = useState(0); // 강제 재랜더링을 위한 상태
+  const [, setMembers] = useAtom(memberAtom);
+  const [, setDashboardInfo] = useAtom(dashboardInfoAtom);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   const router = useRouter();
   const id = Number(router.query["dashboardid"]);
 
@@ -40,8 +65,22 @@ export default function Page() {
     if (router.isReady && !isNaN(id)) {
       const fetchData = async () => {
         try {
+          // 대시보드 상세 정보 전역 상태 저장
+          const dashboardDetail = await getDashboardDetail(id);
+          setDashboardInfo(dashboardDetail);
+
+          // 대시보드 멤버 정보 전역 상태 저장
+          const membersData = await getMembers({ dashboardId: id, page: 1 });
+          setMembers(membersData.members);
+
           const columnData = await getColumns(id);
-          setColumnList(columnData.data);
+          // createdAt을 기준으로 정렬 (최신순)
+          const sortedColumns = columnData.data.sort((a: Column, b: Column) => {
+            return (
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            );
+          });
+          setColumnList(sortedColumns);
         } catch (error) {
           console.error("컬럼 목록 조회 실패: " + error);
         }
@@ -49,7 +88,7 @@ export default function Page() {
 
       fetchData();
     }
-  }, [router.isReady, id]);
+  }, [router.isReady, id, please]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -71,18 +110,23 @@ export default function Page() {
     };
   }, []);
 
+  const handleReRender = () => {
+    setPlease((prev) => (prev += 1));
+  };
+
   return (
     <div className="min-h-screen bg-gray-100">
       <ul className="flex w-[308px] flex-col md:w-[584px] xl:w-[354px] xl:flex-row">
         {columnList?.map((column, index) => (
           <Column
-            key={column.id}
+            key={`${column.id}-${please}`}
             columnId={column.id}
             columnTitle={column.title}
             isFirst={index === 0}
+            onClickReRender={handleReRender}
           />
         ))}
-        <li className="h-fit px-3 pb-[49px] pt-4 md:p-5 xl:pl-0 xl:pt-[75px]">
+        <li className="h-fit px-3 pb-[49px] pt-4 md:px-5 md:pb-5 md:pt-0 xl:pl-5 xl:pt-[75px]">
           <CustomBtn
             content={"새로운 컬럼 추가하기"}
             width={
@@ -105,7 +149,17 @@ export default function Page() {
           isOpen={showCreateColumnModal}
           onClose={handleCreateColumnModalClose}
           dashboardId={id}
+          onClick={handleReRender}
         />
+      )}
+      {isVisible && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-5 right-5 flex h-12 w-12 items-center justify-center text-[#5534da] hover:text-[#452c92]"
+          aria-label="Scroll to top"
+        >
+          <FaArrowUp className="h-6 w-6" />
+        </button>
       )}
     </div>
   );

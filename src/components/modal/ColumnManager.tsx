@@ -8,6 +8,7 @@ interface ColumnManagerProps {
   onClose: () => void;
   dashboardId: number;
   columnId: number;
+  onClickReRender: () => void;
 }
 
 const ColumnManager: React.FC<ColumnManagerProps> = ({
@@ -15,6 +16,7 @@ const ColumnManager: React.FC<ColumnManagerProps> = ({
   onClose,
   dashboardId,
   columnId,
+  onClickReRender,
 }) => {
   const [columnName, setColumnName] = useState("");
   const [isDuplicate, setIsDuplicate] = useState(false);
@@ -62,6 +64,7 @@ const ColumnManager: React.FC<ColumnManagerProps> = ({
       onClose();
       setColumnName("");
       setIsDuplicate(false);
+      onClickReRender();
     } catch (error) {
       console.error("컬럼을 수정하는 중 오류 발생:", error);
     }

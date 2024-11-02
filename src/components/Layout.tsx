@@ -3,15 +3,20 @@
 import React, { ReactNode } from "react";
 import NavBar from "./NavBar";
 import SideMenu from "./modal/SideMenu";
+import { useAtom, useAtomValue } from "jotai";
 import { userAtom } from "@/atoms/userAtom";
-import { useAtom } from "jotai";
-
+import { memberAtom } from "@/atoms/membersAtom";
+import { dashboardInfoAtom } from "@/atoms/dashboardInfoAtom";
 interface LayoutProps {
   children: ReactNode;
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [user] = useAtom(userAtom);
+  const [dashboardInfo] = useAtom(dashboardInfoAtom);
+  const members = useAtomValue(memberAtom);
+  const nicknames = members.map((member) => member.nickname);
+
   return (
     <div className={"flex"}>
       <div>

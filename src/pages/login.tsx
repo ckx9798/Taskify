@@ -15,6 +15,7 @@ import {
 } from "../components/input/formInputValidationRules";
 import { useAtom } from "jotai";
 import { User, userAtom } from "@/atoms/userAtom";
+import Head from "next/head";
 
 // Cookie 관련 함수들
 const cookies = new Cookies();
@@ -87,6 +88,10 @@ export function SigninForm() {
 
   return (
     <>
+      <Head>
+        <title> Taskify | login</title>
+        <link rel="icon" href="/favicon.svg" />
+      </Head>
       <div className="flex min-h-screen items-center justify-center">
         <div className="margincenter flex w-full max-w-[520px] flex-col gap-9 px-4 py-28">
           <div className="flex flex-col items-center justify-center gap-3">

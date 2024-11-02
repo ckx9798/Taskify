@@ -11,14 +11,14 @@ export type MemberType = {
   userId: number;
 };
 
-interface MembersResponseType {
+export interface MembersResponseType {
   members: MemberType[];
   totalCount: number;
 }
 
 export async function getMembers(createdDashboard: {
   dashboardId: number | undefined;
-  page: number;
+  page?: number;
 }): Promise<MembersResponseType> {
   const { dashboardId, page } = createdDashboard;
 

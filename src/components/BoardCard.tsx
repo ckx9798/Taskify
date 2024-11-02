@@ -11,7 +11,6 @@ export interface Assignee {
 }
 
 export interface BoardCardProps {
-  id: number;
   title: string;
   tags: string[];
   dueDate: string;
@@ -21,7 +20,6 @@ export interface BoardCardProps {
 }
 
 export default function BoardCard({
-  id,
   title,
   tags,
   dueDate,
@@ -73,7 +71,7 @@ export default function BoardCard({
     <div
       role="button"
       onClick={onClick}
-      className={`flex h-fit w-[284px] flex-col md:w-[544px] md:flex-row xl:w-[314px] xl:flex-col ${imageInfoGap} rounded-md border border-solid border-gray-300 bg-white ${wrapPadding}`}
+      className={`relative flex h-fit w-[284px] flex-col md:w-[544px] md:flex-row xl:w-[314px] xl:flex-col ${imageInfoGap} rounded-md border border-solid border-gray-300 bg-white ${wrapPadding}`}
     >
       {imageUrl && (
         <div
@@ -98,18 +96,20 @@ export default function BoardCard({
                 <TagItem key={index} tagName={tagName} />
               ))}
           </div>
-          <div className={`flex justify-between ${dateProfileGap}`}>
+          <div className={`flex`}>
             <div className="flex items-center gap-x-1">
               <div className="relative h-3.5 w-3.5">
                 <Image fill src={calendarIcon} alt="달력" />
               </div>
               <div className="text-xs font-medium text-gray-500">{dueDate}</div>
             </div>
-            <ProfileImage
-              size={screenSize === "mobile" ? "smallest" : "small"}
-              nickName={assignee.nickname}
-              imageUrl={assignee.profileImageUrl}
-            />
+            <div className="absolute bottom-[5px] right-3 md:bottom-[15px] md:right-5 xl:bottom-4 xl:right-5">
+              <ProfileImage
+                size={screenSize === "mobile" ? "smallest" : "small"}
+                nickName={assignee.nickname}
+                imageUrl={assignee.profileImageUrl}
+              />
+            </div>
           </div>
         </div>
       </div>

@@ -3,6 +3,7 @@ import CreateDashboardModal from "@/components/modal/CreateDashboardModal";
 import DashboardCard from "@/components/modal/DashboardCard";
 import DashboardPagination from "@/components/modal/DashboardPagination";
 import { Dashboard, getDashboardList } from "@/libs/api/dashboards";
+import Head from "next/head";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Layout from "@/components/Layout";

@@ -2,6 +2,7 @@ import ProfileCard from "@/components/card-table/ProfileCard";
 import PasswordChangeCard from "@/components/card-table/PasswordChangeCard";
 import { updateUserInfo } from "@/libs/api/Users";
 import Layout from "@/components/Layout";
+import Head from "next/head";
 
 interface UpdateUserProfileData {
   nickname: string;
