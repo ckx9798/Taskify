@@ -6,7 +6,7 @@ import Head from "next/head";
 
 interface UpdateUserProfileData {
   nickname: string;
-  profileImageUrl: string | null;
+  profileImageUrl: string | null | undefined;
 }
 
 export default function Mypage() {
@@ -22,7 +22,7 @@ export default function Mypage() {
     console.log(data);
   };
   return (
-    <div className={"flex h-screen w-screen bg-gray-100"}>
+    <div className={"mb-10 min-h-screen bg-gray-100"}>
       <Head>
         <title> Taskify | mypage</title>
         <link rel="icon" href="/favicon.svg" />

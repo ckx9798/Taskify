@@ -74,7 +74,7 @@ export default function PasswordChangeCard() {
     <>
       <div
         className={
-          "mt-3 flex h-auto w-full max-w-[672px] flex-col gap-6 rounded-2xl bg-white p-6 md:mt-7 xl:min-w-[700px]"
+          "mt-3 flex h-auto w-full min-w-[180px] max-w-[672px] flex-col gap-6 rounded-2xl bg-white p-6 md:mt-7 xl:min-w-[700px]"
         }
       >
         <h2 className={"-mb-3 text-xl font-bold md:mb-0 md:text-2xl"}>

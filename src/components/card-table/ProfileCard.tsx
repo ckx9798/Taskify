@@ -8,7 +8,7 @@ import ProfileImageUploader from "./ProfileImageUploader";
 interface ProfileCardProps {
   updateUserProfile: (userData: {
     nickname: string;
-    profileImageUrl: string | null;
+    profileImageUrl: string | null | undefined;
   }) => Promise<void>;
 }
 
