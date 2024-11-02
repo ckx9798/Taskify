@@ -11,6 +11,7 @@ import { memberAtom } from "@/atoms/membersAtom";
 import { getMembers } from "@/libs/api/Members";
 import { getDashboardDetail } from "@/libs/api/dashboards";
 import { FaArrowUp } from "react-icons/fa";
+import Head from "next/head";
 
 interface Column {
   id: number;
@@ -29,6 +30,7 @@ export default function Page() {
   const [, setMembers] = useAtom(memberAtom);
   const [, setDashboardInfo] = useAtom(dashboardInfoAtom);
   const [isVisible, setIsVisible] = useState(false);
+  const [dashboardInfo] = useAtom(dashboardInfoAtom);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -116,6 +118,10 @@ export default function Page() {
 
   return (
     <div className="min-h-screen bg-gray-100">
+      <Head>
+        <title> Taskify | {dashboardInfo?.title}</title>
+        <link rel="icon" href="/favicon.svg" />
+      </Head>
       <ul className="flex w-[308px] flex-col md:w-[584px] xl:w-[354px] xl:flex-row">
         {columnList?.map((column, index) => (
           <Column

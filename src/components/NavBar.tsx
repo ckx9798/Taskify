@@ -102,7 +102,7 @@ export default function NavBar({
         )}
         <div className="ml-auto flex items-center">
           <div
-            className={`${buttonBorder} flex gap-x-1.5 md:mr-8 md:gap-x-3 xl:mr-10 xl:gap-x-4`}
+            className={`${buttonBorder} ${mydashboard && "border-r border-solid border-gray-300 pr-4 md:pr-8"} flex gap-x-1.5 md:mr-8 md:gap-x-3 xl:gap-x-4`}
           >
             {screenSize === "mobile" ? (
               <BoxButton
