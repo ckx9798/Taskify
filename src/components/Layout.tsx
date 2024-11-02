@@ -27,7 +27,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       >
         {dashboardInfo?.title}
       </NavBar>
-      <main className="ml-[287px] mt-[64px] md:ml-[289px] md:mt-[75px]">
+      <main
+        className={
+          "ml-[70px] mt-[64px] md:ml-[215px] md:mt-[80px] xl:ml-[300px]"
+        }
+      >
         {children}
       </main>
     </div>

@@ -78,53 +78,70 @@ export default function PasswordChangeCard() {
         }
       >
         <div>
-          <h2 className={"text-we text-2xl font-bold"}>비밀번호 변경</h2>
+          <h2 className={"text-xl font-bold md:text-2xl"}>비밀번호 변경</h2>
         </div>
 
         <div className={"flex gap-11"}>
-          <form className={"flex w-full max-w-[624px] flex-col gap-3"}>
+          <form className={"flex w-full max-w-[624px] flex-col gap-8"}>
             {/* 현재 비밀번호  */}
-            <MypageInput
-              inputText="현재 비밀번호"
-              inputType="password"
-              labelId="currentPw"
-              placeholder="비밀번호 입력"
-              value={currentPw}
-              onChange={(e) => {
-                setCurrentPw(e.target.value);
-              }}
-              error={currentPwError}
-              onBlur={validationCurrentPw}
-            />
-            <p className={"mt-0 text-sm text-red"}>{currentPwError}</p>
+            <div className={"relative"}>
+              <MypageInput
+                inputText="현재 비밀번호"
+                inputType="password"
+                labelId="currentPw"
+                placeholder="비밀번호 입력"
+                value={currentPw}
+                onChange={(e) => {
+                  setCurrentPw(e.target.value);
+                }}
+                error={currentPwError}
+                onBlur={validationCurrentPw}
+              />
+              <p className={"absolute left-2 top-[86px] text-sm text-red"}>
+                {currentPwError}
+              </p>
+            </div>
             {/* 새 비밀번호 */}
-            <MypageInput
-              inputText="새 비밀번호"
-              inputType="password"
-              labelId="newPw"
-              placeholder="새 비밀번호 입력"
-              value={newPw}
-              onChange={(e) => setNewPw(e.target.value)}
-              error={newPwError}
-              onBlur={validationNewPw}
-            />
-            <p className={"mt-0 text-sm text-red"}>{newPwError}</p>
+            <div className={"relative"}>
+              <MypageInput
+                inputText="새 비밀번호"
+                inputType="password"
+                labelId="newPw"
+                placeholder="새 비밀번호 입력"
+                value={newPw}
+                onChange={(e) => setNewPw(e.target.value)}
+                error={newPwError}
+                onBlur={validationNewPw}
+              />
+              <p className={"absolute left-2 top-[86px] text-sm text-red"}>
+                {newPwError}
+              </p>
+            </div>
+
             {/* 새 비밀번호 확인 */}
-            <MypageInput
-              inputText="새 비밀번호 확인"
-              inputType="password"
-              labelId="checkNewPw"
-              placeholder="새 비밀번호 입력"
-              value={checkNewPw}
-              onChange={(e) => setCheckNewPw(e.target.value)}
-              error={checkNewPwError}
-              onBlur={validationCheckNewPw}
-            />
-            <p className={"mt-0 text-sm text-red"}>{checkNewPwError}</p>
+            <div className={"relative"}>
+              <MypageInput
+                inputText="새 비밀번호 확인"
+                inputType="password"
+                labelId="checkNewPw"
+                placeholder="새 비밀번호 입력"
+                value={checkNewPw}
+                onChange={(e) => setCheckNewPw(e.target.value)}
+                error={checkNewPwError}
+                onBlur={validationCheckNewPw}
+              />
+              <p
+                className={
+                  "absolute left-2 top-[86px] whitespace-nowrap text-sm text-red"
+                }
+              >
+                {checkNewPwError}
+              </p>
+            </div>
             {/* 비밀번호 변경 버튼 */}
             <label
               className={
-                "flex h-12 w-full items-center justify-center rounded-lg bg-blue p-4 font-semibold text-white"
+                "mb-8 mt-1 flex h-12 w-full items-center justify-center rounded-lg bg-violet p-4 font-semibold text-white"
               }
               htmlFor="clickButton"
             >

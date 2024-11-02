@@ -1,4 +1,5 @@
 import BoxButton from "../BoxButton";
+import { createPortal } from "react-dom";
 
 interface ErrorMessageModalProps {
   errorMessage: string;
@@ -15,9 +16,9 @@ export default function ErrorMessageModal({
   height,
   modalClose,
 }: ErrorMessageModalProps) {
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
       onClick={modalClose}
     >
       <div
@@ -41,6 +42,7 @@ export default function ErrorMessageModal({
           확인
         </BoxButton>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

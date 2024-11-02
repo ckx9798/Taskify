@@ -5,6 +5,7 @@ import DashboardPagination from "@/components/modal/DashboardPagination";
 import { Dashboard, getDashboardList } from "@/libs/api/dashboards";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import Layout from "@/components/Layout";
 
 export default function Mydashboard() {
   // 새로운 대시보드 모달창 열기
@@ -31,12 +32,9 @@ export default function Mydashboard() {
   }, [dashboardPage]);
 
   return (
-    <div className={"min-w-screen mb-5 flex h-full bg-gray-100"}>
-      <div>{/* <SideMenu /> */}</div>
+    <div className={"mb-5 flex h-full w-screen bg-gray-100"}>
       <div className={"flex w-screen grow flex-col items-center"}>
-        {/* <NavBar myNickName="qwe" /> */}
-
-        <main className={"flex h-screen w-screen grow flex-col p-10"}>
+        <main className={"flex h-screen w-screen grow flex-col p-5"}>
           <section>
             <ul className="grid w-full grid-rows-1 gap-2 xl:max-w-[1024px] xl:grid-cols-3 xl:grid-rows-3">
               <li className={"w-full"}>
@@ -92,3 +90,7 @@ export default function Mydashboard() {
     </div>
   );
 }
+
+const getLayout = (page: React.ReactElement) => <Layout>{page}</Layout>;
+
+Mydashboard.getLayout = getLayout;

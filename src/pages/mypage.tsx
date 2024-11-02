@@ -22,15 +22,13 @@ export default function Mypage() {
   };
   return (
     <div className={"flex h-screen w-screen bg-gray-100"}>
-      <div>
-        <div className={"h-sreen flex flex-col gap-7 p-5"}>
-          <section>
-            <ProfileCard updateUserProfile={handleClickSave} />
-          </section>
-          <section>
-            <PasswordChangeCard />
-          </section>
-        </div>
+      <div className={"h-sreen flex w-screen flex-col gap-7 p-5"}>
+        <section>
+          <ProfileCard updateUserProfile={handleClickSave} />
+        </section>
+        <section>
+          <PasswordChangeCard />
+        </section>
       </div>
     </div>
   );
