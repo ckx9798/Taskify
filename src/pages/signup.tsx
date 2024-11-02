@@ -11,6 +11,7 @@ import {
   nicknameValidationRules,
 } from "../components/input/formInputValidationRules";
 import OneButton from "../components/modal/OneButton";
+import Head from "next/head";
 
 // signUp 함수의 반환 타입 정의
 interface SignUpResponse {
@@ -94,7 +95,6 @@ const Signup = () => {
       password: values.password,
     };
     try {
-
       const response: SignUpResponse | undefined = await signUp(registerData);
       if (response && response.status === 201) {
         setModalMessage("회원가입이 성공적으로 완료되었습니다!");
@@ -110,8 +110,6 @@ const Signup = () => {
       } else {
         console.error("Unexpected error:", error);
         setModalMessage("회원가입 중 알 수 없는 오류가 발생했습니다.");
-
-
       }
     } finally {
       setIsPending(false);
@@ -127,6 +125,10 @@ const Signup = () => {
 
   return (
     <>
+      <Head>
+        <title> Taskify | signup</title>
+        <link rel="icon" href="/favicon.svg" />
+      </Head>
       <div className="flex min-h-screen items-center justify-center">
         <div className="margincenter flex w-full max-w-[520px] flex-col gap-9 px-4 py-28">
           <div className="flex flex-col items-center justify-center gap-3">

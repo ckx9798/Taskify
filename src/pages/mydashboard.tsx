@@ -3,6 +3,7 @@ import CreateDashboardModal from "@/components/modal/CreateDashboardModal";
 import DashboardCard from "@/components/modal/DashboardCard";
 import DashboardPagination from "@/components/modal/DashboardPagination";
 import { Dashboard, getDashboardList } from "@/libs/api/dashboards";
+import Head from "next/head";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Layout from "@/components/Layout";
@@ -32,7 +33,12 @@ export default function Mydashboard() {
   }, [dashboardPage]);
 
   return (
-    <div className={"mb-5 flex h-full w-screen bg-gray-100"}>
+    <div className={"min-w-screen mb-5 flex h-full bg-gray-100"}>
+      <Head>
+        <title> Taskify | mydashboard</title>
+        <link rel="icon" href="/favicon.svg" />
+      </Head>
+      <div>{/* <SideMenu /> */}</div>
       <div className={"flex w-screen grow flex-col items-center"}>
         <main className={"flex h-screen w-screen grow flex-col p-5"}>
           <section>
