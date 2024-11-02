@@ -42,7 +42,7 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
         )}
       </button>
 
-      {/* Hidden input for file selection */}
+      {/* Hidden input */}
       <input
         type="file"
         ref={fileInputRef}

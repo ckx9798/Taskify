@@ -5,6 +5,12 @@ import { getColumns } from "@/libs/api/columns";
 import CustomBtn from "@/components/CustomBtn";
 import CreateColumn from "@/components/modal/CreateColumn";
 import Layout from "@/components/Layout";
+import { useAtom } from "jotai";
+import { dashboardInfoAtom } from "@/atoms/dashboardInfoAtom";
+import { memberAtom } from "@/atoms/membersAtom";
+import { getMembers } from "@/libs/api/Members";
+import { getDashboardDetail } from "@/libs/api/dashboards";
+// import { FaArrowUp } from "react-icons/fa";
 
 interface Column {
   id: number;

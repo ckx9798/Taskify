@@ -32,7 +32,11 @@ export default function Mydashboard() {
   }, [dashboardPage]);
 
   return (
-    <div className={"mb-5 flex h-full w-screen bg-gray-100"}>
+    <div className={"min-w-screen mb-5 flex h-full bg-gray-100"}>
+      <Head>
+        <title> Taskify | mydashboard</title>
+        <link rel="icon" href="/favicon.svg" />
+      </Head>
       <div className={"flex w-screen grow flex-col items-center"}>
         <main className={"flex h-screen w-screen grow flex-col p-5"}>
           <section>

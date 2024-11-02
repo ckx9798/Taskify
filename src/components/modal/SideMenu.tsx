@@ -36,14 +36,14 @@ export default function SideMenu() {
 
   // 대시보드 상세페이지 이동
   const handleNavigate = (id: number | string) => {
-    router.push(`dashboard/${id}`);
+    router.push(`/dashboard/${id}`);
   };
 
   return (
     <div className="fixed left-0 top-0 z-20 h-screen w-[68px] overflow-y-auto md:w-52 xl:w-72">
       <div
         className={
-          "flex h-full w-[68px] min-w-[68px] flex-col gap-2.5 border-r border-r-gray-300 bg-white px-2 py-5 md:w-52 md:min-w-52 xl:w-72 xl:min-w-72"
+          "flex h-screen w-[68px] min-w-[68px] flex-col gap-2.5 border-r border-r-gray-300 bg-white px-2 py-5 md:w-52 md:min-w-52 xl:w-72 xl:min-w-72"
         }
       >
         {/* 상단  */}

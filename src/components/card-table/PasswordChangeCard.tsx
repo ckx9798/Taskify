@@ -74,15 +74,14 @@ export default function PasswordChangeCard() {
     <>
       <div
         className={
-          "flex h-auto w-full max-w-[672px] flex-col gap-6 rounded-2xl bg-white p-6"
+          "mt-3 flex h-auto w-full max-w-[672px] flex-col gap-6 rounded-2xl bg-white p-6 md:mt-7 xl:min-w-[700px]"
         }
       >
-        <div>
-          <h2 className={"text-xl font-bold md:text-2xl"}>비밀번호 변경</h2>
-        </div>
-
+        <h2 className={"-mb-3 text-xl font-bold md:mb-0 md:text-2xl"}>
+          비밀번호 변경
+        </h2>
         <div className={"flex gap-11"}>
-          <form className={"flex w-full max-w-[624px] flex-col gap-8"}>
+          <form className={"flex w-full flex-col gap-8"}>
             {/* 현재 비밀번호  */}
             <div className={"relative"}>
               <MypageInput
@@ -141,7 +140,7 @@ export default function PasswordChangeCard() {
             {/* 비밀번호 변경 버튼 */}
             <label
               className={
-                "mb-8 mt-1 flex h-12 w-full items-center justify-center rounded-lg bg-violet p-4 font-semibold text-white"
+                "mb-8 mt-1 flex h-12 w-full cursor-pointer items-center justify-center rounded-lg bg-violet p-4 font-semibold text-white"
               }
               htmlFor="clickButton"
             >
