@@ -21,13 +21,13 @@ export default function DashboardCard({
     <div
       className={`flex items-center py-4 xl:px-5 ${isResponse ? "justify-between px-7" : "justify-center px-2"} md:justify-between`}
     >
-      <div className="flex items-center gap-3 md:w-full md:gap-3 xl:max-w-[250px] xl:gap-6">
+      <div className="flex max-w-[150px] items-center gap-2 md:w-full md:gap-3 xl:max-w-[250px] xl:gap-6">
         <span
           className="flex h-2 w-2 flex-shrink-0 items-center justify-center rounded-full"
           style={{ backgroundColor: dashboard.color }}
         />
         {isResponse ? (
-          <span className="mx-3 text-xl font-medium text-gray-500 md:mx-2">
+          <span className="mx-3 overflow-hidden text-ellipsis text-base font-medium text-gray-500 md:mx-2">
             {dashboard.title}
           </span>
         ) : (

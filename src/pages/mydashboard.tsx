@@ -33,15 +33,15 @@ export default function Mydashboard() {
   }, [dashboardPage]);
 
   return (
-    <div className={"min-h-screen bg-gray-100"}>
+    <div className={"mb-10 min-h-screen bg-gray-100"}>
       <Head>
         <title> Taskify | mydashboard</title>
         <link rel="icon" href="/favicon.svg" />
       </Head>
-      <div className={"min-h-screen"}>
-        <main className={"flex h-screen w-screen grow flex-col p-5"}>
+      <div className={"min-h-screen w-full"}>
+        <main className={"flex h-screen grow flex-col p-5"}>
           <section>
-            <ul className="grid w-full grid-rows-1 gap-2 xl:max-w-[1024px] xl:grid-cols-3 xl:grid-rows-3">
+            <ul className="grid grid-rows-1 gap-2 xl:max-w-[1024px] xl:grid-cols-3 xl:grid-rows-3">
               <li className={"w-full"}>
                 <button
                   className={
