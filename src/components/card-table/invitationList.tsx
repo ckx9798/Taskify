@@ -39,7 +39,7 @@ interface InvitationsType {
 }
 
 interface InvitationListProps {
-  dashBoardId: number; // 대시보드 ID를 전달하기 위한 prop
+  dashBoardId: number | null; // 대시보드 ID를 전달하기 위한 prop
 }
 
 export default function InvitationList({ dashBoardId }: InvitationListProps) {

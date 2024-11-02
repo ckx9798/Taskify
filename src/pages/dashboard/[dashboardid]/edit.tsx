@@ -11,24 +11,37 @@ import React, { useEffect, useState } from "react";
 
 const EditDashboard: NextPageWithLayout = () => {
   const router = useRouter();
-  const createdDashboard = {
-    dashboardId: 12238,
-    page: 1,
-  };
   const [members, setMembers] = useState<MemberType[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const totalPage = Math.ceil(totalCount / 4);
+  const [dashboardId, setDashboardId] = useState<number | null>(null);
 
   useEffect(() => {
-    async function fetchData() {
-      const response = await getMembers(createdDashboard);
-      setMembers(response.members);
-      setTotalCount(response.totalCount);
-      console.log(response.members);
+    // router.isReady로 라우터가 준비되었는지 확인합니다.
+    if (!router.isReady) return;
+
+    const { dashboardid } = router.query;
+
+    // dashboardid가 있고, 문자열 타입인지 확인합니다.
+    if (dashboardid && typeof dashboardid === "string") {
+      const id = Number(dashboardid);
+      setDashboardId(id); // dashboardId 상태 설정
+
+      const createdDashboard = {
+        dashboardId: Number(dashboardid),
+        page: 1,
+      };
+
+      async function fetchData() {
+        const response = await getMembers(createdDashboard);
+        setMembers(response.members);
+        setTotalCount(response.totalCount);
+        console.log(response.members);
+      }
+      fetchData();
     }
-    fetchData();
-  }, []);
+  }, [router.isReady, router.query.dashboardid]);
 
   const handleDeleteMember = async (memberId: number) => {
     if (!confirm("정말로 이 멤버를 삭제하시겠습니까?")) return;
@@ -50,17 +63,10 @@ const EditDashboard: NextPageWithLayout = () => {
 
   return (
     <div>
-      <button
-        onClick={() =>
-          router.push(`/dashboard/${createdDashboard.dashboardId}`)
-        }
-      >
+      <button onClick={() => router.push(`/dashboard/${dashboardId}`)}>
         돌아가기
       </button>
-      <EditDashboardCard
-        dashboardId={createdDashboard.dashboardId}
-        dashboardTitle="dk"
-      />
+      <EditDashboardCard dashboardId={dashboardId} dashboardTitle="dk" />
       <MemberTable
         members={members}
         totalPage={totalPage}
@@ -78,7 +84,7 @@ const EditDashboard: NextPageWithLayout = () => {
         onClickDelete={handleDeleteMember}
       />
       <div className="w-[620px]">
-        <InvitationList dashBoardId={createdDashboard.dashboardId} />
+        <InvitationList dashBoardId={dashboardId} />
       </div>
     </div>
   );

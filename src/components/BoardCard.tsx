@@ -50,9 +50,6 @@ export default function BoardCard({
         ? "gap-y-4"
         : "gap-y-1";
 
-  const dateProfileGap =
-    screenSize === "tablet" ? (imageUrl ? "gap-x-[63px]" : "gap-[188px]") : "";
-
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
@@ -77,7 +74,7 @@ export default function BoardCard({
         <div
           className={`relative h-[152px] w-[260px] overflow-hidden rounded-md md:h-[53px] md:w-[91px] md:rounded xl:h-[160px] xl:w-[274px] xl:rounded-md`}
         >
-          <Image fill src={imageUrl} alt="카드 이미지" />
+          <Image src={imageUrl} alt="카드 이미지" fill objectFit="cover" />
         </div>
       )}
       <div className={`flex flex-col gap-y-1.5 md:gap-y-2 xl:gap-y-2.5`}>

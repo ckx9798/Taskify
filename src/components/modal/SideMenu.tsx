@@ -36,7 +36,7 @@ export default function SideMenu() {
 
   // 대시보드 상세페이지 이동
   const handleNavigate = (id: number | string) => {
-    router.push(`dashboard/${id}`);
+    router.push(`/dashboard/${id}`);
   };
 
   return (
