@@ -1,86 +1,82 @@
-import axios from "axios";
+import baseaxios from "./axios";
 
-interface ColumnData {
-  title: string;
-  dashboardId: number;
-}
-
-interface ColumnResponseData {
+export interface Column {
   id: number;
   title: string;
   teamId: string;
+  dashboardId: number;
   createdAt: string;
   updatedAt: string;
 }
 
-const BASE_URL = "https://sp-taskify-api.vercel.app/9-2";
+export interface ColumnData {
+  title: string;
+  dashboardId: number;
+}
+
+interface UploadImageResponse {
+  imageUrl: string;
+}
 
 // 새로운 컬럼을 생성하는 함수
-async function createColumn(
-  columnData: ColumnData,
-): Promise<ColumnResponseData> {
-  const response = await axios.post(`${BASE_URL}/columns`, columnData, {
-    headers: {
-      "Content-Type": "application/json",
-    },
+export async function createColumn(columnData: ColumnData): Promise<Column> {
+  const response = await baseaxios.post<Column>(`/columns`, {
+    title: columnData.title,
+    dashboardId: columnData.dashboardId,
   });
   return response.data;
+}
+
+interface ColumnList {
+  result: string;
+  data: Column[];
 }
 
 // 컬럼 목록을 가져오는 함수
-async function getColumns(): Promise<ColumnResponseData> {
-  const response = await axios.get(`${BASE_URL}/columns`, {
-    headers: {
-      "Content-Type": "application/json",
+export async function getColumns(dashboardId: number): Promise<ColumnList> {
+  const response = await baseaxios.get<ColumnList>(`/columns`, {
+    params: {
+      dashboardId,
     },
   });
   return response.data;
 }
-
+// export async function getColumns(
+//   dashboardId: number,
+// ): Promise<{ result: string; data: Column[] }> {
+//   const response = await baseaxios.get<{ result: string; data: Column[] }>(
+//     `/columns`,
+//     {
+//       params: {
+//         dashboardId,
+//       },
+//     },
+//   );
+//   return response.data;
+// }
 // 기존 컬럼을 수정하는 함수
-async function updateColumn(
-  columnId: string,
-  columnData: ColumnData,
-): Promise<ColumnResponseData> {
-  const response = await axios.put(
-    `${BASE_URL}/columns/${columnId}`,
-    columnData,
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    },
-  );
+export async function updateColumn(columnId: number, columnData: ColumnData) {
+  const response = await baseaxios.put(`/columns/${columnId}`, columnData);
   return response.data;
 }
 // 컬럼을 삭제하는 함수
-async function deleteColumn(columnId: string) {
-  const response = await axios.delete(`${BASE_URL}/columns/${columnId}`, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+export async function deleteColumn(columnId: number) {
+  const response = await baseaxios.delete(`/columns/${columnId}`);
   return response.data;
 }
 
 // 컬럼에 카드 이미지를 업로드하는 함수
-async function uploadCardImage(
-  columnId: string,
+export async function uploadCardImage(
+  columnId: number,
   imageFile: File,
-): Promise<{
-  imageUrl: "string";
-}> {
+): Promise<UploadImageResponse> {
   const formData = new FormData();
   formData.append("image", imageFile);
 
-  const response = await axios.post(
-    `${BASE_URL}/columns/${columnId}/card-image`,
+  const response = await baseaxios.post<UploadImageResponse>(
+    `/columns/${columnId}/card-image`,
     formData,
-    {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    },
   );
+  console.log(response);
   return response.data;
 }

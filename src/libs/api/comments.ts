@@ -1,4 +1,4 @@
-import axios from "axios";
+import baseaxios from "./axios";
 
 interface CommentData {
   content: string;
@@ -6,17 +6,35 @@ interface CommentData {
   columnId: number;
   dashboardId: number;
 }
+interface Author {
+  id: number;
+  nickname: string;
+  profileImageUrl: string;
+}
 
-const BASE_URL = axios.create({
-  baseURL: "https://sp-taskify-api.vercel.app/9-2",
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
+interface CommentInfo {
+  id: number;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  cardId: number;
+  author: Author;
+}
 
-export async function createComment(commentData: CommentData) {
+interface CommentsResponse {
+  cursorId: number;
+  comments: CommentInfo[]; // CommentInfo[] 타입 배열
+}
+
+// 댓글 생성
+export async function createComment(
+  commentData: CommentData,
+): Promise<CommentInfo> {
   try {
-    const response = await BASE_URL.post(`/comments`, commentData);
+    const response = await baseaxios.post<CommentInfo>(
+      `/comments`,
+      commentData,
+    );
     return response.data;
   } catch (error) {
     console.error("Error creating comment:", error);
@@ -24,9 +42,12 @@ export async function createComment(commentData: CommentData) {
   }
 }
 
-export async function getComments() {
+// 댓글 조회
+export async function getComments(cardId: number): Promise<CommentsResponse> {
   try {
-    const response = await BASE_URL.get(`/comments`);
+    const response = await baseaxios.get<CommentsResponse>(
+      `/comments?cardId=${cardId}`,
+    );
     return response.data;
   } catch (error) {
     console.error("Error fetching comments:", error);
@@ -34,12 +55,13 @@ export async function getComments() {
   }
 }
 
-export async function updateComment(
-  commentId: string,
-  commentData: CommentData,
-) {
+// 댓글 수정
+export async function updateComment(commentId: number, content: string) {
   try {
-    const response = await BASE_URL.put(`/comments/${commentId}`, commentData);
+    const response = await baseaxios.put<CommentInfo>(
+      `/comments/${commentId}`,
+      { content },
+    );
     return response.data;
   } catch (error) {
     console.error("Error updating comment:", error);
@@ -47,10 +69,11 @@ export async function updateComment(
   }
 }
 
-export async function deleteComment(commentId: string) {
+// 댓글 삭제
+export async function deleteComment(commentId: number) {
   try {
-    const response = await BASE_URL.delete(`/comments/${commentId}`);
-    return response.data;
+    await baseaxios.delete(`/comments/${commentId}`);
+    return commentId;
   } catch (error) {
     console.error("Error deleting comment:", error);
     throw error;

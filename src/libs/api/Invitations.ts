@@ -1,4 +1,5 @@
-interface InvitationType {
+import baseaxios from "./axios";
+export interface InvitationType {
   id: number;
   inviter: {
     id: number;
@@ -20,23 +21,22 @@ interface InvitationType {
   updatedAt: string;
 }
 
-interface ReceivedInvitationsResponseType {
+export interface ReceivedInvitationsResponseType {
   invitations: InvitationType[];
   cursorId: number;
 }
 
 export async function getReceivedInvitations(
-  searchQuery: string | null,
+  cursorId: number | null = null,
 ): Promise<ReceivedInvitationsResponseType> {
-  const accessToken = localStorage.getItem("accessToken");
   try {
-    const response = await axios.get<ReceivedInvitationsResponseType>(
-      `https://sp-taskify-api.vercel.app/9-2/invitations?size=5${searchQuery}`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      },
+    const params: { size: number; cursorId?: number } = { size: 10 };
+    if (cursorId !== null) {
+      params.cursorId = cursorId;
+    }
+    const response = await baseaxios.get<ReceivedInvitationsResponseType>(
+      `/invitations`,
+      { params },
     );
     return response.data;
   } catch (error) {
@@ -49,19 +49,10 @@ export async function acceptInvite(
   invitationId: number,
   isAccept: boolean,
 ): Promise<number> {
-  const accessToken = localStorage.getItem("accessToken");
   try {
-    await axios.put(
-      `https://sp-taskify-api.vercel.app/9-2/invitations/${invitationId}`,
-      {
-        inviteAccepted: isAccept,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      },
-    );
+    await baseaxios.put(`/invitations/${invitationId}`, {
+      inviteAccepted: isAccept,
+    });
     return invitationId; // 초대 ID 반환
   } catch (error) {
     console.error("Error accepting invite:", error);

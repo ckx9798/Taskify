@@ -104,8 +104,8 @@ export default function Page() {
           </div>
         </div>
       </main>
-
       <footer className="flex h-[100px] items-center justify-between px-20 py-4 text-gray-400">
+
         <div>©codeit - 2023</div>
         <div className="flex space-x-2">
           <div>Privacy Policy</div>

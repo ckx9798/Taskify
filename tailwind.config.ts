@@ -33,7 +33,7 @@ const config: Config = {
         "gray-400": "#9fa6b2",
         "gray-300": "#d9d9d9",
         "gray-200": "#eeeeee",
-        "grat-100": "#fafafa",
+        "gray-100": "#fafafa",
         white: "#ffffff",
         violet: "#5534da",
         "violet-8": "#f1effd",
@@ -43,9 +43,14 @@ const config: Config = {
         orange: "#ffa500",
         blue: "#76a5ea",
         pink: "#e876ea",
+        "mandy-500": "#d25b68",
+        "vanillaIce-200": "#f4d7da",
+        "diserria-400": "#d58d49",
+        "linen-100": "#f9eee3",
       },
     },
   },
+
   plugins: [],
 };
 export default config;

@@ -1,42 +1,56 @@
-interface LoginButtonProps {
-  width: string;
-  height: string;
-  radius: "4" | "8";
-  backgroundColor: "purple" | "white";
+import { ReactNode } from "react";
+
+export interface BoxButtonStyle {
+  width?: string;
+  paddingTopBottom: string;
+  paddingRightLeft: string;
+  radius: "4" | "6" | "8";
+  backgroundColor: "purple" | "white" | "white2";
   fontSize: "12" | "14" | "16" | "18";
-  children: string;
-  disabled: boolean;
-  onClick: () => void;
+  children: ReactNode;
+  disabled?: boolean;
+  onClick?: () => void;
 }
 
 export default function BoxButton({
   width,
-  height,
+  paddingTopBottom,
+  paddingRightLeft,
   radius,
   backgroundColor,
   fontSize,
   children,
   disabled = false,
   onClick,
-}: LoginButtonProps) {
+}: BoxButtonStyle) {
+  const borderValue = {
+    purple: "",
+    white: "border-solid border-gray-300 border",
+    white2: "border-solid border-gray-300 border",
+  };
+
   const radiusValue = {
     "4": "rounded",
+    "6": "rounded-md",
     "8": "rounded-lg",
   };
 
   const backgroundColorValue = {
     purple: "bg-indigo-700",
     white: "bg-white",
+    white2: "bg-white",
   };
 
   const hoverColorValue = {
     purple: "hover:bg-indigo-600",
     white: "hover:bg-gray-100",
+    white2: "hover:bg-gray-100",
   };
 
   const textColorValue = {
     purple: "text-white",
     white: "text-indigo-700",
+    white2: "text-gray-500",
   };
 
   const fontSizeValue = {
@@ -48,8 +62,11 @@ export default function BoxButton({
 
   return (
     <button
-      style={{ width: `${width}px`, height: `${height}px` }}
-      className={`${radiusValue[radius]} ${backgroundColorValue[backgroundColor]} ${hoverColorValue[backgroundColor]} ${textColorValue[backgroundColor]} ${fontSizeValue[fontSize]} text-center  disabled:bg-gray-500 disabled:hover:bg-gray-500 disabled:text-white disabled:cursor-not-allowed`}
+      style={{
+        padding: `${paddingTopBottom}px ${paddingRightLeft}px`,
+        width: `${width}`,
+      }}
+      className={`${borderValue[backgroundColor]} ${radiusValue[radius]} ${backgroundColorValue[backgroundColor]} ${hoverColorValue[backgroundColor]} ${textColorValue[backgroundColor]} ${fontSizeValue[fontSize]} flex items-center justify-center gap-x-2 text-center font-medium disabled:cursor-not-allowed disabled:bg-gray-500 disabled:text-white disabled:hover:bg-gray-500`}
       disabled={disabled}
       onClick={onClick}
     >

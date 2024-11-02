@@ -1,4 +1,4 @@
-import axios from "axios";
+import baseaxios from "./axios";
 
 // AxiosError 타입을 수동으로 정의
 interface AxiosError {
@@ -23,7 +23,7 @@ interface ChangePasswordPayloadType {
 
 interface UpdateInformationPayloadType {
   nickname: string;
-  profileImageUrl?: string;
+  profileImageUrl: string | null;
 }
 
 // isAxiosError 판별 함수 직접 정의
@@ -40,13 +40,20 @@ function handleAxiosError(error: unknown) {
   throw new Error("An unknown error occurred.");
 }
 
+interface UserProfileImageResponse {
+  success: boolean;
+  message?: string;
+  imageUrl?: string;
+}
+
 export async function signUp(registerData: RegisterPayloadType) {
   try {
     const { email, nickname, password } = registerData;
-    const response = await axios.post(
-      "https://sp-taskify-api.vercel.app/9-2/users",
-      { email, nickname, password },
-    );
+    const response = await baseaxios.post("/users", {
+      email,
+      nickname,
+      password,
+    });
     return {
       data: response.data,
       status: response.status,
@@ -59,16 +66,10 @@ export async function signUp(registerData: RegisterPayloadType) {
 export async function changePassword(passwordData: ChangePasswordPayloadType) {
   try {
     const { password, newPassword } = passwordData;
-    const accessToken = localStorage.getItem("accessToken");
-    const response = await axios.put(
-      "https://sp-taskify-api.vercel.app/9-2/auth/password",
-      { password, newPassword },
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      },
-    );
+    const response = await baseaxios.put("/auth/password", {
+      password,
+      newPassword,
+    });
     return {
       data: response.data,
       status: response.status,
@@ -80,15 +81,7 @@ export async function changePassword(passwordData: ChangePasswordPayloadType) {
 
 export async function getUserInfo() {
   try {
-    const accessToken = localStorage.getItem("accessToken");
-    const response = await axios.get(
-      "https://sp-taskify-api.vercel.app/9-2/users/me",
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      },
-    );
+    const response = await baseaxios.get("/users/me", {});
     return {
       data: response.data,
       status: response.status,
@@ -100,22 +93,38 @@ export async function getUserInfo() {
 
 export async function updateUserInfo(updateData: UpdateInformationPayloadType) {
   try {
-    const accessToken = localStorage.getItem("accessToken");
     const { nickname, profileImageUrl } = updateData;
-    const response = await axios.put(
-      "https://sp-taskify-api.vercel.app/9-2/users/me",
-      { nickname, profileImageUrl },
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      },
-    );
+    const response = await baseaxios.put("/users/me", {
+      nickname,
+      profileImageUrl,
+    });
     return {
       data: response.data,
       status: response.status,
     };
   } catch (error) {
     handleAxiosError(error);
+  }
+}
+
+export async function createUserProfileImg(
+  file: File,
+): Promise<UserProfileImageResponse> {
+  try {
+    const formData = new FormData();
+    formData.append("image", file);
+    const response = await baseaxios.post<UserProfileImageResponse>(
+      "users/me/image",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      },
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error uploading profile image:", error);
+    throw error;
   }
 }
