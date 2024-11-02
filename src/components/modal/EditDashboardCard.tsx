@@ -3,7 +3,7 @@ import SelectColorCircle from "./SelectColorCircle";
 import { updateDashboard } from "@/libs/api/dashboards";
 
 interface EditDashboardCardProps {
-  dashboardId: number;
+  dashboardId: number | null;
   dashboardTitle: string;
 }
 

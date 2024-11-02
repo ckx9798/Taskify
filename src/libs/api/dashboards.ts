@@ -75,7 +75,7 @@ export async function getDashboardDetail(dashboardId: number) {
 
 // 대시보드 수정
 export async function updateDashboard(
-  dashboardId: number,
+  dashboardId: number | null,
   dashboardData: DashboardData,
 ) {
   try {
@@ -120,7 +120,7 @@ export async function createDashboardInvitation(
 
 // 대시보드 초대 불러오기
 export async function getDashboardInvitations(
-  dashboardId: number,
+  dashboardId: number | null,
   invitationsQueryData: InvitationsQueryData,
 ) {
   try {
