@@ -50,6 +50,20 @@ export default function BoardCard({
         ? "gap-y-4"
         : "gap-y-1";
 
+  const fontColor = {
+    "bg-linen-100": "text-diserria-400",
+    "bg-liceFlower-100": "text-atlantis-400",
+    "bg-pinkLace-200": "text-fuchsiaPiknk-500",
+    "bg-linkWater-100": "text-azureRadiance-600",
+  } as const;
+
+  const colors: (keyof typeof fontColor)[] = [
+    "bg-linen-100",
+    "bg-liceFlower-100",
+    "bg-pinkLace-200",
+    "bg-linkWater-100",
+  ];
+
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
@@ -90,7 +104,11 @@ export default function BoardCard({
             {tags
               ?.slice(0, 3)
               .map((tagName, index) => (
-                <TagItem key={index} tagName={tagName} />
+                <TagItem
+                  key={index}
+                  tagName={tagName}
+                  backgroundColor={colors[index]}
+                />
               ))}
           </div>
           <div className={`flex`}>
