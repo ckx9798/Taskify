@@ -10,8 +10,9 @@ import { dashboardInfoAtom } from "@/atoms/dashboardInfoAtom";
 import { memberAtom } from "@/atoms/membersAtom";
 import { getMembers } from "@/libs/api/Members";
 import { getDashboardDetail } from "@/libs/api/dashboards";
-import { FaArrowUp } from "react-icons/fa";
+// import { FaArrowUp } from "react-icons/fa";
 import Head from "next/head";
+
 
 interface Column {
   id: number;

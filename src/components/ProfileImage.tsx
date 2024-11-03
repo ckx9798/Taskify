@@ -4,9 +4,15 @@ interface Props {
   size: "large" | "medium" | "small" | "smallest";
   nickName: string | undefined;
   imageUrl?: string | null;
+  onClick?: () => void;
 }
 
-export default function ProfileImage({ size, nickName, imageUrl }: Props) {
+export default function ProfileImage({
+  size,
+  nickName,
+  imageUrl,
+  onClick,
+}: Props) {
   const profileWidth = {
     large: "w-[38px]",
     medium: "w-[34px]",
@@ -42,6 +48,7 @@ export default function ProfileImage({ size, nickName, imageUrl }: Props) {
   return (
     <div
       className={`relative ${profileWidth[size]} ${profileHeight[size]} ring-2 ring-white ${backgroundColor} flex items-center justify-center rounded-full`}
+      onClick={onClick}
     >
       {imageUrl ? (
         <Image

@@ -2,8 +2,8 @@
 import React, { useState, ChangeEvent, useEffect } from "react";
 import CommonModal from "./CommonModal";
 import BoxButton from "@/components/BoxButton";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+// import DatePicker from "react-datepicker";
+// import "react-datepicker/dist/react-datepicker.css";
 import Image from "next/image";
 import { DetailResponse, editCard, getDetailCard } from "@/libs/api/cards"; // EditCard 함수 임포트
 import { Column, getColumns, uploadCardImage } from "@/libs/api/columns";
@@ -301,7 +301,6 @@ const TaskEditModal: React.FC<TaskEditModalProps> = ({
     >
       <div className="flex flex-col gap-6 p-6">
         <h2 className="text-2xl font-bold text-black-200">할 일 수정</h2>
-
         {/* 상태 선택 드롭다운 */}
         <div className="flex justify-between gap-3">
           <div className="flex w-[50%] flex-col gap-2">
@@ -360,7 +359,6 @@ const TaskEditModal: React.FC<TaskEditModalProps> = ({
             className="h-12 w-full rounded-lg border border-gray-300 p-4 text-black"
           />
         </div>
-
         {/* 설명 입력 */}
         <div className="flex flex-col gap-2">
           <label htmlFor="description">설명</label>
@@ -372,9 +370,8 @@ const TaskEditModal: React.FC<TaskEditModalProps> = ({
             className="h-24 w-full rounded-lg border border-gray-300 p-4 text-black"
           />
         </div>
-
-        {/* 마감일 변경 컴포넌트 */}
-        <div className="flex flex-col gap-2">
+        마감일 변경 컴포넌트
+        {/* <div className="flex flex-col gap-2">
           <label htmlFor="dueDate">마감일</label>
           <DatePicker
             autoComplete="off"
@@ -389,8 +386,7 @@ const TaskEditModal: React.FC<TaskEditModalProps> = ({
             timeIntervals={15}
             timeCaption="시간"
           />
-        </div>
-
+        </div> */}
         {/* 태그 입력 및 표시 */}
         <div className="flex flex-col gap-2">
           <label htmlFor="tags" className="text-black-200">
@@ -507,10 +503,8 @@ const TaskEditModal: React.FC<TaskEditModalProps> = ({
             </button>
           )}
         </div>
-
         {/* 에러 메시지 */}
         {error && <p className="text-red-500">{error}</p>}
-
         {/* 버튼 */}
         <div className="flex gap-4">
           <BoxButton

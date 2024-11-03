@@ -8,7 +8,7 @@ import ProfileImageUploader from "./ProfileImageUploader";
 interface ProfileCardProps {
   updateUserProfile: (userData: {
     nickname: string;
-    profileImageUrl: string | null;
+    profileImageUrl: string | null | undefined;
   }) => Promise<void>;
 }
 
@@ -124,13 +124,10 @@ export default function ProfileCard({ updateUserProfile }: ProfileCardProps) {
   return (
     <div
       className={
-        "flex h-auto w-full max-w-[672px] flex-col gap-6 rounded-2xl bg-white p-6"
+        "flex h-auto w-full min-w-[180px] flex-col gap-6 rounded-2xl bg-white p-6 md:mb-5 md:max-w-[672px] xl:min-w-[700px]"
       }
     >
-      <div>
-        <h2 className={"text-xl font-bold md:text-2xl"}>프로필</h2>
-      </div>
-
+      <h2 className={"-mb-4 text-xl font-bold md:mb-0 md:text-2xl"}>프로필</h2>
       <div className={"flex flex-col gap-7 md:flex-row md:gap-11"}>
         {/* 이미지 선택 컴포넌트  */}
         <ProfileImageUploader
@@ -147,7 +144,7 @@ export default function ProfileCard({ updateUserProfile }: ProfileCardProps) {
           accept="image/*"
           onChange={handleFileChange}
         />
-        <form className={"flex w-full flex-col gap-3 md:max-w-[400px]"}>
+        <form className={"-mt-3 flex w-full flex-col gap-1 md:mt-0 md:gap-3"}>
           {/* 이메일 */}
           <div className={"flex flex-col gap-2"}>
             <MypageInput
@@ -182,7 +179,7 @@ export default function ProfileCard({ updateUserProfile }: ProfileCardProps) {
           {/* 저장버튼 */}
           <label
             className={
-              "mb-5 mt-5 flex h-12 w-full items-center justify-center rounded-lg bg-violet p-4 font-semibold text-white"
+              "mb-5 mt-5 flex h-12 w-full cursor-pointer items-center justify-center rounded-lg bg-violet p-4 font-semibold text-white"
             }
             htmlFor="저장버튼"
           >
