@@ -2,8 +2,6 @@
 import React, { useState, ChangeEvent, useEffect } from "react";
 import CommonModal from "./CommonModal";
 import BoxButton from "@/components/BoxButton";
-// import DatePicker from "react-datepicker";
-// import "react-datepicker/dist/react-datepicker.css";
 import Image from "next/image";
 import { createCard } from "@/libs/api/cards";
 import { Column, getColumns, uploadCardImage } from "@/libs/api/columns";
@@ -13,6 +11,7 @@ import { getMembers } from "@/libs/api/Members";
 import addImage from "@/../public/image/addImage.svg";
 import editImage from "@/../public/image/editImage.svg";
 import TagItem from "../TagItem";
+import DatePicker from "react-datepicker";
 
 interface TaskFormModalProps {
   isOpen: boolean;

@@ -11,9 +11,19 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import beforePage from "@/../public/icons/arrow_forward_black_icon.svg";
 import { deleteDashboard } from "@/libs/api/dashboards";
+import { useAtom } from "jotai";
+import {
+  dashboardCountAtom,
+  dashboardListAtom,
+} from "@/atoms/dashboardInfoAtom";
 
 const EditDashboard: NextPageWithLayout = () => {
   const router = useRouter();
+
+  // Jotai Atom 사용
+  const [, setDashboardData] = useAtom(dashboardListAtom);
+  const [, setDashboardCount] = useAtom(dashboardCountAtom);
+
   const [members, setMembers] = useState<MemberType[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -64,6 +74,7 @@ const EditDashboard: NextPageWithLayout = () => {
       alert("멤버 삭제에 실패했습니다.");
     }
   };
+
   const handleDeleteDashboard = async () => {
     if (dashboardId === null) {
       console.error("대시보드 ID가 존재하지 않습니다.");
@@ -77,6 +88,11 @@ const EditDashboard: NextPageWithLayout = () => {
     try {
       await deleteDashboard(dashboardId);
       alert("대시보드가 성공적으로 삭제되었습니다.");
+
+      // Atom에서 대시보드 제거
+      setDashboardData((prev) => prev.filter((d) => d.id !== dashboardId));
+      setDashboardCount((prev) => prev - 1);
+
       router.push("/mydashboard"); // 삭제 후 대시보드 목록 페이지로 리디렉션
     } catch (error) {
       console.error("대시보드 삭제 중 오류 발생:", error);
