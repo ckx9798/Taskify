@@ -103,7 +103,7 @@ export interface EditResponse extends DetailResponse {
 }
 
 // 카드 수정
-export async function editCard(putCard: PutCard, cardId: number) {
+export async function editCard(putCard: Partial<PutCard>, cardId: number) {
   try {
     const response = await baseaxios.put(`/cards/${cardId}`, putCard);
     return response.data as EditResponse;

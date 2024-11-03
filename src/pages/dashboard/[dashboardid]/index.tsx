@@ -10,9 +10,10 @@ import { dashboardInfoAtom } from "@/atoms/dashboardInfoAtom";
 import { memberAtom } from "@/atoms/membersAtom";
 import { getMembers } from "@/libs/api/Members";
 import { getDashboardDetail } from "@/libs/api/dashboards";
-// import { FaArrowUp } from "react-icons/fa";
+import { FaArrowUp } from "react-icons/fa";
 import Head from "next/head";
-
+import { DragDropContext, DropResult } from "@hello-pangea/dnd";
+import { editCard, PutCard } from "@/libs/api/cards";
 
 interface Column {
   id: number;
@@ -117,40 +118,82 @@ export default function Page() {
     setPlease((prev) => (prev += 1));
   };
 
+  // 드래그 종료 시 호출되는 함수
+  const handleOnDragEnd = async (result: DropResult) => {
+    const { source, destination, draggableId, type } = result;
+
+    if (!destination) return;
+
+    // 카드 이동 처리
+    if (type === "CARD") {
+      const sourceColumnId = parseInt(
+        source.droppableId.replace("column-", ""),
+      );
+      const destinationColumnId = parseInt(
+        destination.droppableId.replace("column-", ""),
+      );
+      const cardId = parseInt(draggableId);
+
+      if (sourceColumnId === destinationColumnId) {
+        // 같은 컬럼 내에서 카드 순서 변경
+        // 필요한 경우 구현
+      } else {
+        // 다른 컬럼으로 카드 이동
+        try {
+          // 카드의 columnId를 업데이트
+          await editCard(
+            { columnId: destinationColumnId } as Partial<PutCard>,
+            cardId,
+          );
+
+          // 카드 목록 업데이트
+          // 여기서는 간단히 전체 재렌더링을 위해 setPlease를 증가시킵니다
+          setPlease((prev) => prev + 1);
+        } catch (error) {
+          console.error("카드 이동 실패:", error);
+        }
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100">
       <Head>
         <title> Taskify | {dashboardInfo?.title}</title>
         <link rel="icon" href="/favicon.svg" />
       </Head>
-      <ul className="flex w-[308px] flex-col md:w-[584px] xl:w-[354px] xl:flex-row">
-        {columnList?.map((column, index) => (
-          <Column
-            key={`${column.id}-${please}`}
-            columnId={column.id}
-            columnTitle={column.title}
-            isFirst={index === 0}
-            onClickReRender={handleReRender}
-          />
-        ))}
-        <li className="h-fit px-3 pb-[49px] pt-4 md:px-5 md:pb-5 md:pt-0 xl:pl-5 xl:pt-[75px]">
-          <CustomBtn
-            content={"새로운 컬럼 추가하기"}
-            width={
-              screenSize === "mobile"
-                ? 284
-                : screenSize === "tablet"
-                  ? 544
-                  : 354
-            }
-            height={screenSize === "mobile" ? 66 : 70}
-            fontSize={screenSize === "mobile" ? "14" : "18"}
-            fontWeight={"700"}
-            borderRadius={"8"}
-            onClick={handleCreateColumnModalOpen}
-          />
-        </li>
-      </ul>
+      {/* DragDropContext로 감싸기 */}
+      <DragDropContext onDragEnd={handleOnDragEnd}>
+        <ul className="flex w-[308px] flex-col md:w-[584px] xl:w-[354px] xl:flex-row">
+          {columnList?.map((column, index) => (
+            <Column
+              key={`${column.id}-${please}`}
+              columnId={column.id}
+              columnTitle={column.title}
+              isFirst={index === 0}
+              onClickReRender={handleReRender}
+            />
+          ))}
+          {/* 새로운 컬럼 추가 버튼 */}
+          <li className="h-fit px-3 pb-[49px] pt-4 md:px-5 md:pb-5 md:pt-0 xl:pl-5 xl:pt-[75px]">
+            <CustomBtn
+              content={"새로운 컬럼 추가하기"}
+              width={
+                screenSize === "mobile"
+                  ? 284
+                  : screenSize === "tablet"
+                    ? 544
+                    : 354
+              }
+              height={screenSize === "mobile" ? 66 : 70}
+              fontSize={screenSize === "mobile" ? "14" : "18"}
+              fontWeight={"700"}
+              borderRadius={"8"}
+              onClick={handleCreateColumnModalOpen}
+            />
+          </li>
+        </ul>
+      </DragDropContext>
       {showCreateColumnModal && (
         <CreateColumn
           isOpen={showCreateColumnModal}

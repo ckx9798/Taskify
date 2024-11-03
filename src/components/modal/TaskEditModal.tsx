@@ -2,8 +2,8 @@
 import React, { useState, ChangeEvent, useEffect } from "react";
 import CommonModal from "./CommonModal";
 import BoxButton from "@/components/BoxButton";
-// import DatePicker from "react-datepicker";
-// import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import Image from "next/image";
 import { DetailResponse, editCard, getDetailCard } from "@/libs/api/cards"; // EditCard 함수 임포트
 import { Column, getColumns, uploadCardImage } from "@/libs/api/columns";
@@ -371,7 +371,7 @@ const TaskEditModal: React.FC<TaskEditModalProps> = ({
           />
         </div>
         마감일 변경 컴포넌트
-        {/* <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2">
           <label htmlFor="dueDate">마감일</label>
           <DatePicker
             autoComplete="off"
@@ -386,8 +386,8 @@ const TaskEditModal: React.FC<TaskEditModalProps> = ({
             timeIntervals={15}
             timeCaption="시간"
           />
-        </div> */}
-        {/* 태그 입력 및 표시 */}
+        </div>
+        {/* {/* 태그 입력 및 표시 */}
         <div className="flex flex-col gap-2">
           <label htmlFor="tags" className="text-black-200">
             태그
