@@ -6,6 +6,7 @@ import CreateDashboardModal from "./CreateDashboardModal";
 import DashboardPagination from "./DashboardPagination";
 import DashboardCard from "./DashboardCard";
 import { useRouter } from "next/router";
+import NavigateButton from "./NavigateButton";
 
 // 왼쪽 사이드바에서 대시보드 목록을 보여주고 생성하는 컴포넌트
 export default function SideMenu() {
@@ -43,7 +44,7 @@ export default function SideMenu() {
     <div className="fixed left-0 top-0 z-20 h-screen w-[68px] overflow-y-auto md:w-52 xl:w-72">
       <div
         className={
-          "flex h-full w-[68px] min-w-[68px] flex-col gap-2.5 border-r border-r-gray-300 bg-white px-2 py-5 md:w-52 md:min-w-52 xl:w-72 xl:min-w-72"
+          "flex h-screen w-[68px] min-w-[68px] flex-col gap-2.5 border-r border-r-gray-300 bg-white px-2 py-5 md:w-52 md:min-w-52 xl:w-72 xl:min-w-72"
         }
       >
         {/* 상단  */}
@@ -91,41 +92,16 @@ export default function SideMenu() {
         {/* 페이지 이동 버튼 */}
         <div
           className={
-            "mt-2 flex flex-col gap-5 border-b border-t border-b-gray-300 border-t-gray-300 py-4 md:px-1 md:py-5 xl:gap-6 xl:px-4"
+            "mt-2 flex flex-col border-b border-t border-b-gray-300 border-t-gray-300 py-1 md:py-2 xl:py-3"
+            // md:px-1 md:py-5 xl:gap-6 xl:px-4"
           }
         >
-          <Link href={"/mydashboard"}>
-            <div
-              className={
-                "flex items-center justify-center md:justify-start md:gap-3 xl:gap-5"
-              }
-            >
-              <span>📝</span>
-              <span
-                className={
-                  "hidden whitespace-nowrap font-medium md:block md:text-sm xl:text-lg"
-                }
-              >
-                My Dashboard
-              </span>
-            </div>
-          </Link>
-          <Link href={"/mypage"}>
-            <div
-              className={
-                "flex items-center justify-center gap-4 md:justify-start xl:gap-6"
-              }
-            >
-              <span>🎈</span>
-              <span
-                className={
-                  "hidden whitespace-nowrap font-medium md:block md:text-sm xl:text-lg"
-                }
-              >
-                My Account
-              </span>
-            </div>
-          </Link>
+          <NavigateButton
+            icon={"📝"}
+            link={"/mydashboard"}
+            text={"My Dashboard"}
+          />
+          <NavigateButton icon={"🎈"} link={"/mypage"} text={"My Account"} />
         </div>
 
         {/* 대시보드 목록  */}
@@ -135,6 +111,7 @@ export default function SideMenu() {
               <li
                 key={dashboard.id}
                 onClick={() => handleNavigate(dashboard.id)}
+                className={"cursor-pointer rounded-lg hover:bg-violet-8"}
               >
                 <DashboardCard dashboard={dashboard} />
               </li>

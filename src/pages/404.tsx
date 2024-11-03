@@ -19,8 +19,6 @@ export default function NotFound() {
             unoptimized
             width={1400}
             height={1000}
-            objectFit="cover"
-            objectPosition="center"
             sizes="(max-width: 480px) 100vw, 30vw"
           />
         </div>

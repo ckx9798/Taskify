@@ -20,7 +20,7 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
     <div className={"flex gap-11"}>
       <button
         className={
-          "relative flex h-28 w-28 items-center justify-center rounded-md bg-gray-200 text-gray-100 md:h-44 md:w-44 md:min-w-[182px]"
+          "relative flex h-20 w-20 items-center justify-center rounded-md bg-gray-200 text-gray-100 md:h-44 md:w-44"
         }
         onClick={handleProfileImg}
       >
@@ -42,7 +42,7 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
         )}
       </button>
 
-      {/* Hidden input for file selection */}
+      {/* Hidden input */}
       <input
         type="file"
         ref={fileInputRef}
