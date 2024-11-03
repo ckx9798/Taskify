@@ -46,7 +46,7 @@ export default function MemberTable({
   }, []);
 
   return (
-    <div className="h-fit w-[284px] rounded-lg md:w-[620px]">
+    <div className="h-fit rounded-lg">
       <div className="px-5 pt-[22px] md:px-7 md:pt-[26px]">
         <div className="flex items-center justify-between pb-[18px]">
           <h3 className="text-xl font-bold md:text-2xl">구성원</h3>

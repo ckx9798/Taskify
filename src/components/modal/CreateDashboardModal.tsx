@@ -15,14 +15,13 @@ export default function CreateDashboardModal({
   closeModal,
 }: CreateDashboardModalProps) {
   const [title, setTitle] = useState<string>("비브리지");
-  const [color, setColor] = useState<string>("#7AC555");
   const [selectedColor, setSelectedColor] = useState<string>("#7AC555");
 
   // 대시보드 생성 api 함수
   const handleCreateSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await createDashboard({ title, color });
+      await createDashboard({ title, color: selectedColor });
       //get을 다시
       refresh();
       //모달닫기
@@ -69,9 +68,8 @@ export default function CreateDashboardModal({
                   <SelectColorCircle
                     key={color}
                     color={color}
-                    setColor={setColor}
                     selectedColor={selectedColor}
-                    setSelectedColor={setSelectedColor}
+                    setSelectedColor={(color) => setSelectedColor(color)}
                   />
                 ),
               )}

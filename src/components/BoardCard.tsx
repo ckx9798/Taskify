@@ -50,14 +50,14 @@ export default function BoardCard({
         ? "gap-y-4"
         : "gap-y-1";
 
-  const fontColor = {
-    "bg-linen-100": "text-diserria-400",
-    "bg-liceFlower-100": "text-atlantis-400",
-    "bg-pinkLace-200": "text-fuchsiaPiknk-500",
-    "bg-linkWater-100": "text-azureRadiance-600",
-  } as const;
+  type FontColor = {
+    "bg-linen-100": "text-diserria-400";
+    "bg-liceFlower-100": "text-atlantis-400";
+    "bg-pinkLace-200": "text-fuchsiaPiknk-500";
+    "bg-linkWater-100": "text-azureRadiance-600";
+  };
 
-  const colors: (keyof typeof fontColor)[] = [
+  const colors: (keyof FontColor)[] = [
     "bg-linen-100",
     "bg-liceFlower-100",
     "bg-pinkLace-200",
