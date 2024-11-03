@@ -31,8 +31,15 @@ export default function ProfileImage({
     small: "text-xs",
     smallest: "text-[10px]",
   };
+  const colors = [
+    "bg-rodeoDust-300",
+    "bg-regentBlue-300",
+    "bg-brightSun-300",
+    "bg-goldenTainoi-300",
+  ];
+  const randomColor = colors[Math.floor(Math.random() * colors.length)];
   const backgroundColor =
-    nickName?.charAt(0) === "+" ? "bg-vanillaIce-200" : "bg-blue";
+    nickName?.charAt(0) === "+" ? "bg-vanillaIce-200" : randomColor;
   const firstText =
     nickName?.charAt(0) === "+" ? nickName : nickName?.charAt(0);
   const textColorValue =

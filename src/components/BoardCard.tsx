@@ -50,8 +50,19 @@ export default function BoardCard({
         ? "gap-y-4"
         : "gap-y-1";
 
-  const dateProfileGap =
-    screenSize === "tablet" ? (imageUrl ? "gap-x-[63px]" : "gap-[188px]") : "";
+  const fontColor = {
+    "bg-linen-100": "text-diserria-400",
+    "bg-liceFlower-100": "text-atlantis-400",
+    "bg-pinkLace-200": "text-fuchsiaPiknk-500",
+    "bg-linkWater-100": "text-azureRadiance-600",
+  } as const;
+
+  const colors: (keyof typeof fontColor)[] = [
+    "bg-linen-100",
+    "bg-liceFlower-100",
+    "bg-pinkLace-200",
+    "bg-linkWater-100",
+  ];
 
   useEffect(() => {
     const handleResize = () => {
@@ -77,7 +88,7 @@ export default function BoardCard({
         <div
           className={`relative h-[152px] w-[260px] overflow-hidden rounded-md md:h-[53px] md:w-[91px] md:rounded xl:h-[160px] xl:w-[274px] xl:rounded-md`}
         >
-          <Image fill src={imageUrl} alt="카드 이미지" />
+          <Image src={imageUrl} alt="카드 이미지" fill objectFit="cover" />
         </div>
       )}
       <div className={`flex flex-col gap-y-1.5 md:gap-y-2 xl:gap-y-2.5`}>
@@ -93,7 +104,11 @@ export default function BoardCard({
             {tags
               ?.slice(0, 3)
               .map((tagName, index) => (
-                <TagItem key={index} tagName={tagName} />
+                <TagItem
+                  key={index}
+                  tagName={tagName}
+                  backgroundColor={colors[index]}
+                />
               ))}
           </div>
           <div className={`flex`}>

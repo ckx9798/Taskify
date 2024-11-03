@@ -23,7 +23,7 @@ interface ChangePasswordPayloadType {
 
 interface UpdateInformationPayloadType {
   nickname: string;
-  profileImageUrl: string | null;
+  profileImageUrl: string | null | undefined;
 }
 
 // isAxiosError 판별 함수 직접 정의
@@ -43,7 +43,7 @@ function handleAxiosError(error: unknown) {
 interface UserProfileImageResponse {
   success: boolean;
   message?: string;
-  imageUrl?: string;
+  profileImageUrl?: string | null;
 }
 
 export async function signUp(registerData: RegisterPayloadType) {

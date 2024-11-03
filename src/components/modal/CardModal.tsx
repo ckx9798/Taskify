@@ -69,6 +69,20 @@ export default function CardModal({
   const [showTaskEdit, setShowTaskEdit] = useState(false);
   const formattedDate = cardDetail ? useDateFormat(cardDetail.dueDate) : "";
 
+  const fontColor = {
+    "bg-linen-100": "text-diserria-400",
+    "bg-liceFlower-100": "text-atlantis-400",
+    "bg-pinkLace-200": "text-fuchsiaPiknk-500",
+    "bg-linkWater-100": "text-azureRadiance-600",
+  } as const;
+
+  const colors: (keyof typeof fontColor)[] = [
+    "bg-linen-100",
+    "bg-liceFlower-100",
+    "bg-pinkLace-200",
+    "bg-linkWater-100",
+  ];
+
   const cardUpdate = (card: CardDetail) => {
     setCardDetail(card);
   };
@@ -173,13 +187,13 @@ export default function CardModal({
 
   return (
     <div
-      className="fixed inset-0 z-10 flex items-center justify-center"
+      className="fixed inset-0 z-20 flex items-center justify-center"
       onClick={() => setShowOptions(false)}
     >
       {/* 오버레이 */}
       <div className="absolute inset-0 bg-black opacity-80"></div>
 
-      <div className="fixed z-50 h-[710px] w-[342px] overflow-y-auto rounded-lg bg-white p-4 md:h-[766px] md:w-[693px] md:px-8 md:py-6 xl:h-[763px] xl:w-[745px]">
+      <div className="fixed z-50 h-fit w-[342px] overflow-y-auto rounded-lg bg-white p-4 md:h-[766px] md:w-[693px] md:px-8 md:py-6 xl:h-[763px] xl:w-[745px]">
         <div className="absolute right-4 top-4 flex items-center gap-x-4 md:right-8 md:top-6">
           <button
             className="relative h-5 w-5 md:h-7 md:w-7"
@@ -208,7 +222,7 @@ export default function CardModal({
           {cardDetail.title}
         </h3>
         <div className="h-[710px] justify-between md:flex">
-          <div className="mt-2 flex h-16 items-center gap-x-[62px] rounded-lg border border-solid border-gray-300 px-4 py-[9px] md:order-2 md:mt-6 md:h-[155px] md:w-[181px] md:flex-col md:items-start md:justify-between md:px-4 md:py-[15px] xl:h-[155px] xl:w-[200px]">
+          <div className="mt-2 flex h-16 items-center justify-between rounded-lg border border-solid border-gray-300 px-4 py-[9px] md:order-2 md:mt-6 md:h-[155px] md:w-[181px] md:flex-col md:items-start md:justify-between md:px-4 md:py-[15px] xl:h-[155px] xl:w-[200px]">
             <div className="flex h-full flex-col justify-between md:h-[60px] md:gap-y-[6px]">
               <span className="text-xs font-semibold text-black-400">
                 담당자
@@ -242,7 +256,11 @@ export default function CardModal({
               </div>
               <ul className="flex gap-x-2 md:gap-x-[6px]">
                 {cardDetail.tags.map((item, index) => (
-                  <TagItem key={index} tagName={item} />
+                  <TagItem
+                    key={index}
+                    tagName={item}
+                    backgroundColor={colors[index]}
+                  />
                 ))}
               </ul>
             </div>

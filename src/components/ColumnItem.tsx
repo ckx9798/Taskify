@@ -96,7 +96,7 @@ export default function ColumnItem({
 
   return (
     <li
-      className={`${isLast ? "border-gray-200 md:border-b md:border-solid md:pb-5" : "md:border-none md:pb-0"} w-full border-b border-solid border-gray-200 pb-6 text-black xl:pb-0 xl:pr-5`}
+      className={`${isLast ? "border-gray-200 md:border-b md:border-solid md:pb-5" : "md:border-none md:pb-0"} w-full border-b border-solid border-gray-200 pb-6 text-black xl:border-none xl:pb-0 xl:pr-5`}
     >
       {/* 모바일이거나 첫 번째 ColumnItem일 때 상단 요소 렌더링 */}
       {(screenSize === "mobile" || isFirst || !id) && (
@@ -156,8 +156,7 @@ export default function ColumnItem({
           onClickReRender={onClickReRender}
         />
       )}
-
-      {id && id !== 0 && totalCard > 0 && (
+      {id && id !== 0 && totalCard > 0 ? (
         <>
           <BoardCard
             title={title}
@@ -178,7 +177,7 @@ export default function ColumnItem({
             />
           )}
         </>
-      )}
+      ) : null}
     </li>
   );
 }
