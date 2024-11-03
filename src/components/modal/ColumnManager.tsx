@@ -2,6 +2,7 @@ import CommonModal from "@/components/modal/CommonModal";
 import React, { useEffect, useState } from "react";
 import BoxButton from "../BoxButton";
 import { Column, getColumns, updateColumn } from "@/libs/api/columns";
+import DeleteAllCardsModal from "./DeleteAllCardsModal";
 
 interface ColumnManagerProps {
   isOpen: boolean;
@@ -21,6 +22,7 @@ const ColumnManager: React.FC<ColumnManagerProps> = ({
   const [columnName, setColumnName] = useState("");
   const [isDuplicate, setIsDuplicate] = useState(false);
   const [columns, setColumns] = useState<Column[]>([]);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // 모달 상태 추가
 
   useEffect(() => {
     const fetchColumns = async () => {
@@ -42,6 +44,14 @@ const ColumnManager: React.FC<ColumnManagerProps> = ({
       fetchColumns();
     }
   }, [isOpen, dashboardId, columnId]);
+
+  const handleDeleteClick = () => {
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleDeleteModalClose = () => {
+    setIsDeleteModalOpen(false);
+  };
 
   const handleUpdateColumn = async () => {
     if (!columnName) return;
@@ -101,13 +111,9 @@ const ColumnManager: React.FC<ColumnManagerProps> = ({
               radius="8"
               backgroundColor="white2"
               fontSize="16"
-              onClick={() => {
-                onClose();
-                setColumnName("");
-                setIsDuplicate(false);
-              }}
+              onClick={handleDeleteClick}
             >
-              취소
+              삭제
             </BoxButton>
             <BoxButton
               width="100%"
@@ -124,6 +130,16 @@ const ColumnManager: React.FC<ColumnManagerProps> = ({
           </div>
         </div>
       </CommonModal>
+
+      {/* DeleteAllCardsModal 렌더링 */}
+      {isDeleteModalOpen && (
+        <DeleteAllCardsModal
+          isOpen={isDeleteModalOpen}
+          onClose={handleDeleteModalClose}
+          columnId={columnId}
+          // 필요한 추가 props 전달
+        />
+      )}
     </div>
   );
 };
