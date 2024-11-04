@@ -137,62 +137,76 @@ const Signup = () => {
             </button>
             <p className="text-[20px] text-black-200">첫 방문을 환영합니다!</p>
           </div>
-          <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
-            <TextInput
-              labelName="닉네임"
-              placeholder="닉네임을 입력해주세요."
-              name="nickname"
-              onChange={handleChange}
-              onBlur={() => validateInput("nickname", values.nickname)}
-              hasError={errors}
-              className="mx-auto w-full max-w-[520px]"
-            />
-            {errors.nickname && (
-              <p style={{ color: "red" }}>{errors.nickname}</p>
-            )}
+          <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+            <div className="flex flex-col">
+              <TextInput
+                labelName="닉네임"
+                placeholder="닉네임을 입력해주세요."
+                name="nickname"
+                onChange={handleChange}
+                onBlur={() => validateInput("nickname", values.nickname)}
+                hasError={errors}
+                className="mx-auto w-full max-w-[520px]"
+              />
+              {errors.nickname && (
+                <p className="mt-[-16px] text-sm leading-none text-[#d6173a]">
+                  {errors.nickname}
+                </p>
+              )}
+            </div>
 
-            <TextInput
-              labelName="이메일"
-              placeholder="이메일을 입력해주세요."
-              name="email"
-              onChange={handleChange}
-              onBlur={() => validateInput("email", values.email)}
-              hasError={errors}
-              className="mx-auto w-full max-w-[520px]"
-            />
-            {errors.email && (
-              <div className="text-red-500 pt-2 text-sm">{errors.email}</div>
-            )}
+            <div className="flex flex-col">
+              <TextInput
+                labelName="이메일"
+                placeholder="이메일을 입력해주세요."
+                name="email"
+                onChange={handleChange}
+                onBlur={() => validateInput("email", values.email)}
+                hasError={errors}
+                className="mx-auto w-full max-w-[520px]"
+              />
+              {errors.email && (
+                <p className="mt-[-16px] text-sm leading-none text-[#d6173a]">
+                  {errors.email}
+                </p>
+              )}
+            </div>
 
-            <PasswordInput
-              labelName="비밀번호"
-              placeholder="비밀번호를 입력해주세요."
-              name="password"
-              onChange={handleChange}
-              onBlur={() => validateInput("password", values.password)}
-              hasError={errors}
-              className="mx-auto w-full max-w-[520px]"
-            />
-            {errors.password && (
-              <div className="text-red-500 pt-2 text-sm">{errors.password}</div>
-            )}
+            <div className="flex flex-col">
+              <PasswordInput
+                labelName="비밀번호"
+                placeholder="비밀번호를 입력해주세요."
+                name="password"
+                onChange={handleChange}
+                onBlur={() => validateInput("password", values.password)}
+                hasError={errors}
+                className="mx-auto w-full max-w-[520px]"
+              />
+              {errors.password && (
+                <p className="mt-[-16px] text-sm leading-none text-[#d6173a]">
+                  {errors.password}
+                </p>
+              )}
+            </div>
 
-            <PasswordInput
-              labelName="비밀번호 확인"
-              placeholder="비밀번호를 다시 입력해주세요."
-              name="confirmPassword"
-              onChange={handleChange}
-              onBlur={() =>
-                validateInput("confirmPassword", values.confirmPassword)
-              }
-              hasError={errors}
-              className="mx-auto w-full max-w-[520px]"
-            />
-            {errors.confirmPassword && (
-              <div className="text-red-500 pt-2 text-sm">
-                {errors.confirmPassword}
-              </div>
-            )}
+            <div className="flex flex-col">
+              <PasswordInput
+                labelName="비밀번호 확인"
+                placeholder="비밀번호를 다시 입력해주세요."
+                name="confirmPassword"
+                onChange={handleChange}
+                onBlur={() =>
+                  validateInput("confirmPassword", values.confirmPassword)
+                }
+                hasError={errors}
+                className="mx-auto w-full max-w-[520px]"
+              />
+              {errors.confirmPassword && (
+                <p className="mt-[-16px] text-sm leading-none text-[#d6173a]">
+                  {errors.confirmPassword}
+                </p>
+              )}
+            </div>
 
             <div>
               <label>
