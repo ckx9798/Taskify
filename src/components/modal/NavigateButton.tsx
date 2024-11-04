@@ -1,7 +1,16 @@
 import Link from "next/link";
 import React from "react";
 
-export default function NavigateButton({ link, icon, text }) {
+interface NavigateButtonProps {
+  link: string;
+  icon: React.ReactNode;
+  text: string;
+}
+const NavigateButton: React.FC<NavigateButtonProps> = ({
+  link,
+  icon,
+  text,
+}) => {
   return (
     <Link href={link}>
       <div
@@ -20,4 +29,6 @@ export default function NavigateButton({ link, icon, text }) {
       </div>
     </Link>
   );
-}
+};
+
+export default NavigateButton;
