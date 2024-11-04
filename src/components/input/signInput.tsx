@@ -7,9 +7,11 @@ export interface SignInputProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
   name: string;
-  hasError?: unknown; // hasError를 unknown으로 변경
-  className?: string; // className 속성 추가
+  hasError?: Record<string, { message: string }>;
+  className?: string;
 }
+
+const errorColor = "#d6173a";
 
 const PasswordInput = forwardRef<HTMLInputElement, SignInputProps>(
   ({ placeholder, labelName, onChange, onBlur, name = "", hasError }, ref) => {
@@ -20,6 +22,8 @@ const PasswordInput = forwardRef<HTMLInputElement, SignInputProps>(
       setCurrentType(currentType === "text" ? "password" : "text");
       setIsOpenEye(!isOpenEye);
     };
+
+    const hasErrorForField = hasError && hasError[name];
 
     return (
       <div className="relative mb-4 flex w-full flex-col">
@@ -44,16 +48,63 @@ const PasswordInput = forwardRef<HTMLInputElement, SignInputProps>(
           name={name}
           type={currentType}
           placeholder={placeholder}
-          className={`w-full rounded-md border p-4 ${hasError && Object.keys(hasError).includes(name) ? "border-red-500" : "border-gray-300"}`}
+          className={`w-full rounded-md border p-4 ${
+            hasErrorForField ? "border-[#d6173a]" : "border-gray-300"
+          }`}
           onChange={onChange}
           onBlur={onBlur}
+          style={hasErrorForField ? { borderColor: errorColor } : {}}
         />
+        {hasErrorForField && (
+          <span
+            className="pt-2 text-sm"
+            style={{ color: errorColor, marginTop: "4px" }}
+          >
+            {hasError[name].message}
+          </span>
+        )}
       </div>
     );
   },
 );
 
 PasswordInput.displayName = "PasswordInput";
+
+const TextInput = forwardRef<HTMLInputElement, SignInputProps>(
+  ({ placeholder, labelName, onChange, onBlur, name = "", hasError }, ref) => {
+    const hasErrorForField = hasError && hasError[name];
+    return (
+      <div className="mb-4 flex w-full flex-col">
+        <label htmlFor={name} className="mb-2 font-medium text-black">
+          {labelName}
+        </label>
+        <input
+          id={name}
+          ref={ref}
+          name={name}
+          type="text"
+          placeholder={placeholder}
+          className={`w-full rounded-md border p-4 ${
+            hasErrorForField ? "border-[#d6173a]" : "border-gray-300"
+          }`}
+          onChange={onChange}
+          onBlur={onBlur}
+          style={hasErrorForField ? { borderColor: errorColor } : {}}
+        />
+        {hasErrorForField && (
+          <span
+            className="pt-2 text-sm"
+            style={{ color: errorColor, marginTop: "4px" }}
+          >
+            {hasError[name].message}
+          </span>
+        )}
+      </div>
+    );
+  },
+);
+
+TextInput.displayName = "TextInput";
 
 const ReadonlyInput = ({
   labelName = "",
@@ -74,29 +125,5 @@ const ReadonlyInput = ({
     </div>
   );
 };
-
-const TextInput = forwardRef<HTMLInputElement, SignInputProps>(
-  ({ placeholder, labelName, onChange, onBlur, name = "", hasError }, ref) => {
-    return (
-      <div className="mb-4 flex w-full flex-col">
-        <label htmlFor={name} className="mb-2 font-medium text-black">
-          {labelName}
-        </label>
-        <input
-          id={name}
-          ref={ref}
-          name={name}
-          type="text"
-          placeholder={placeholder}
-          className={`w-full rounded-md border p-4 ${hasError && Object.keys(hasError).includes(name) ? "border-red-500" : "border-gray-300"}`}
-          onChange={onChange}
-          onBlur={onBlur}
-        />
-      </div>
-    );
-  },
-);
-
-TextInput.displayName = "TextInput";
 
 export { PasswordInput, ReadonlyInput, TextInput };

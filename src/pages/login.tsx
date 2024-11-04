@@ -102,6 +102,7 @@ export function SigninForm() {
               오늘도 만나서 반가워요!
             </p>
           </div>
+
           <form
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col gap-6"
@@ -113,11 +114,6 @@ export function SigninForm() {
               hasError={errors}
               className="mx-auto w-full max-w-[520px]"
             />
-            {errors.email && (
-              <div className="text-red-500 pt-2 text-sm">
-                {errors.email.message}
-              </div>
-            )}
 
             <PasswordInput
               labelName="비밀번호"
@@ -126,11 +122,6 @@ export function SigninForm() {
               hasError={errors}
               className="mx-auto w-full max-w-[520px]"
             />
-            {errors.password && (
-              <div className="text-red-500 pt-2 text-sm">
-                {errors.password.message}
-              </div>
-            )}
 
             <button
               disabled={!isValid || isPending}
