@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosHeaders } from "axios";
 
 const baseaxios = axios.create({
   baseURL: "https://sp-taskify-api.vercel.app/9-2",
@@ -11,7 +11,7 @@ export const setToken = (token: string | undefined) => {
 baseaxios.interceptors.request.use(
   (config) => {
     if (!config.headers) {
-      config.headers = {};
+      config.headers = new AxiosHeaders();
       // headers가 undefined일 경우 빈 객체로 초기화
     }
     // Node.js 환경에서 쿠키를 가져옵니다.

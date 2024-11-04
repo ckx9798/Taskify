@@ -42,7 +42,7 @@ export async function createCard(postCard: PostCard) {
   }
 }
 
-interface GetResponse {
+export interface GetResponse {
   cursorId: number;
   totalCount: number;
   cards: {
@@ -61,11 +61,11 @@ interface GetResponse {
     columnId: number;
     createdAt: string;
     updatedAt: string;
-  }[];
+  };
 }
 
 // 카드 목록 조회
-export async function getCardList(columnId: number) {
+export async function getCardList(columnId: number): Promise<GetResponse> {
   try {
     const response = await baseaxios.get(`/cards?size=10&columnId=${columnId}`);
     return response.data as GetResponse;
@@ -103,7 +103,7 @@ export interface EditResponse extends DetailResponse {
 }
 
 // 카드 수정
-export async function editCard(putCard: PutCard, cardId: number) {
+export async function editCard(putCard: Partial<PutCard>, cardId: number) {
   try {
     const response = await baseaxios.put(`/cards/${cardId}`, putCard);
     return response.data as EditResponse;

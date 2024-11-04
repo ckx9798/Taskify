@@ -1,24 +1,31 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { getDashboardList, Dashboard } from "@/libs/api/dashboards";
+import { getDashboardList } from "@/libs/api/dashboards";
 import Image from "next/image";
 import CreateDashboardModal from "./CreateDashboardModal";
 import DashboardPagination from "./DashboardPagination";
 import DashboardCard from "./DashboardCard";
 import { useRouter } from "next/router";
 import NavigateButton from "./NavigateButton";
+import { useAtom } from "jotai";
+import {
+  dashboardCountAtom,
+  dashboardListAtom,
+  dashboardPageAtom,
+} from "@/atoms/dashboardInfoAtom";
 
-// 왼쪽 사이드바에서 대시보드 목록을 보여주고 생성하는 컴포넌트
 export default function SideMenu() {
+  // 대시보드 데이터 불러오기
+  // Jotai Atom 사용
+  const [dashboardData, setDashboardData] = useAtom(dashboardListAtom);
+  const [dashboardCount, setDashboardCount] = useAtom(dashboardCountAtom);
+  const [dashboardPage, setDashboardPage] = useAtom(dashboardPageAtom);
+  // 왼쪽 사이드바에서 대시보드 목록을 보여주고 생성하는 컴포넌트
   // 새로운 대시보드 모달창 열기
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  // 대시보드 데이터 불러오기
-  const [dashboardData, setDashboardData] = useState<Dashboard[]>([]);
-  const [dashboardPage, setDashboardPage] = useState<number>(1);
-  const [dashboardCount, setDashboardCount] = useState<number>(0);
   const router = useRouter();
 
   const loadDashboard = async (): Promise<void> => {

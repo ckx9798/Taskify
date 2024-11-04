@@ -14,7 +14,7 @@ import {
   passwordValidationRules,
 } from "../components/input/formInputValidationRules";
 import { useAtom } from "jotai";
-import { User, userAtom } from "@/atoms/userAtom";
+import { userAtom } from "@/atoms/userAtom";
 import Head from "next/head";
 
 // Cookie 관련 함수들

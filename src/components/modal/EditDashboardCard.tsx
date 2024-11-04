@@ -1,19 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SelectColorCircle from "./SelectColorCircle";
-import { updateDashboard } from "@/libs/api/dashboards";
+import { getDashboardDetail, updateDashboard } from "@/libs/api/dashboards";
 
 interface EditDashboardCardProps {
   dashboardId: number | null;
-  dashboardTitle: string;
 }
 
 export default function EditDashboardCard({
   dashboardId,
-  dashboardTitle,
 }: EditDashboardCardProps) {
-  const [title, setTitle] = useState<string>("");
-  const [color, setColor] = useState<string>("");
-  const [selectedColor, setSelectedColor] = useState<string>("");
+  const [selectedColor, setSelectedColor] = useState<string>(""); // 선택된 색상 상태
+  const [title, setTitle] = useState<string>(""); // 대시보드 제목 상태
 
   // 대시보드 변경요청 api
   const editDashboard = async (): Promise<void> => {
@@ -28,19 +25,31 @@ export default function EditDashboardCard({
     }
   };
 
+  useEffect(() => {
+    // dashboardId가 유효한 경우에만 함수 호출
+    if (dashboardId !== null && dashboardId !== undefined) {
+      fetchDashboardDetail(dashboardId);
+    }
+  }, [dashboardId]);
+
+  async function fetchDashboardDetail(id: number) {
+    const response = await getDashboardDetail(id);
+    setSelectedColor(response.color); // 기존 색상 설정
+    setTitle(response.title); // 기존 제목 설정
+  }
+
   return (
     <>
-      <div className="h-[344px] w-[620px] gap-3 rounded-2xl bg-white p-9 shadow-lg">
-        {/* 대시보드 title을 받아서 출력 */}
+      <div className="mb-2 h-[344px] gap-3 rounded-2xl bg-white p-9">
+        <p className="mb-2 text-[20px] font-bold md:text-[24px]">{title}</p>
         <div>
-          <h2 className="mb-7 text-2xl font-bold">{dashboardTitle}</h2>
           <label htmlFor="대시보드" className={"text-lg font-medium"}>
             대시보드 이름
           </label>
           {/* 변경할 대시보드 title 입력 */}
           <input
             type="text"
-            placeholder="생성할 대시보드 이름을 입력해 주세요"
+            placeholder={title}
             className="mb-5 mt-4 w-full rounded-lg border p-2"
             onChange={(e) => {
               setTitle(e.target.value);
@@ -54,7 +63,6 @@ export default function EditDashboardCard({
                   <SelectColorCircle
                     key={color}
                     color={color}
-                    setColor={setColor}
                     selectedColor={selectedColor}
                     setSelectedColor={setSelectedColor}
                   />

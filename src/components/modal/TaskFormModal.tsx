@@ -2,16 +2,16 @@
 import React, { useState, ChangeEvent, useEffect } from "react";
 import CommonModal from "./CommonModal";
 import BoxButton from "@/components/BoxButton";
-// import DatePicker from "react-datepicker";
-// import "react-datepicker/dist/react-datepicker.css";
 import Image from "next/image";
 import { createCard } from "@/libs/api/cards";
 import { Column, getColumns, uploadCardImage } from "@/libs/api/columns";
 import { MemberType } from "@/libs/api/Members";
-// import { PostResponse, PostCard } from "@/libs/api/cards";
+import { PostCard } from "@/libs/api/cards";
 import { getMembers } from "@/libs/api/Members";
 import addImage from "@/../public/image/addImage.svg";
 import editImage from "@/../public/image/editImage.svg";
+import TagItem from "../TagItem";
+import DatePicker from "react-datepicker";
 
 interface TaskFormModalProps {
   isOpen: boolean;
@@ -21,17 +21,19 @@ interface TaskFormModalProps {
   onClickReRender: () => void;
 }
 
-// 태그 색상 매핑
-const tagColors: { [key: string]: string } = {
-  urgent: "#FF5733", // 빨간색
-  important: "#FFC300", // 노란색
-  optional: "#DAF7A6", // 연두색
-  // 필요한 태그와 색상을 추가하세요
+type FontColor = {
+  "bg-linen-100": "text-diserria-400";
+  "bg-liceFlower-100": "text-atlantis-400";
+  "bg-pinkLace-200": "text-fuchsiaPiknk-500";
+  "bg-linkWater-100": "text-azureRadiance-600";
 };
 
-const getTagColor = (tag: string): string => {
-  return tagColors[tag.toLowerCase()] || "#6B7280"; // 기본 회색
-};
+const colors: (keyof FontColor)[] = [
+  "bg-linen-100",
+  "bg-liceFlower-100",
+  "bg-pinkLace-200",
+  "bg-linkWater-100",
+];
 
 const TaskFormModal: React.FC<TaskFormModalProps> = ({
   isOpen,
@@ -57,6 +59,7 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
   const [imageFile, setImageFile] = useState<File | null>(null); // 이미지 파일 상태
   const [error, setError] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isComposing, setIsComposing] = useState(false);
 
   // 멤버 데이터 가져온 후 설정
   useEffect(() => {
@@ -164,14 +167,13 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
   // 태그 추가 핸들러
   const handleAddTag = () => {
     if (tagsInput.trim() !== "") {
-      setFormData((prev) => ({
-        ...prev,
-        tags: [...prev.tags, tagsInput.trim()],
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        tags: [...prevFormData.tags, tagsInput.trim()],
       }));
       setTagsInput("");
     }
   };
-
   // 태그 제거 핸들러
   const handleRemoveTag = (index: number) => {
     setFormData((prev) => ({
@@ -205,7 +207,6 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
       // 'image' 대신 'imageFile' 사용
       try {
         const data = await uploadCardImage(formData.columnId, imageFile);
-        console.log("Uploaded Image URL:", data.imageUrl); // 이미지 업로드 결과 로그
         uploadedImageUrl = data.imageUrl;
       } catch (err) {
         console.error("이미지 업로드 실패:", err);
@@ -226,10 +227,8 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
       imageUrl: uploadedImageUrl,
     };
 
-    console.log("Post Card Data:", postCard); // 전송할 데이터 로그
-
     try {
-      const response = await createCard(postCard); // PostCard 전달
+      await createCard(postCard); // PostCard 전달
       // onCreate(response);
       handleCloseModal();
       onClickReRender();
@@ -267,48 +266,50 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
         <h2 className="text-2xl font-bold text-black-200">할 일 생성</h2>
 
         {/* 상태 선택 드롭다운 */}
-        <div className="flex flex-col gap-2">
-          <label htmlFor="columnId" className="text-black-200">
-            상태
-          </label>
-          <select
-            id="columnId"
-            value={formData.columnId}
-            onChange={handleChange}
-            className="h-12 w-full rounded-lg border border-gray-300 px-4 py-2 text-black"
-          >
-            {allColumns.map((col) => (
-              <option key={col.id} value={col.id}>
-                {col.title}
-              </option>
-            ))}
-          </select>
-        </div>
+        <div className="flex justify-between gap-3">
+          <div className="flex w-[50%] flex-col gap-2">
+            <label htmlFor="columnId" className="text-black-200">
+              상태
+            </label>
+            <select
+              id="columnId"
+              value={formData.columnId}
+              onChange={handleChange}
+              className="h-12 w-full rounded-lg border border-gray-300 px-4 py-2 text-black"
+            >
+              {allColumns.map((col) => (
+                <option key={col.id} value={col.id}>
+                  {col.title}
+                </option>
+              ))}
+            </select>
+          </div>
 
-        {/* 담당자 선택 */}
-        <div className="flex flex-col gap-2">
-          <label htmlFor="assigneeUserId" className="text-black-200">
-            담당자
-          </label>
-          <select
-            id="assigneeUserId"
-            value={formData.assigneeUserId}
-            onChange={handleChange}
-            className="h-12 w-full rounded-lg border border-gray-300 px-4 py-2 text-black"
-          >
-            {members.map((member) => (
-              <option key={member.userId} value={member.userId}>
-                <Image
-                  src={member.profileImageUrl || "/image/default-profile.png"}
-                  alt={member.nickname}
-                  width={24}
-                  height={24}
-                  className="mr-2 rounded-full"
-                />
-                {member.nickname}
-              </option>
-            ))}
-          </select>
+          {/* 담당자 선택 */}
+          <div className="flex w-[50%] flex-col gap-2">
+            <label htmlFor="assigneeUserId" className="text-black-200">
+              담당자
+            </label>
+            <select
+              id="assigneeUserId"
+              value={formData.assigneeUserId}
+              onChange={handleChange}
+              className="h-12 w-full rounded-lg border border-gray-300 px-4 py-2 text-black"
+            >
+              {members.map((member) => (
+                <option key={member.userId} value={member.userId}>
+                  <Image
+                    src={member.profileImageUrl || "/image/default-profile.png"}
+                    alt={member.nickname}
+                    width={24}
+                    height={24}
+                    className="mr-2 rounded-full"
+                  />
+                  {member.nickname}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         {/* 제목 입력 */}
@@ -365,30 +366,32 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
           <label htmlFor="tags" className="text-black-200">
             태그
           </label>
-          <div className="flex flex-wrap items-center gap-2 rounded-lg border border-gray-300 p-2">
+          <div className="flex flex-wrap items-center gap-2 rounded-lg border border-gray-300">
             {formData.tags.map((tag, index) => (
-              <span
-                key={index}
-                className="bg-blue-100 text-blue-800 flex items-center rounded-full px-2 py-1"
-                style={{ backgroundColor: getTagColor(tag) }}
-              >
-                {tag}
+              <>
+                <TagItem
+                  key={index}
+                  tagName={tag}
+                  backgroundColor={colors[index % colors.length]}
+                />
                 <button
                   type="button"
-                  className="ml-1 text-sm font-bold"
+                  className="ml-0.5 text-sm font-bold"
                   onClick={() => handleRemoveTag(index)}
                   aria-label={`Remove tag ${tag}`}
                 >
                   &times;
                 </button>
-              </span>
+              </>
             ))}
             <input
               type="text"
               value={tagsInput}
               onChange={(e) => setTagsInput(e.target.value)}
+              onCompositionStart={() => setIsComposing(true)}
+              onCompositionEnd={() => setIsComposing(false)}
               onKeyDown={(e) => {
-                if (e.key === "Enter" && tagsInput.trim() !== "") {
+                if (e.key === "Enter" && !isComposing) {
                   e.preventDefault();
                   handleAddTag();
                 } else if (e.key === "Backspace" && tagsInput === "") {
@@ -397,7 +400,7 @@ const TaskFormModal: React.FC<TaskFormModalProps> = ({
                 }
               }}
               placeholder="태그를 입력하고 Enter를 누르세요"
-              className="flex-grow rounded-lg border border-gray-300 p-4 text-black focus:outline-none"
+              className="flex-grow rounded-lg p-4 text-black focus:outline-none"
             />
           </div>
         </div>

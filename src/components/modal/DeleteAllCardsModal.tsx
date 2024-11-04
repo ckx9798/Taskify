@@ -1,7 +1,8 @@
 import CommonModal from "@/components/modal/CommonModal";
 import React, { useEffect, useState } from "react";
 import BoxButton from "../BoxButton";
-import { GetCardList, DeleteCard } from "@/libs/api/cards";
+import { getCardList, DeleteCard } from "@/libs/api/cards";
+import { useRouter } from "next/router";
 
 // 카드의 데이터 구조에 맞는 인터페이스 정의
 interface Assignee {
@@ -24,12 +25,6 @@ interface Card {
   updatedAt: string;
 }
 
-interface GetResponse {
-  cursorId: number;
-  totalCount: number;
-  cards: Card[];
-}
-
 interface DeleteAllCardsModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -44,11 +39,12 @@ const DeleteAllCardsModal: React.FC<DeleteAllCardsModalProps> = ({
   const [totalCards, setTotalCards] = useState<number>(0);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchCardCount = async () => {
       try {
-        const response: GetResponse = await GetCardList(columnId);
+        const response = await getCardList(columnId);
         setTotalCards(response.totalCount);
       } catch (err) {
         console.error("카드 목록 조회 중 오류 발생:", err);
@@ -67,15 +63,20 @@ const DeleteAllCardsModal: React.FC<DeleteAllCardsModalProps> = ({
 
     try {
       // 모든 카드를 한 번에 가져오는 방식으로 변경
-      const response: GetResponse = await GetCardList(columnId);
+      const response = await getCardList(columnId);
+
+      if (!Array.isArray(response.cards)) {
+        throw new Error("Invalid response format: 'cards' is not an array.");
+      }
+
       const allCards: Card[] = response.cards;
 
       // 모든 카드 삭제 (병렬로 처리)
       const deletePromises = allCards.map((card) => DeleteCard(card.id));
       await Promise.all(deletePromises);
 
-      // 성공적으로 삭제되면 모달을 닫고 상태를 초기화합니다.
-      onClose();
+      // 삭제 후 페이지 새로고침
+      router.reload();
       setTotalCards(0);
     } catch (err) {
       console.error("카드 삭제 중 오류 발생:", err);

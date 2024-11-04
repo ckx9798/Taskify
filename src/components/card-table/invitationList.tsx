@@ -39,7 +39,7 @@ interface InvitationsType {
 }
 
 interface InvitationListProps {
-  dashBoardId: number | null; // 대시보드 ID를 전달하기 위한 prop
+  dashBoardId: number; // 대시보드 ID를 전달하기 위한 prop
 }
 
 export default function InvitationList({ dashBoardId }: InvitationListProps) {
@@ -85,9 +85,15 @@ export default function InvitationList({ dashBoardId }: InvitationListProps) {
   const handleRemoveInvitation = async (invitationId: number) => {
     if (!confirm("정말로 이 초대를 취소하시겠습니까?")) return;
 
+    if (dashBoardId === null) {
+      return;
+    }
+
+    const validDashboardId: number = dashBoardId;
+
     setLoading(true);
     try {
-      await deleteDashboardInvitation(dashBoardId, invitationId);
+      await deleteDashboardInvitation(validDashboardId, invitationId);
       // 초대 목록에서 삭제
       setData((prevData) => {
         if (!prevData) return prevData;
@@ -108,52 +114,14 @@ export default function InvitationList({ dashBoardId }: InvitationListProps) {
   };
   return (
     <>
-      <section
-        style={{
-          padding: "2.8rem",
-          maxWidth: "62rem",
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          gap: "2.8rem",
-          borderRadius: "0.8rem",
-          background: "var(--color-white)",
-          boxShadow:
-            "rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px",
-        }}
-      >
+      <section className="flex flex-col gap-[5px] rounded-lg bg-white p-[28px]">
         {/* 헤더 부분: 초대 내역 제목과 페이지 정보, 버튼들 */}
-        <div
-          style={{
-            paddingBottom: "2.8rem",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            flexWrap: "wrap",
-            gap: "1.6rem",
-          }}
-        >
-          <div style={{ flex: "1 1 auto", minWidth: "200px" }}>
-            <h2
-              style={{
-                padding: "0.4rem 0",
-                fontSize: "2.4rem",
-                fontWeight: 700,
-                color: "var(--color-black_33)",
-              }}
-            >
-              초대 내역
-            </h2>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "1.6rem" }}>
-            <span
-              style={{
-                fontSize: "1.4rem",
-                fontWeight: 400,
-                color: "var(--color-black_33)",
-                marginRight: "15px",
-              }}
-            >
+        <div className="flex flex-wrap items-center justify-between gap-[16px] pb-[28px]">
+          <h2 className="text-black_33 py-[0.4rem] text-[24px] font-bold">
+            초대 내역
+          </h2>
+          <div className="flex items-center gap-[16px]">
+            <span className="text-black_33 mr-[15px] text-[14px] font-medium">
               {Math.ceil((data?.totalCount ?? 0) / pageSize)} 페이지 중{" "}
               {currentPage}
             </span>
@@ -175,16 +143,16 @@ export default function InvitationList({ dashBoardId }: InvitationListProps) {
             >
               {/* 페이지네이션 버튼의 자식 요소: 이미지 아이콘 */}
               <Image
-                key="foward"
+                key="forward"
                 src={arrow_forward_gray_icon}
                 alt="Forward"
-                style={{ marginLeft: "8px", blockSize: "40px" }}
+                className="ml-2 block h-[16px] w-[16px]"
               />
               <Image
                 key="back"
                 src={arrow_back_gray_icon}
                 alt="Back"
-                style={{ marginRight: "8px", blockSize: "40px" }}
+                className="mr-2 block h-[16px] w-[16px]"
               />
             </PaginationButton>
             {/* 초대하기 버튼 */}
@@ -194,8 +162,8 @@ export default function InvitationList({ dashBoardId }: InvitationListProps) {
               dashboardId={dashBoardId}
             />
             <BoxButton
-              paddingTopBottom="15"
-              paddingRightLeft="10"
+              paddingTopBottom="8"
+              paddingRightLeft="3"
               radius="4"
               backgroundColor="purple"
               fontSize="18"
@@ -204,83 +172,49 @@ export default function InvitationList({ dashBoardId }: InvitationListProps) {
               <Image
                 src={whitePlus}
                 alt="Plus Icon"
-                style={{
-                  marginLeft: "10px",
-                  marginRight: "10px",
-                  blockSize: "24px",
-                }}
+                className="ml-[10px] mr-[10px] block h-[11px] w-[11px]"
               />
-              <div className="mr-[10px] text-xl">초대하기</div>
+              <div className="mr-[10px] text-[14px]">초대하기</div>
             </BoxButton>
           </div>
         </div>
         {/* 초대 내역 헤더 */}
-        <div className="flex justify-between pl-[28px] pr-[104px] text-2xl text-gray-400 max-[499px]:hidden">
+        <div className="flex justify-between pl-[28px] pr-[104px] text-[16px] text-gray-400 max-[499px]:hidden">
           이메일
         </div>
 
         <div>
           {loading ? (
             // 로딩 중 표시
-            <p
-              style={{
-                textAlign: "center",
-                fontSize: "1.6rem",
-                color: "var(--color-gray40)",
-              }}
-            >
-              로딩 중...
-            </p>
+            <p className="text-gray40 text-center text-[16px]">로딩 중...</p>
           ) : data?.totalCount === 0 ? (
             // 초대 내역이 없을 때 표시
-            <p
-              style={{
-                textAlign: "center",
-                fontSize: "1.6rem",
-                color: "var(--color-gray40)",
-              }}
-            >
+            <p className="text-gray40 text-center text-[16px]">
               초대 내역이 없어요
             </p>
           ) : (
             // 초대 목록
-            <ul style={{ listStyle: "none", padding: 0 }}>
+            <ul className="list-none p-0">
               {data?.invitations.map((invitation) => (
                 <li
                   key={invitation.id}
-                  style={{
-                    padding: "1.9rem 2.8rem",
-                    borderBottom: "1px solid var(--color-gray20)",
-                    listStyle: "none",
-                  }}
+                  className="border-gray-20 list-none border-b px-[28px] py-[19px]"
                 >
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontSize: "1.6rem",
-                        fontWeight: 400,
-                        color: "var(--color-black_33)",
-                      }}
-                    >
+                  <div className="flex items-center justify-between">
+                    <span className="text-black_33 text-[16px] font-medium">
                       {invitation.invitee.email}
                     </span>
                     <div className="flex gap-[10px]">
                       {/* 초대 취소 버튼 */}
                       <BoxButton
-                        paddingTopBottom="14"
-                        paddingRightLeft="44"
+                        paddingTopBottom="7"
+                        paddingRightLeft="29"
                         radius="4"
                         backgroundColor="white"
                         fontSize="18"
                         onClick={() => handleRemoveInvitation(invitation.id)}
                       >
-                        <div className="text-xl, font-bold">취소</div>
+                        <div className="text-[14px] text-violet">취소</div>
                       </BoxButton>
                     </div>
                   </div>

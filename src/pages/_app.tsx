@@ -8,7 +8,6 @@ import { getCookie } from "./login";
 import Router from "next/router";
 import { NextPage } from "next";
 
-
 type AppPropsWithLayout = AppProps & {
   Component: NextPage & {
     getLayout?: (page: React.ReactElement) => React.ReactNode;
@@ -21,32 +20,32 @@ export type NextPageWithLayout<P = object> = NextPage<P> & {
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page: React.ReactElement) => page);
-  const [, setUser] = useAtom(userAtom);
+  const [user, setUser] = useAtom(userAtom);
 
   useEffect(() => {
     async function fetchUser() {
-      const token = getCookie("accessToken");
+      if (!user) {
+        const token = getCookie("accessToken");
 
-      if (token) {
-        const userData = await getUserInfo();
-        if (userData && userData.data) {
-          setUser(
-            userData.data as {
-              id: number;
-              email: string;
-              nickname: string;
-              profileImageUrl: string;
-              createdAt: string;
-              updatedAt: string;
-            },
-          );
+        if (token) {
+          try {
+            const userData = await getUserInfo();
+            if (userData && userData.data) {
+              setUser(userData.data);
+            } else {
+              Router.push("/login");
+            }
+          } catch (error) {
+            console.error("사용자 정보 가져오기 실패:", error);
+            Router.push("/login");
+          }
         } else {
           Router.push("/login");
         }
       }
     }
     fetchUser();
-  }, []);
+  }, [user, setUser]);
 
   return getLayout(<Component {...pageProps} />);
 }

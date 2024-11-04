@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { useState } from "react";
 
-export default function ImageInput({ onChange, temptImg }) {
-  const [temptImage, setTemptImage] = useState<string | null>(null);
+export default function ImageInput(temptImg: string | null) {
+  const [, setTemptImage] = useState<string | null>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files;
