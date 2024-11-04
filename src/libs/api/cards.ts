@@ -1,4 +1,5 @@
 // pages/api/login.js
+import { Card } from "@/pages/dashboard/[dashboardid]";
 import baseaxios from "./axios";
 
 // PostCard 인터페이스 정의
@@ -64,11 +65,17 @@ export interface GetResponse {
   };
 }
 
+export interface GetCardListResponse {
+  cards: Card[] | null;
+  totalCount: number;
+}
 // 카드 목록 조회
-export async function getCardList(columnId: number): Promise<GetResponse> {
+export async function getCardList(
+  columnId: number,
+): Promise<GetCardListResponse> {
   try {
     const response = await baseaxios.get(`/cards?size=10&columnId=${columnId}`);
-    return response.data as GetResponse;
+    return response.data as GetCardListResponse;
   } catch (error) {
     console.log("카드 목록 조회 api 오류");
     throw error;

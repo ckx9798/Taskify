@@ -30,7 +30,8 @@ export default function Column({
     const fetchData = async () => {
       try {
         const cardListResponse = await getCardList(columnId);
-        setCardList(cardListResponse.cards);
+        console.log("API 응답:", cardListResponse); // 응답 확인
+        setCardList(cardListResponse.cards ?? []);
       } catch (error) {
         console.error("카드 목록 조회 실패: ", error);
       }
