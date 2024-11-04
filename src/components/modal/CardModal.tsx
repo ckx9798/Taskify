@@ -14,8 +14,8 @@ import {
   getComments,
   updateComment,
 } from "@/libs/api/comments";
-import useDateFormat from "@/hooks/useDateFormat";
 import TaskEditModal from "./TaskEditModal";
+import formatDate from "@/utils/formatDate";
 
 interface Author {
   profileImageUrl: string | null;
@@ -67,16 +67,17 @@ export default function CardModal({
   const [newComment, setNewComment] = useState<string>("");
   const [showOptions, setShowOptions] = useState(false); // 드롭다운 상태
   const [showTaskEdit, setShowTaskEdit] = useState(false);
-  const formattedDate = cardDetail ? useDateFormat(cardDetail.dueDate) : "";
+  // 항상 formatDate 함수를 호출하고, cardDetail이 없을 경우 빈 문자열을 반환
+  const formattedDate = formatDate(cardDetail?.dueDate);
 
-  const fontColor = {
-    "bg-linen-100": "text-diserria-400",
-    "bg-liceFlower-100": "text-atlantis-400",
-    "bg-pinkLace-200": "text-fuchsiaPiknk-500",
-    "bg-linkWater-100": "text-azureRadiance-600",
-  } as const;
+  type fontColor = {
+    "bg-linen-100": "text-diserria-400";
+    "bg-liceFlower-100": "text-atlantis-400";
+    "bg-pinkLace-200": "text-fuchsiaPiknk-500";
+    "bg-linkWater-100": "text-azureRadiance-600";
+  };
 
-  const colors: (keyof typeof fontColor)[] = [
+  const colors: (keyof fontColor)[] = [
     "bg-linen-100",
     "bg-liceFlower-100",
     "bg-pinkLace-200",
