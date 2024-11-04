@@ -19,9 +19,9 @@ export default function DashboardCard({
 }: DashboardCardProps) {
   return (
     <div
-      className={`xl:px- flex items-center py-4 xl:py-6 ${isResponse ? "justify-between px-7" : "justify-center px-2"} md:justify-between`}
+      className={`xl:px- flex items-center py-4 xl:py-6 ${isResponse ? "justify-between px-7" : "justify-center md:px-3 xl:px-4"} md:justify-between`}
     >
-      <div className="flex max-w-[150px] items-center gap-2 md:w-full md:gap-3 xl:max-w-[250px] xl:gap-3">
+      <div className="flex max-w-[150px] items-center gap-2 md:w-full md:gap-4 xl:max-w-[250px] xl:gap-5">
         <span
           className="flex h-2 w-2 flex-shrink-0 items-center justify-center rounded-full"
           style={{ backgroundColor: dashboard.color }}
