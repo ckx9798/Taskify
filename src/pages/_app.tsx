@@ -40,7 +40,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
             Router.push("/login");
           }
         } else {
-          Router.push("/login");
+          Router.push("/");
         }
       }
     }
