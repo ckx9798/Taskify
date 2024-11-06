@@ -1,4 +1,4 @@
-# Fondom-K
+# Taskify
 
 ![image](https://github.com/user-attachments/assets/ddf09ca2-766b-4854-a0b4-1ef5f379c419)
 
@@ -26,25 +26,25 @@ https://taskify-sepia.vercel.app/
     <tr>
       <td align="center">
         <a href="">
-          <img src="https://github.com/user-attachments/assets/46f49e99-3102-41f9-9af0-8b301b31be87" width="200px;" /><br />
+          <img src="https://github.com/user-attachments/assets/46f49e99-3102-41f9-9af0-8b301b31be87" width="230px;" height="230px;" /><br />
           <sub><b>FE 팀장 : 이재서</b></sub>
         </a><br />
       </td>
       <td align="center">
         <a href="">
-          <img src="https://velog.velcdn.com/images/ckx9798/post/6dccc51a-c054-4382-8f18-aa74c9dc8052/image.png" width="200px;" /><br />
+          <img src="https://velog.velcdn.com/images/ckx9798/post/6dccc51a-c054-4382-8f18-aa74c9dc8052/image.png" width="230px;" height="230px;"  /><br />
           <sub><b>FE 팀원 : 김태준</b></sub>
         </a><br />
       </td>
       <td align="center">
         <a href="">
-          <img src="https://github.com/user-attachments/assets/653d7dae-0284-4072-bd4e-b04a9f94d878" width="200px;" /><br />
+          <img src="https://github.com/user-attachments/assets/653d7dae-0284-4072-bd4e-b04a9f94d878" width="230px;" height="230px;"  /><br />
           <sub><b>FE 팀원 : 김민준</b></sub>
         </a><br />
       </td>
       <td align="center">
         <a href="">
-          <img src="https://velog.velcdn.com/images/ckx9798/post/5962b4c5-2b88-4561-b3f2-f8274d669190/image.png" width="200px;" /><br />
+          <img src="https://velog.velcdn.com/images/ckx9798/post/5962b4c5-2b88-4561-b3f2-f8274d669190/image.png" width="230px;" height="230px;"  /><br />
           <sub><b>FE 팀원 : 정우영</b></sub>
         </a><br />
       </td>
@@ -202,26 +202,19 @@ https://taskify-sepia.vercel.app/
 ![랜딩](https://github.com/user-attachments/assets/9483ca03-af2a-492e-bc6b-910a58628e39)
 
 
--   로그인
+-   회원가입 및 로그인
 
-![로그인2](https://github.com/user-attachments/assets/4d064fbc-12e9-4bb9-b458-ccf2020903a0)
-
-
-
--   회원가입
-
-![회원가입2](https://github.com/user-attachments/assets/63d26bbb-b8d3-4754-a6fc-75c11276ddb6)
+![가입 및 로그인](https://github.com/user-attachments/assets/5b0336ce-087a-451e-b837-9d37123af2eb)
 
 
+- mydashboard 페이지
 
--  마이 대시보드 페이지
-
-![마이대시보드2](https://github.com/user-attachments/assets/9ee59ef5-19fd-49a2-a296-fb889d4e7c4d)
+![mydashboard](https://github.com/user-attachments/assets/1bfc7bc2-3b20-4107-8856-02e191f65f10)
 
 
 -   마이페이지
 
-![마이페이지2](https://github.com/user-attachments/assets/b8217d15-5b72-4571-ae07-3d06d90a3921)
+![mypage](https://github.com/user-attachments/assets/396241d4-2893-41a1-a05b-e71070fc0f7c)
 
 
 -   대시보드 삭제하기
