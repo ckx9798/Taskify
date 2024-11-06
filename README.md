@@ -26,25 +26,25 @@ https://taskify-sepia.vercel.app/
     <tr>
       <td align="center">
         <a href="">
-          <img src="https://github.com/user-attachments/assets/46f49e99-3102-41f9-9af0-8b301b31be87" width="230px;" height="230px;" /><br />
+          <img src="https://github.com/user-attachments/assets/46f49e99-3102-41f9-9af0-8b301b31be87" width="200px;" height="200px;" /><br />
           <sub><b>FE 팀장 : 이재서</b></sub>
         </a><br />
       </td>
       <td align="center">
         <a href="">
-          <img src="https://velog.velcdn.com/images/ckx9798/post/6dccc51a-c054-4382-8f18-aa74c9dc8052/image.png" width="230px;" height="230px;"  /><br />
+          <img src="https://velog.velcdn.com/images/ckx9798/post/6dccc51a-c054-4382-8f18-aa74c9dc8052/image.png" width="200px;" height="200px;"  /><br />
           <sub><b>FE 팀원 : 김태준</b></sub>
         </a><br />
       </td>
       <td align="center">
         <a href="">
-          <img src="https://github.com/user-attachments/assets/653d7dae-0284-4072-bd4e-b04a9f94d878" width="230px;" height="230px;"  /><br />
+          <img src="https://github.com/user-attachments/assets/653d7dae-0284-4072-bd4e-b04a9f94d878" width="200px;" height="200px;"  /><br />
           <sub><b>FE 팀원 : 김민준</b></sub>
         </a><br />
       </td>
       <td align="center">
         <a href="">
-          <img src="https://velog.velcdn.com/images/ckx9798/post/5962b4c5-2b88-4561-b3f2-f8274d669190/image.png" width="230px;" height="230px;"  /><br />
+          <img src="https://velog.velcdn.com/images/ckx9798/post/5962b4c5-2b88-4561-b3f2-f8274d669190/image.png" width="200px;" height="200px;"  /><br />
           <sub><b>FE 팀원 : 정우영</b></sub>
         </a><br />
       </td>
